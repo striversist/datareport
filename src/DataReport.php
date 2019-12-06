@@ -177,7 +177,7 @@ class DataReport
         $data['ctime'] = time();
     }
     /**
-     * [blacklist description]
+     * [blacklist 黑名单]
      * @author tux (8966723@qq.com) 2019-12-06
      * @param  [type] $app_package   [description]
      * @param  [type] $offer_package [description]
@@ -227,7 +227,7 @@ class DataReport
         $data['ctime'] = time();
     }
     /**
-     * [ocr description]
+     * [ocr 图片2文字]
      * @author tux (8966723@qq.com) 2019-12-06
      * @param  [type] $app_package   [description]
      * @param  [type] $offer_package [description]
