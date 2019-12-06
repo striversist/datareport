@@ -17,6 +17,33 @@ class DataReport
     private $realtimeProcess; //实时数据处理类
     private $offlineProcess; //离线数据处理类
 
+    const USER_DEVICE   = 'report/api/userdevice'; //新增设备信息
+    const USER_ACTIVE   = 'report/api/useractive'; //日活数据
+    const USER_REG      = 'report/api/userreg'; //注册
+    const USER_ORDER    = 'report/cpi/userorder'; //进件订单
+    const FREE_TICKET   = 'report/cpi/freeticket'; //使用免息券
+    const POIN_TREDEEM  = 'report/cpi/pointredeem'; //使用积分兑换
+    const APP_INSTALL   = 'report/cpi/appinstall'; // 马甲包激活
+    const OFFER_INSTALL = 'report/cpi/offerinstall'; //cpi激活
+    const SMS           = 'report/service/sms'; //发送短信
+    const BLACKLIST     = 'report/service/blacklist'; //黑名单验证
+    const CHECK_CARD    = 'report/service/checkcard'; //银行卡验证
+    const KTP           = 'report/service/ktp'; //实名验证
+    const OCR           = 'report/service/ocr'; //图片2文字
+    const FACE_COMPARE  = 'report/service/facecompare'; //人脸比对
+    const BIOPSY        = 'report/service/biopsy'; //活体
+    const PHONE_AGE     = 'report/service/phoneage'; //在网时长
+    const PHONE_OWNER   = 'report/service/phoneowner'; //一人多号
+    const FACE_SEARCH   = 'report/service/facesearch'; //人脸搜索
+    const TEL_SCORE     = 'report/service/telscore'; //电信分
+    const FK_SCORE      = 'report/service/fkscore'; //风控分
+    const SPIDER        = 'report/service/spider'; //爬虫数据
+    const TEL_AUTH      = 'report/service/telauth'; //手机号实名
+    const MULTIHEAD     = 'report/service/multihead'; //多头查询
+    const RISK_LIST     = 'report/service/risklist'; //风险名单
+    const RISKY_FACE    = 'report/service/riskyface'; //风险人脸
+    const FK360         = 'report/service/fk360'; //360风控
+
     public function __construct($offlineDataPath, $isProdEnv = false)
     {
         $this->offlineDataPath = $offlineDataPath;
@@ -39,8 +66,18 @@ class DataReport
      */
     public function userDevice($app_package, $app_channel, $app_version, $advertising_id, $guid, $create_time)
     {
+        $data = array(
+            'app_package'    => $app_package,
+            'app_channel'    => $app_channel,
+            'app_version'    => $app_version,
+            'advertising_id' => $advertising_id,
+            'guid'           => $guid,
+            'create_time'    => $create_time,
+        );
         // 离线数据存储
+        $this->offlineProcess->writeJson(self::USER_DEVICE, $data);
         // 实时数据上报
+        $this->realtimeProcess->sendOut(self::USER_DEVICE, $data);
     }
     /**
      * [userActive 用户活跃数据，按天计算，不重复]
@@ -55,8 +92,18 @@ class DataReport
      */
     public function userActive($app_package, $app_channel, $app_version, $uid, $guid, $create_time)
     {
+        $data = array(
+            'app_package' => $app_package,
+            'app_channel' => $app_channel,
+            'app_version' => $app_version,
+            'uid'         => $uid,
+            'guid'        => $guid,
+            'create_time' => $create_time,
+        );
         // 离线数据存储
+        $this->offlineProcess->writeJson(self::USER_ACTIVE, $data);
         // 实时数据上报
+        $this->realtimeProcess->sendOut(self::USER_ACTIVE, $data);
     }
     /**
      * [userReg 新增用户注册]
@@ -71,8 +118,18 @@ class DataReport
      */
     public function userReg($app_package, $user_name, $user_mobile, $uid, $guid, $create_time)
     {
+        $data = array(
+            'app_package' => $app_package,
+            'user_name'   => $user_name,
+            'user_mobile' => $user_mobile,
+            'uid'         => $uid,
+            'guid'        => $guid,
+            'create_time' => $create_time,
+        );
         // 离线数据存储
+        $this->offlineProcess->writeJson(self::USER_REG, $data);
         // 实时数据上报
+        $this->realtimeProcess->sendOut(self::USER_REG, $data);
     }
     /**
      * [userOrder 新增用户订单]
@@ -88,8 +145,19 @@ class DataReport
      */
     public function userOrder($app_package, $offer_package, $order_no, $push_time, $uid, $guid, $create_time)
     {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'order_no'      => $order_no,
+            'push_time'     => $push_time,
+            'uid'           => $uid,
+            'guid'          => $guid,
+            'create_time'   => $create_time,
+        );
         // 离线数据存储
+        $this->offlineProcess->writeJson(self::USER_ORDER, $data);
         // 实时数据上报
+        $this->realtimeProcess->sendOut(self::USER_ORDER, $data);
     }
     /**
      * [freeTicket 免息券使用，成本数据]
@@ -106,7 +174,20 @@ class DataReport
      */
     public function freeTicket($app_package, $offer_package, $order_no, $ticket_num, $ticket_price, $uid, $guid, $create_time)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'order_no'      => $order_no,
+            'ticket_num'    => $ticket_num,
+            'ticket_price'  => $ticket_price,
+            'uid'           => $uid,
+            'guid'          => $guid,
+            'create_time'   => $create_time,
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::FREE_TICKET, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FREE_TICKET, $data);
     }
     /**
      * [pointRedeem 积分兑换，成本数据]
@@ -121,7 +202,20 @@ class DataReport
      */
     public function pointRedeem($app_package, $goods_point, $goods_price, $uid, $guid, $create_time)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'order_no'      => $order_no,
+            'ticket_num'    => $ticket_num,
+            'ticket_price'  => $ticket_price,
+            'uid'           => $uid,
+            'guid'          => $guid,
+            'create_time'   => $create_time,
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::POIN_TREDEEM, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::POIN_TREDEEM, $data);
     }
     /**
      * [appInstall 广告主回调数据，马甲包]
@@ -137,8 +231,29 @@ class DataReport
     public function appInstall($app_package, $install_time, $advertising_id, $appsflyer_id, $channel, $campaign, $country, $ip)
     {
         // $raw_package, $shop_channel
+        $raw_package  = $app_package;
+        $shop_channel = '';
+        if (strrpos($app_package, "-") != false) {
+            $package_arr  = explode("-", $app_package);
+            $raw_package  = $package_arr[0];
+            $shop_channel = $package_arr[1];
+        }
+        $data = array(
+            'app_package'    => $app_package,
+            'raw_package'    => $raw_package,
+            'shop_channel'   => $shop_channel,
+            'install_time'   => $install_time,
+            'advertising_id' => $advertising_id,
+            'appsflyer_id'   => $appsflyer_id,
+            'channel'        => $channel,
+            'campaign'       => $campaign,
+            'country'        => $country,
+            'ip'             => $ip,
+        );
         // 离线数据存储
+        $this->offlineProcess->writeJson(self::APP_INSTALL, $data);
         // 实时数据上报
+        $this->realtimeProcess->sendOut(self::APP_INSTALL, $data);
     }
     /**
      * [offerInstall 广告商回调数据，cpi]
@@ -157,8 +272,30 @@ class DataReport
     public function offerInstall($offer_package, $install_time, $advertising_id, $cid, $sub_id, $cc_id, $clickid, $country, $ip)
     {
         // $raw_package, $shop_channel
+        $raw_package  = $offer_package;
+        $shop_channel = '';
+        if (strrpos($offer_package, "-") != false) {
+            $package_arr  = explode("-", $offer_package);
+            $raw_package  = $package_arr[0];
+            $shop_channel = $package_arr[1];
+        }
+        $data = array(
+            'offer_package'  => $offer_package,
+            'raw_package'    => $raw_package,
+            'shop_channel'   => $shop_channel,
+            'install_time'   => $install_time,
+            'advertising_id' => $advertising_id,
+            'cid'            => $cid,
+            'sub_id'         => $sub_id,
+            'cc_id'          => $cc_id,
+            'clickid'        => $clickid,
+            'country'        => $country,
+            'ip'             => $ip,
+        );
         // 离线数据存储
+        $this->offlineProcess->writeJson(self::OFFER_INSTALL, $data);
         // 实时数据上报
+        $this->realtimeProcess->sendOut(self::OFFER_INSTALL, $data);
     }
     /**
      * [sms 短信]
@@ -174,7 +311,28 @@ class DataReport
      */
     public function sms($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay)
     {
-        $data['ctime'] = time();
+        $sms_count = 1;
+        $smsLength = new SmsLength($sms_content);
+        $sms_len   = $smsLength->getSize();
+        if ($sms_len > 160) {
+            $sms_count = ceil($sms_len / 153);
+        }
+
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'sms_content'   => $sms_content,
+            'sms_count'     => $sms_count,
+            'sms_type'      => $sms_type,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::SMS, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::SMS, $data);
     }
     /**
      * [blacklist 黑名单]
@@ -191,7 +349,21 @@ class DataReport
      */
     public function blacklist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
     {
-        $data['ctime'] = time();
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::BLACKLIST, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
     }
     /**
      * [checkcard 银行卡验证]
@@ -208,7 +380,21 @@ class DataReport
      */
     public function checkCard($app_package, $offer_package, $bank_code, $bank_card, $user_name, $is_hit, $channel_type, $is_pay)
     {
-        $data['ctime'] = time();
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'bank_code'     => $bank_code,
+            'bank_card'     => $bank_card,
+            'user_name'     => $user_name,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::CHECK_CARD, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::CHECK_CARD, $data);
     }
     /**
      * [ktp 实名验证]
@@ -224,7 +410,20 @@ class DataReport
      */
     public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
     {
-        $data['ctime'] = time();
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::KTP, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::KTP, $data);
     }
     /**
      * [ocr 图片2文字]
@@ -238,7 +437,18 @@ class DataReport
      */
     public function ocr($app_package, $offer_package, $ocr_img, $channel_type, $is_pay)
     {
-        $data['ctime'] = time();
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'ocr_img'       => $ocr_img,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::OCR, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::OCR, $data);
     }
     /**
      * [faceCompare 人脸比对]
@@ -254,7 +464,20 @@ class DataReport
      */
     public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $return_code, $channel_type, $is_pay)
     {
-        $data['ctime'] = time();
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'raw_img'       => $raw_img,
+            'diff_img'      => $diff_img,
+            'return_code'   => $return_code,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::FACE_COMPARE, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
     }
     /**
      * [biopsy 活体检测]
@@ -268,7 +491,18 @@ class DataReport
      */
     public function biopsy($app_package, $offer_package, $return_code, $channel_type, $is_pay)
     {
-        $data['ctime'] = time();
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'return_code'   => $return_code,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::BIOPSY, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::BIOPSY, $data);
     }
     /**
      * [phoneAge 在网时长]
@@ -283,7 +517,19 @@ class DataReport
      */
     public function phoneAge($app_package, $offer_package, $user_mobile, $phone_age, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'phone_age'     => $phone_age,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::PHONE_AGE, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::PHONE_AGE, $data);
     }
     /**
      * [phoneOwner 一人多号]
@@ -300,7 +546,21 @@ class DataReport
      */
     public function phoneOwner($app_package, $offer_package, $user_mobile, $user_idcard, $mobile_info, $idcard_info, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_idcard'   => $user_idcard,
+            'mobile_info'   => $mobile_info,
+            'idcard_info'   => $idcard_info,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::PHONE_OWNER, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::PHONE_OWNER, $data);
     }
     /**
      * [faceSearch 人脸搜索]
@@ -316,7 +576,20 @@ class DataReport
      */
     public function faceSearch($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard'   => $user_idcard,
+            'face_img'      => $face_img,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::FACE_SEARCH, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FACE_SEARCH, $data);
     }
     /**
      * [telScore 电信评分]
@@ -331,7 +604,19 @@ class DataReport
      */
     public function telScore($app_package, $offer_package, $user_mobile, $return_score, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'return_score'  => $return_score,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::TEL_SCORE, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::TEL_SCORE, $data);
     }
     /**
      * [fkScore 风控评分]
@@ -349,7 +634,22 @@ class DataReport
      */
     public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'fk_type'       => $fk_type,
+            'return_score'  => $return_score,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::FK_SCORE, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FK_SCORE, $data);
     }
     /**
      * [spider 爬虫]
@@ -364,7 +664,19 @@ class DataReport
      */
     public function spider($app_package, $offer_package, $task_id, $auth_code, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'task_id'       => $task_id,
+            'auth_code'     => $auth_code,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::SPIDER, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::SPIDER, $data);
     }
     /**
      * [telAuth 手机号实名检测]
@@ -379,7 +691,19 @@ class DataReport
      */
     public function telAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::TEL_AUTH, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::TEL_AUTH, $data);
     }
     /**
      * [multihead 多头查询，多个平台借款]
@@ -394,7 +718,19 @@ class DataReport
      */
     public function multihead($app_package, $offer_package, $user_idcard, $is_hit, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard'   => $user_idcard,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::MULTIHEAD, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::MULTIHEAD, $data);
     }
     /**
      * [riskList 风险关注名单]
@@ -411,7 +747,21 @@ class DataReport
      */
     public function riskList($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::RISK_LIST, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::RISK_LIST, $data);
     }
     /**
      * [riskyface 风险人脸]
@@ -427,7 +777,20 @@ class DataReport
      */
     public function riskyface($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard'   => $user_idcard,
+            'face_img'      => $face_img,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::RISKY_FACE, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::RISKY_FACE, $data);
     }
     /**
      * [fk360 360风控]
@@ -445,7 +808,22 @@ class DataReport
      */
     public function fk360($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay)
     {
-        # code...
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'fk_type'       => $fk_type,
+            'return_score'  => $return_score,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::FK360, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FK360, $data);
     }
 
 }
