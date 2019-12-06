@@ -92,7 +92,7 @@ class DataReport
         // 实时数据上报
     }
     /**
-     * [freeTicket 免息券使用]
+     * [freeTicket 免息券使用，成本数据]
      * @author tux (8966723@qq.com) 2019-12-06
      * @param  [type] $app_package   [description]
      * @param  [type] $offer_package [description]
@@ -109,7 +109,7 @@ class DataReport
         # code...
     }
     /**
-     * [pointRedeem 积分兑换]
+     * [pointRedeem 积分兑换，成本数据]
      * @author tux (8966723@qq.com) 2019-12-06
      * @param  [type] $app_package [description]
      * @param  [type] $goods_point [兑换商品消耗的积分]
