@@ -92,6 +92,38 @@ class DataReport
         // 实时数据上报
     }
     /**
+     * [freeTicket 免息券使用]
+     * @author tux (8966723@qq.com) 2019-12-06
+     * @param  [type] $app_package   [description]
+     * @param  [type] $offer_package [description]
+     * @param  [type] $order_no      [description]
+     * @param  [type] $ticket_num    [description]
+     * @param  [type] $ticket_price  [该免息券的唯一索引]
+     * @param  [type] $uid           [该免息券总金额]
+     * @param  [type] $guid          [description]
+     * @param  [int] $create_time   [description]
+     * @return [type]                [description]
+     */
+    public function freeTicket($app_package, $offer_package, $order_no, $ticket_num, $ticket_price, $uid, $guid, $create_time)
+    {
+        # code...
+    }
+    /**
+     * [pointRedeem 积分兑换]
+     * @author tux (8966723@qq.com) 2019-12-06
+     * @param  [type] $app_package [description]
+     * @param  [type] $goods_point [兑换商品消耗的积分]
+     * @param  [type] $goods_price [兑换商品总金额]
+     * @param  [type] $uid         [description]
+     * @param  [type] $guid        [description]
+     * @param  [int] $create_time [description]
+     * @return [type]              [description]
+     */
+    public function pointRedeem($app_package, $goods_point, $goods_price, $uid, $guid, $create_time)
+    {
+        # code...
+    }
+    /**
      * [appInstall 广告主回调数据，马甲包]
      * @author tux (8966723@qq.com) 2019-12-06
      * @param  [type] $app_package    [马甲包名]
@@ -309,7 +341,7 @@ class DataReport
      * @param  [type] $user_mobile   [description]
      * @param  [type] $user_name     [description]
      * @param  [type] $user_idcard   [description]
-     * @param  [tinyint] $fk_type       [ 	1=信用分，2=多头分，3=欺诈分]
+     * @param  [tinyint] $fk_type       [     1=信用分，2=多头分，3=欺诈分]
      * @param  [type] $return_score  [返回分]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
@@ -347,7 +379,7 @@ class DataReport
      */
     public function telAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay)
     {
-    	# code...
+        # code...
     }
     /**
      * [multihead 多头查询，多个平台借款]
@@ -362,7 +394,7 @@ class DataReport
      */
     public function multihead($app_package, $offer_package, $user_idcard, $is_hit, $channel_type, $is_pay)
     {
-    	# code...
+        # code...
     }
     /**
      * [riskList 风险关注名单]
@@ -379,10 +411,10 @@ class DataReport
      */
     public function riskList($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
     {
-    	# code...
+        # code...
     }
     /**
-     * [riskyface description]
+     * [riskyface 风险人脸]
      * @author tux (8966723@qq.com) 2019-12-06
      * @param  [type] $app_package   [description]
      * @param  [type] $offer_package [description]
@@ -395,7 +427,25 @@ class DataReport
      */
     public function riskyface($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay)
     {
-    	# code...
+        # code...
+    }
+    /**
+     * [fk360 360风控]
+     * @author tux (8966723@qq.com) 2019-12-06
+     * @param  [type] $app_package   [description]
+     * @param  [type] $offer_package [description]
+     * @param  [type] $user_mobile   [description]
+     * @param  [type] $user_name     [description]
+     * @param  [type] $user_idcard   [description]
+     * @param  [type] $fk_type       [360风控ABCD产品]
+     * @param  [type] $return_score  [返回分数，命中某项分数为0]
+     * @param  [type] $channel_type  [description]
+     * @param  [type] $is_pay        [description]
+     * @return [type]                [description]
+     */
+    public function fk360($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay)
+    {
+        # code...
     }
 
 }
