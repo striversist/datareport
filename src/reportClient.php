@@ -26,6 +26,7 @@ class reportClient
     const APP_INSTALL   = 'report/cpi/appinstall'; // 马甲包激活
     const OFFER_INSTALL = 'report/cpi/offerinstall'; //cpi激活
     const SMS           = 'report/service/sms'; //发送短信
+    const WHITELIST     = 'report/service/whitelist'; //白名单验证
     const BLACKLIST     = 'report/service/blacklist'; //黑名单验证
     const CHECK_CARD    = 'report/service/checkcard'; //银行卡验证
     const KTP           = 'report/service/ktp'; //实名验证
@@ -333,6 +334,39 @@ class reportClient
         $this->offlineProcess->writeJson(self::SMS, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::SMS, $data);
+    }
+    /**
+     * [whitelist 白名单]
+     * @author tux (8966723@qq.com) 2019-12-07
+     * @param  [type] $app_package   [description]
+     * @param  [type] $offer_package [description]
+     * @param  [type] $user_mobile   [description]
+     * @param  [type] $user_name     [description]
+     * @param  [type] $user_idcard   [description]
+     * @param  [type] $bank_card     [description]
+     * @param  [type] $is_hit        [description]
+     * @param  [type] $channel_type  [description]
+     * @param  [type] $is_pay        [description]
+     * @return [type]                [description]
+     */
+    public function whitelist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $bank_card, $is_hit, $channel_type, $is_pay)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'bank_card'     => $bank_card,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->writeJson(self::BLACKLIST, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
     }
     /**
      * [blacklist 黑名单]
