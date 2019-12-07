@@ -78,7 +78,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::USER_DEVICE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::USER_DEVICE, $data);
+        return $this->realtimeProcess->sendOut(self::USER_DEVICE, $data);
     }
     /**
      * [userActive 用户活跃数据，按天计算，不重复]
@@ -104,7 +104,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::USER_ACTIVE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::USER_ACTIVE, $data);
+        return $this->realtimeProcess->sendOut(self::USER_ACTIVE, $data);
     }
     /**
      * [userReg 新增用户注册]
@@ -130,7 +130,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::USER_REG, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::USER_REG, $data);
+        return $this->realtimeProcess->sendOut(self::USER_REG, $data);
     }
     /**
      * [userOrder 新增用户订单]
@@ -158,7 +158,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::USER_ORDER, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::USER_ORDER, $data);
+        return $this->realtimeProcess->sendOut(self::USER_ORDER, $data);
     }
     /**
      * [freeTicket 免息券使用，成本数据]
@@ -188,7 +188,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::FREE_TICKET, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FREE_TICKET, $data);
+        return $this->realtimeProcess->sendOut(self::FREE_TICKET, $data);
     }
     /**
      * [pointRedeem 积分兑换，成本数据]
@@ -216,7 +216,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::POIN_TREDEEM, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::POIN_TREDEEM, $data);
+        return $this->realtimeProcess->sendOut(self::POIN_TREDEEM, $data);
     }
     /**
      * [appInstall 广告主回调数据，马甲包]
@@ -254,7 +254,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::APP_INSTALL, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::APP_INSTALL, $data);
+        return $this->realtimeProcess->sendOut(self::APP_INSTALL, $data);
     }
     /**
      * [offerInstall 广告商回调数据，cpi]
@@ -296,7 +296,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::OFFER_INSTALL, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::OFFER_INSTALL, $data);
+        return $this->realtimeProcess->sendOut(self::OFFER_INSTALL, $data);
     }
     /**
      * [sms 短信]
@@ -333,7 +333,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::SMS, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::SMS, $data);
+        return $this->realtimeProcess->sendOut(self::SMS, $data);
     }
     /**
      * [whitelist 白名单]
@@ -366,7 +366,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::BLACKLIST, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
+        return $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
     }
     /**
      * [blacklist 黑名单]
@@ -397,7 +397,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::BLACKLIST, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
+        return $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
     }
     /**
      * [checkcard 银行卡验证]
@@ -428,7 +428,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::CHECK_CARD, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::CHECK_CARD, $data);
+        return $this->realtimeProcess->sendOut(self::CHECK_CARD, $data);
     }
     /**
      * [ktp 实名验证]
@@ -457,7 +457,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::KTP, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::KTP, $data);
+        return $this->realtimeProcess->sendOut(self::KTP, $data);
     }
     /**
      * [ocr 图片2文字]
@@ -482,7 +482,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::OCR, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::OCR, $data);
+        return $this->realtimeProcess->sendOut(self::OCR, $data);
     }
     /**
      * [faceCompare 人脸比对]
@@ -511,7 +511,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::FACE_COMPARE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
+        return $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
     }
     /**
      * [biopsy 活体检测]
@@ -536,7 +536,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::BIOPSY, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::BIOPSY, $data);
+        return $this->realtimeProcess->sendOut(self::BIOPSY, $data);
     }
     /**
      * [phoneAge 在网时长]
@@ -563,7 +563,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::PHONE_AGE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::PHONE_AGE, $data);
+        return $this->realtimeProcess->sendOut(self::PHONE_AGE, $data);
     }
     /**
      * [phoneOwner 一人多号]
@@ -594,7 +594,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::PHONE_OWNER, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::PHONE_OWNER, $data);
+        return $this->realtimeProcess->sendOut(self::PHONE_OWNER, $data);
     }
     /**
      * [faceSearch 人脸搜索]
@@ -623,7 +623,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::FACE_SEARCH, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FACE_SEARCH, $data);
+        return $this->realtimeProcess->sendOut(self::FACE_SEARCH, $data);
     }
     /**
      * [telScore 电信评分]
@@ -650,7 +650,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::TEL_SCORE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::TEL_SCORE, $data);
+        return $this->realtimeProcess->sendOut(self::TEL_SCORE, $data);
     }
     /**
      * [fkScore 风控评分]
@@ -683,7 +683,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::FK_SCORE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FK_SCORE, $data);
+        return $this->realtimeProcess->sendOut(self::FK_SCORE, $data);
     }
     /**
      * [spider 爬虫]
@@ -710,7 +710,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::SPIDER, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::SPIDER, $data);
+        return $this->realtimeProcess->sendOut(self::SPIDER, $data);
     }
     /**
      * [telAuth 手机号实名检测]
@@ -737,7 +737,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::TEL_AUTH, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::TEL_AUTH, $data);
+        return $this->realtimeProcess->sendOut(self::TEL_AUTH, $data);
     }
     /**
      * [multihead 多头查询，多个平台借款]
@@ -764,7 +764,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::MULTIHEAD, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::MULTIHEAD, $data);
+        return $this->realtimeProcess->sendOut(self::MULTIHEAD, $data);
     }
     /**
      * [riskList 风险关注名单]
@@ -795,7 +795,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::RISK_LIST, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::RISK_LIST, $data);
+        return $this->realtimeProcess->sendOut(self::RISK_LIST, $data);
     }
     /**
      * [riskyface 风险人脸]
@@ -824,7 +824,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::RISKY_FACE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::RISKY_FACE, $data);
+        return $this->realtimeProcess->sendOut(self::RISKY_FACE, $data);
     }
     /**
      * [fk360 360风控]
@@ -857,7 +857,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->writeJson(self::FK360, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FK360, $data);
+        return $this->realtimeProcess->sendOut(self::FK360, $data);
     }
 
 }
