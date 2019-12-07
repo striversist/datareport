@@ -9,7 +9,7 @@
 
 namespace Cashcash\DataReport;
 
-class reportClient
+class ReportClient
 {
     private $offlineDataPath; //离线数据存储路径
     private $isProdEnv; //当前是否生成环境
