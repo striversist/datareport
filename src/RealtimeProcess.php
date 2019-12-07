@@ -15,7 +15,7 @@ class RealtimeProcess
     public function __construct($isProdEnv = false)
     {
         if (!$isProdEnv) {
-            $this->base_url = 'http://testreport.luno.id/api/';
+            $this->base_url = 'http://testreport.cashcash.id/api/';
         } else {
             $this->base_url = 'http://stat.luno.id/api/';
         }

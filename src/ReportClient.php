@@ -364,9 +364,9 @@ class ReportClient
             'create_time'   => time(),
         );
         // 离线数据存储
-        $this->offlineProcess->writeJson(self::BLACKLIST, $data);
+        $this->offlineProcess->writeJson(self::WHITELIST, $data);
         // 实时数据上报
-        return $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
+        return $this->realtimeProcess->sendOut(self::WHITELIST, $data);
     }
     /**
      * [blacklist 黑名单]
