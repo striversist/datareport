@@ -11,29 +11,32 @@ namespace Cashcash\DataReport;
 
 class OfflineProcess
 {
-    private $file_path;
-    public function __construct($filePath)
+    private $logChannel;
+
+    /**
+     * [__construct description]
+     * @author tux (8966723@qq.com) 2019-12-10
+     * @param  [type]  $countryCode [ECS服务器所在地区]
+     * @param  integer $projectEnv  [项目当前环境，默认0测试，1生产]
+     * @param  integer $linkType    [使用内网链接或是外网链接，默认0内网，1外网]
+     * @param  integer $logType     [日志服务商，默认0阿里云，1华为云]
+     */
+    public function __construct($countryCode, $projectEnv = 0, $linkType = 0, $logType = 0)
     {
-        $this->file_path = $filePath;
+        if ($logType == 0) {
+            //阿里云日志
+            $this->logChannel = new AliyunLog($countryCode, $projectEnv, $linkType);
+        }
     }
 
-    public function writeJson($url, $data)
+    public function addLog($url, $data)
     {
-        if (substr(trim($this->file_path), -1) != DIRECTORY_SEPARATOR) {
-        	// 最后一位是否是斜杠
-            $this->file_path = trim($this->file_path) . DIRECTORY_SEPARATOR;
+        if (!empty($this->logChannel)) {
+            $name    = str_replace("/", "_", $url);
+            $content = json_encode($data);
+            $this->logChannel->addLog($name, $content);
+            return true;
         }
-        $this->file_path .= date('Y-m-d'). DIRECTORY_SEPARATOR;
-        if (!file_exists($this->file_path)) {
-            //检查是否有该文件夹，如果没有就创建，并给予权限
-            mkdir($path, 0777, true);
-        }
-        $file = str_replace("/", "_", $url);
-        $file = $this->file_path . $file . ".json";
-
-        $myfile = fopen($file, "a") or die("Unable to open file!");
-        fwrite($myfile, json_encode($data) . "\r\n");
-        fclose($myfile);
-        unset($myfile);
+        return false;
     }
 }

@@ -11,13 +11,19 @@ namespace Cashcash\DataReport;
 
 class RealtimeProcess
 {
-    private $base_url;
-    public function __construct($isProdEnv = false)
+    private $baseUrl;
+
+    /**
+     * [__construct description]
+     * @author tux (8966723@qq.com) 2019-12-10
+     * @param  integer $projectEnv [description]
+     */
+    public function __construct($projectEnv)
     {
-        if (!$isProdEnv) {
-            $this->base_url = 'http://testreport.cashcash.id/api/';
+        if ($projectEnv == 0) {
+            $this->baseUrl = 'http://testreport.cashcash.id/api/';
         } else {
-            $this->base_url = 'http://stat.luno.id/api/';
+            $this->baseUrl = 'http://stat.luno.id/api/';
         }
     }
     /**
@@ -29,7 +35,7 @@ class RealtimeProcess
      */
     public function sendOut($url, $data)
     {
-        $url = $this->base_url . $url;
+        $url = $this->baseUrl . $url;
         return $this->doPost($url, json_encode($data));
     }
     /*
