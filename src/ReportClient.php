@@ -493,18 +493,20 @@ class ReportClient
      * @param  [type] $offer_package [description]
      * @param  [type] $raw_img       [参照图片，或是身份证图片的地址]
      * @param  [type] $diff_img      [需要对比的图片地址]
+     * @param  [type] $request_id    [每笔调用的唯一索引，平安旧request id，新Authorization]
      * @param  [type] $return_code   [针对平安人脸的返回码，默认99]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @return [type]                [description]
      */
-    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $return_code, $channel_type, $is_pay)
+    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay)
     {
         $data = array(
             'app_package'   => $app_package,
             'offer_package' => $offer_package,
             'raw_img'       => $raw_img,
             'diff_img'      => $diff_img,
+            'request_id'    => $request_id,
             'return_code'   => $return_code,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
@@ -520,16 +522,18 @@ class ReportClient
      * @author tux (8966723@qq.com) 2019-12-06
      * @param  [type] $app_package   [description]
      * @param  [type] $offer_package [description]
+     * @param  [type] $request_id    [每笔调用的唯一索引，平安旧request id，新Authorization]
      * @param  [type] $return_code   [针对平安活体的返回码，默认99]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @return [type]                [description]
      */
-    public function biopsy($app_package, $offer_package, $return_code, $channel_type, $is_pay)
+    public function biopsy($app_package, $offer_package, $request_id, $return_code, $channel_type, $is_pay)
     {
         $data = array(
             'app_package'   => $app_package,
             'offer_package' => $offer_package,
+            'request_id'    => $request_id,
             'return_code'   => $return_code,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
@@ -662,7 +666,7 @@ class ReportClient
      * @param  [type] $user_mobile   [description]
      * @param  [type] $user_name     [description]
      * @param  [type] $user_idcard   [description]
-     * @param  [tinyint] $fk_type       [1=信用分，2=多头分，3=欺诈分]
+     * @param  [tinyint] $fk_type    [1=信用分,2=多头分,3=欺诈分,4=定制分]
      * @param  [type] $return_score  [返回分]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
@@ -707,7 +711,7 @@ class ReportClient
             'auth_code'     => $auth_code,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
-            'create_time'   => time()
+            'create_time'   => time(),
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::SPIDER, $data);
@@ -811,7 +815,7 @@ class ReportClient
      * @param  [type] $is_pay        [description]
      * @return [type]                [description]
      */
-    public function riskyface($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay)
+    public function riskyFace($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay)
     {
         $data = array(
             'app_package'   => $app_package,
