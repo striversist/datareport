@@ -36,7 +36,11 @@ class RealtimeProcess
     public function sendOut($url, $data)
     {
         $url = $this->baseUrl . $url;
-        return $this->doPost($url, json_encode($data));
+        try {
+            return $this->doPost($url, json_encode($data));
+        } catch (Exception $ex) {
+            //
+        };
     }
     /*
     get

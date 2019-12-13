@@ -6,7 +6,7 @@
 
 $version = '0.6.0';
 
-function Aliyun_Log_PHP_Client_Autoload($className) {
+function Aliyun_Log_PHP_Client_Autoload_Tux($className) {
     $classPath = explode('_', $className);
     if ($classPath[0] == 'Aliyun') {
         if(count($classPath)>5)
@@ -29,4 +29,4 @@ function Aliyun_Log_PHP_Client_Autoload($className) {
     }
 }
 
-spl_autoload_register('Aliyun_Log_PHP_Client_Autoload');
+spl_autoload_register('Aliyun_Log_PHP_Client_Autoload_Tux');

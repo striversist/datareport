@@ -63,17 +63,10 @@ class AliyunLog
      */
     public function addLog($name, $content)
     {
-        $client = null;
         try {
-            $client = new \Aliyun_Log_Client($this->log_info['end_point'], self::ACCESS_KEY_ID, self::ACCESS_KEY_SECRET);
-        } catch (Exception $ex) {
             require_once realpath(dirname(__FILE__) . '/aliyun-log-php-sdk-master/Log_Autoload.php');
-        };
 
-        try {
-            if (empty($client)) {
-                $client = new \Aliyun_Log_Client($this->log_info['end_point'], self::ACCESS_KEY_ID, self::ACCESS_KEY_SECRET);
-            }
+            $client = new \Aliyun_Log_Client($this->log_info['end_point'], self::ACCESS_KEY_ID, self::ACCESS_KEY_SECRET);
 
             $contents = array(
                 'name'    => $name,
