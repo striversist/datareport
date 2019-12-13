@@ -3,7 +3,7 @@
 //require('protocolbuffers.inc.php');
 
 // message Log.Content
-class Log_Content {
+class LogContent {
   private $_unknown;
 
   function __construct($in = NULL, &$limit = PHP_INT_MAX) {
@@ -126,7 +126,7 @@ class Log_Content {
 }
 
 // message Log
-class Log {
+class AliyunLog {
   private $_unknown;
 
   function __construct($in = NULL, &$limit = PHP_INT_MAX) {
@@ -512,4 +512,3 @@ class LogGroupList {
 
   // @@protoc_insertion_point(class_scope:LogGroupList)
 }
-
