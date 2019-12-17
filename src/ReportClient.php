@@ -36,7 +36,8 @@ class ReportClient
     const TEL_SCORE     = 'report/service/telscore'; //电信分
     const FK_SCORE      = 'report/service/fkscore'; //风控分
     const SPIDER        = 'report/service/spider'; //爬虫数据
-    const TEL_AUTH      = 'report/service/telauth'; //手机号实名
+    const PHONE_IDCARD  = 'report/service/phoneidcard'; //手机号证件
+    const PHONE_AUTH    = 'report/service/phoneauth'; //手机号实名
     const MULTIHEAD     = 'report/service/multihead'; //多头查询
     const RISK_LIST     = 'report/service/risklist'; //风险名单
     const RISKY_FACE    = 'report/service/riskyface'; //风险人脸
@@ -81,7 +82,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::USER_DEVICE, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::USER_DEVICE, $data);
-        return true; 
+        return true;
     }
     /**
      * [userActive 用户活跃数据，按天计算，不重复]
@@ -108,7 +109,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::USER_ACTIVE, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::USER_ACTIVE, $data);
-        return true; 
+        return true;
     }
     /**
      * [userReg 新增用户注册]
@@ -135,7 +136,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::USER_REG, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::USER_REG, $data);
-        return true; 
+        return true;
     }
     /**
      * [userOrder 新增用户订单]
@@ -164,7 +165,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::USER_ORDER, $data);
-        return true; 
+        return true;
     }
     /**
      * [freeTicket 免息券使用，成本数据]
@@ -195,7 +196,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::FREE_TICKET, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::FREE_TICKET, $data);
-        return true; 
+        return true;
     }
     /**
      * [pointRedeem 积分兑换，成本数据]
@@ -224,7 +225,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::POIN_TREDEEM, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::POIN_TREDEEM, $data);
-        return true; 
+        return true;
     }
     /**
      * [appInstall 广告主回调数据，马甲包]
@@ -263,7 +264,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::APP_INSTALL, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::APP_INSTALL, $data);
-        return true; 
+        return true;
     }
     /**
      * [offerInstall 广告商回调数据，cpi]
@@ -306,7 +307,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::OFFER_INSTALL, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::OFFER_INSTALL, $data);
-        return true; 
+        return true;
     }
     /**
      * [sms 短信]
@@ -344,7 +345,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::SMS, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::SMS, $data);
-        return true; 
+        return true;
     }
     /**
      * [whitelist 白名单]
@@ -378,7 +379,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::WHITELIST, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::WHITELIST, $data);
-        return true; 
+        return true;
     }
     /**
      * [blacklist 黑名单]
@@ -410,7 +411,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::BLACKLIST, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
-        return true; 
+        return true;
     }
     /**
      * [checkcard 银行卡验证]
@@ -442,7 +443,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::CHECK_CARD, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::CHECK_CARD, $data);
-        return true; 
+        return true;
     }
     /**
      * [ktp 实名验证]
@@ -472,7 +473,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::KTP, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::KTP, $data);
-        return true; 
+        return true;
     }
     /**
      * [ocr 图片2文字]
@@ -498,7 +499,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::OCR, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::OCR, $data);
-        return true; 
+        return true;
     }
     /**
      * [faceCompare 人脸比对]
@@ -530,7 +531,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::FACE_COMPARE, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
-        return true; 
+        return true;
     }
     /**
      * [biopsy 活体检测]
@@ -558,7 +559,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::BIOPSY, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::BIOPSY, $data);
-        return true; 
+        return true;
     }
     /**
      * [phoneAge 在网时长]
@@ -586,7 +587,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::PHONE_AGE, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::PHONE_AGE, $data);
-        return true; 
+        return true;
     }
     /**
      * [phoneOwner 一人多号]
@@ -618,7 +619,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::PHONE_OWNER, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::PHONE_OWNER, $data);
-        return true; 
+        return true;
     }
     /**
      * [faceSearch 人脸搜索]
@@ -648,7 +649,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::FACE_SEARCH, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::FACE_SEARCH, $data);
-        return true; 
+        return true;
     }
     /**
      * [telScore 电信评分]
@@ -676,7 +677,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::TEL_SCORE, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::TEL_SCORE, $data);
-        return true; 
+        return true;
     }
     /**
      * [fkScore 风控评分]
@@ -710,7 +711,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::FK_SCORE, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::FK_SCORE, $data);
-        return true; 
+        return true;
     }
     /**
      * [spider 爬虫]
@@ -738,20 +739,20 @@ class ReportClient
         $this->offlineProcess->addLog(self::SPIDER, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::SPIDER, $data);
-        return true; 
+        return true;
     }
     /**
-     * [telAuth 手机号实名检测]
-     * @author tux (8966723@qq.com) 2019-12-06
+     * [phoneAuth 手机号实名检测]
+     * @author tux (8966723@qq.com) 2019-12-17
      * @param  [type] $app_package   [description]
      * @param  [type] $offer_package [description]
      * @param  [type] $user_mobile   [description]
-     * @param  [type] $is_hit        [是否验证通过，通过为1]
+     * @param  [type] $is_hit        [description]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @return [type]                [description]
      */
-    public function telAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay)
+    public function phoneAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -763,10 +764,40 @@ class ReportClient
             'create_time'   => time(),
         );
         // 离线数据存储
-        $this->offlineProcess->addLog(self::TEL_AUTH, $data);
+        $this->offlineProcess->addLog(self::PHONE_AUTH, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::TEL_AUTH, $data);
-        return true; 
+        $this->realtimeProcess->sendOut(self::PHONE_AUTH, $data);
+        return true;
+    }
+    /**
+     * [phoneIdcard 手机号证件检测]
+     * @author tux (8966723@qq.com) 2019-12-17
+     * @param  [type] $app_package   [description]
+     * @param  [type] $offer_package [description]
+     * @param  [type] $user_mobile   [description]
+     * @param  [type] $user_idcard   [description]
+     * @param  [type] $is_hit        [description]
+     * @param  [type] $channel_type  [description]
+     * @param  [type] $is_pay        [description]
+     * @return [type]                [description]
+     */
+    public function phoneIdcard($app_package, $offer_package, $user_mobile, $user_idcard, $is_hit, $channel_type, $is_pay)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_idcard'   => $user_idcard,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::PHONE_IDCARD, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::PHONE_IDCARD, $data);
+        return true;
     }
     /**
      * [multihead 多头查询，多个平台借款]
@@ -794,7 +825,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::MULTIHEAD, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::MULTIHEAD, $data);
-        return true; 
+        return true;
     }
     /**
      * [riskList 风险关注名单]
@@ -826,7 +857,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::RISK_LIST, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::RISK_LIST, $data);
-        return true; 
+        return true;
     }
     /**
      * [riskyface 风险人脸]
@@ -856,7 +887,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::RISKY_FACE, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::RISKY_FACE, $data);
-        return true; 
+        return true;
     }
     /**
      * [fk360 360风控]
@@ -890,7 +921,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::FK360, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::FK360, $data);
-        return true; 
+        return true;
     }
 
 }
