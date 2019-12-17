@@ -21,7 +21,7 @@ class RealtimeProcess
     public function __construct($projectEnv)
     {
         if ($projectEnv == 0) {
-            $this->baseUrl = 'http://teststat.cashcash.id/api/';
+            $this->baseUrl = 'http://teststat.luno.id/api/';
         } else {
             $this->baseUrl = 'http://stat.luno.id/api/';
         }
