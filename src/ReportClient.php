@@ -14,14 +14,14 @@ class ReportClient
     private $realtimeProcess; //实时数据处理类
     private $offlineProcess; //离线数据处理类
 
-    const USER_DEVICE   = 'report/api/userdevice'; //新增设备信息
-    const USER_ACTIVE   = 'report/api/useractive'; //日活数据
-    const USER_REG      = 'report/api/userreg'; //注册
-    const USER_ORDER    = 'report/cpi/userorder'; //进件订单
-    const FREE_TICKET   = 'report/cpi/freeticket'; //使用免息券
-    const POIN_TREDEEM  = 'report/cpi/pointredeem'; //使用积分兑换
-    const APP_INSTALL   = 'report/cpi/appinstall'; // 马甲包激活
-    const OFFER_INSTALL = 'report/cpi/offerinstall'; //cpi激活
+    const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
+    const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
+    const USER_REG      = 'report/stat/userreg'; //注册
+    const USER_ORDER    = 'report/stat/userorder'; //进件订单
+    const FREE_TICKET   = 'report/stat/freeticket'; //使用免息券
+    const POIN_TREDEEM  = 'report/stat/pointredeem'; //使用积分兑换
+    const APP_INSTALL   = 'report/stat/appinstall'; // 马甲包激活
+    const OFFER_INSTALL = 'report/stat/offerinstall'; //cpi激活
     const SMS           = 'report/service/sms'; //发送短信
     const WHITELIST     = 'report/service/whitelist'; //白名单验证
     const BLACKLIST     = 'report/service/blacklist'; //黑名单验证
@@ -42,6 +42,9 @@ class ReportClient
     const RISK_LIST     = 'report/service/risklist'; //风险名单
     const RISKY_FACE    = 'report/service/riskyface'; //风险人脸
     const FK360         = 'report/service/fk360'; //360风控
+
+    const SMS_SEND    = 'report/stat/smssend'; //短信到达
+    const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
 
     /**
      * [__construct description]
@@ -921,6 +924,52 @@ class ReportClient
         $this->offlineProcess->addLog(self::FK360, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::FK360, $data);
+        return true;
+    }
+
+    /**
+     * [smsSend 验证码短信发送记录]
+     * @author tux (8966723@qq.com) 2019-12-20
+     * @param  [type] $partner_id  [接入toolcash项目的partner id]
+     * @param  [type] $app_package [马甲包名]
+     * @param  [type] $user_mobile [发送手机号码]
+     * @param  [type] $sms_type    [短信发送场景]
+     * @return [type]              [description]
+     */
+    public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001)
+    {
+        $data = array(
+            'partner_id'  => $partner_id,
+            'app_package' => $app_package,
+            'user_mobile' => $user_mobile,
+            'sms_type'    => $sms_type,
+            'create_time' => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::SMS_SEND, $data);
+        return true;
+    }
+
+    /**
+     * [smsReceive 验证码短信使用记录]
+     * @author tux (8966723@qq.com) 2019-12-20
+     * @param  [type] $partner_id  [接入toolcash项目的partner id]
+     * @param  [type] $app_package [马甲包名]
+     * @param  [type] $user_mobile [发送手机号码]
+     * @param  string $sms_type    [短信发送场景]
+     * @return [type]              [description]
+     */
+    public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001)
+    {
+        $data = array(
+            'partner_id'  => $partner_id,
+            'app_package' => $app_package,
+            'user_mobile' => $user_mobile,
+            'sms_type'    => $sms_type,
+            'create_time' => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
         return true;
     }
 
