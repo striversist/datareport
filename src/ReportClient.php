@@ -215,14 +215,12 @@ class ReportClient
     public function pointRedeem($app_package, $goods_point, $goods_price, $uid, $guid, $create_time)
     {
         $data = array(
-            'app_package'   => $app_package,
-            'offer_package' => $offer_package,
-            'order_no'      => $order_no,
-            'ticket_num'    => $ticket_num,
-            'ticket_price'  => $ticket_price,
-            'uid'           => $uid,
-            'guid'          => $guid,
-            'create_time'   => $create_time,
+            'app_package' => $app_package,
+            'goods_point' => $goods_point,
+            'goods_price' => $goods_price,
+            'uid'         => $uid,
+            'guid'        => $guid,
+            'create_time' => $create_time,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::POIN_TREDEEM, $data);
