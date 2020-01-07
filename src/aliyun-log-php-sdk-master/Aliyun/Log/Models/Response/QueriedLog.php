@@ -14,17 +14,17 @@ class Aliyun_Log_Models_QueriedLog {
     /**
      * @var integer log timestamp
      */
-    private $time;
+    public $time;
 
     /**
      * @var string log source
      */
-    private $source;
+    public $source;
 
     /**
      * @var array log contents, content many key/value pair
      */
-    private $contents;
+    public $contents;
     
     
     /**
