@@ -43,7 +43,7 @@ class ReportClient
     const RISKY_FACE    = 'report/service/riskyface'; //风险人脸
     const FK360         = 'report/service/fk360'; //360风控
 
-    const SMS_SEND    = 'report/stat/smssend'; //短信到达
+    const SMS_SEND    = 'report/stat/smssend'; //短信发送
     const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
 
     /**
@@ -148,18 +148,22 @@ class ReportClient
      * @param  [type] $offer_package [机构包名]
      * @param  [type] $order_no      [业务系统订单号，唯一]
      * @param  [int] $push_time     [推送时间，时间戳]
+     * @param  [type] $order_status  [订单状态，贷超订单80以上所有状态]
+     * @param  [type] $order_type    [订单分类，10=标准进件，11=多推进件]
      * @param  [type] $uid         [自定义用户id，唯一]
      * @param  [type] $guid        [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
      * @return [type]                [description]
      */
-    public function userOrder($app_package, $offer_package, $order_no, $push_time, $uid, $guid, $create_time)
+    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time)
     {
         $data = array(
             'app_package'   => $app_package,
             'offer_package' => $offer_package,
             'order_no'      => $order_no,
             'push_time'     => $push_time,
+            'order_status'  => $order_status,
+            'order_type'    => $order_type,
             'uid'           => $uid,
             'guid'          => $guid,
             'create_time'   => $create_time,

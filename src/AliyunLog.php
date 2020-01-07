@@ -93,4 +93,25 @@ class AliyunLog
         };
     }
 
+    public function queryLog($from, $to, $offset = 0, $line = '100', $query = '', $topic = '', $reverse = false)
+    {
+        try {
+            require_once realpath(dirname(__FILE__) . '/aliyun-log-php-sdk-master/Log_Autoload.php');
+
+            $client = new \Aliyun_Log_Client($this->log_info['end_point'], self::ACCESS_KEY_ID, self::ACCESS_KEY_SECRET);
+
+            $request = new \Aliyun_Log_Models_GetLogsRequest($this->log_info['project_name'], $this->log_info['log_store'], $from, $to, $topic, $query, $line, $offset, $reverse);
+
+            $response = null;
+            while (is_null($response) || (!$response->isCompleted())) {
+                $response = $client->getLogs($request);
+            }
+            return array('count' => $response->getCount(), 'logs' => $response->getLogs());
+        } catch (Aliyun_Log_Exception $ex) {
+            // logVarDump($ex);
+        } catch (Exception $ex) {
+            // logVarDump($ex);
+        };
+    }
+
 }
