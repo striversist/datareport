@@ -22,6 +22,7 @@ class ReportClient
     const POIN_TREDEEM  = 'report/stat/pointredeem'; //使用积分兑换
     const APP_INSTALL   = 'report/stat/appinstall'; // 马甲包激活
     const OFFER_INSTALL = 'report/stat/offerinstall'; //cpi激活
+
     const SMS           = 'report/service/sms'; //发送短信
     const WHITELIST     = 'report/service/whitelist'; //白名单验证
     const BLACKLIST     = 'report/service/blacklist'; //黑名单验证
@@ -45,6 +46,7 @@ class ReportClient
 
     const SMS_SEND    = 'report/stat/smssend'; //短信发送
     const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
+    const OFFER_CAP = 'report/stat/offercap'; //cap值同步
 
     /**
      * [__construct description]
@@ -974,5 +976,24 @@ class ReportClient
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
         return true;
     }
+
+    /**
+     * cap值同步
+     */
+    public function offerCap($offer_package, $offer_type, $old_value, $new_value)
+    {
+        $data = array(
+            'offer_package'  => $offer_package,
+            'offer_type' => $offer_type,
+            'old_value' => $old_value,
+            'new_value' => $new_value,
+            'create_time' => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::OFFER_CAP, $data);
+        return true;
+    }
+
+
 
 }
