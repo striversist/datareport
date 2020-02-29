@@ -22,31 +22,33 @@ class ReportClient
     const POIN_TREDEEM  = 'report/stat/pointredeem'; //使用积分兑换
     const APP_INSTALL   = 'report/stat/appinstall'; // 马甲包激活
     const OFFER_INSTALL = 'report/stat/offerinstall'; //cpi激活
+    const USER_INFO     = 'report/stat/userinfo'; //用户数据
 
-    const SMS           = 'report/service/sms'; //发送短信
-    const WHITELIST     = 'report/service/whitelist'; //白名单验证
-    const BLACKLIST     = 'report/service/blacklist'; //黑名单验证
-    const CHECK_CARD    = 'report/service/checkcard'; //银行卡验证
-    const KTP           = 'report/service/ktp'; //实名验证
-    const OCR           = 'report/service/ocr'; //图片2文字
-    const FACE_COMPARE  = 'report/service/facecompare'; //人脸比对
-    const BIOPSY        = 'report/service/biopsy'; //活体
-    const PHONE_AGE     = 'report/service/phoneage'; //在网时长
-    const PHONE_OWNER   = 'report/service/phoneowner'; //一人多号
-    const FACE_SEARCH   = 'report/service/facesearch'; //人脸搜索
-    const TEL_SCORE     = 'report/service/telscore'; //电信分
-    const FK_SCORE      = 'report/service/fkscore'; //风控分
-    const SPIDER        = 'report/service/spider'; //爬虫数据
-    const PHONE_IDCARD  = 'report/service/phoneidcard'; //手机号证件
-    const PHONE_AUTH    = 'report/service/phoneauth'; //手机号实名
-    const MULTIHEAD     = 'report/service/multihead'; //多头查询
-    const RISK_LIST     = 'report/service/risklist'; //风险名单
-    const RISKY_FACE    = 'report/service/riskyface'; //风险人脸
-    const FK360         = 'report/service/fk360'; //360风控
+    const SMS          = 'report/service/sms'; //发送短信
+    const WHITELIST    = 'report/service/whitelist'; //白名单验证
+    const BLACKLIST    = 'report/service/blacklist'; //黑名单验证
+    const CHECK_CARD   = 'report/service/checkcard'; //银行卡验证
+    const KTP          = 'report/service/ktp'; //实名验证
+    const OCR          = 'report/service/ocr'; //图片2文字
+    const FACE_COMPARE = 'report/service/facecompare'; //人脸比对
+    const BIOPSY       = 'report/service/biopsy'; //活体
+    const PHONE_AGE    = 'report/service/phoneage'; //在网时长
+    const PHONE_OWNER  = 'report/service/phoneowner'; //一人多号
+    const FACE_SEARCH  = 'report/service/facesearch'; //人脸搜索
+    const TEL_SCORE    = 'report/service/telscore'; //电信分
+    const FK_SCORE     = 'report/service/fkscore'; //风控分
+    const SPIDER       = 'report/service/spider'; //爬虫数据
+    const PHONE_IDCARD = 'report/service/phoneidcard'; //手机号证件
+    const PHONE_AUTH   = 'report/service/phoneauth'; //手机号实名
+    const MULTIHEAD    = 'report/service/multihead'; //多头查询
+    const RISK_LIST    = 'report/service/risklist'; //风险名单
+    const RISKY_FACE   = 'report/service/riskyface'; //风险人脸
+    const FK360        = 'report/service/fk360'; //360风控
+    const PAY = 'report/service/pay'; //放款
 
     const SMS_SEND    = 'report/stat/smssend'; //短信发送
     const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
-    const OFFER_CAP = 'report/stat/offercap'; //cap值同步
+    const OFFER_CAP   = 'report/stat/offercap'; //cap值同步
 
     /**
      * [__construct description]
@@ -143,6 +145,7 @@ class ReportClient
         //$this->realtimeProcess->sendOut(self::USER_REG, $data);
         return true;
     }
+
     /**
      * [userOrder 新增用户订单]
      * @author tux (8966723@qq.com) 2019-12-06
@@ -983,17 +986,57 @@ class ReportClient
     public function offerCap($offer_package, $offer_type, $old_value, $new_value)
     {
         $data = array(
-            'offer_package'  => $offer_package,
-            'offer_type' => $offer_type,
-            'old_value' => $old_value,
-            'new_value' => $new_value,
-            'create_time' => time(),
+            'offer_package' => $offer_package,
+            'offer_type'    => $offer_type,
+            'old_value'     => $old_value,
+            'new_value'     => $new_value,
+            'create_time'   => time(),
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::OFFER_CAP, $data);
         return true;
     }
 
+    /**
+     *用户数据
+     */
+    public function userInfo($app_package, $user_name, $user_mobile, $event_id, $uid, $guid, $create_time)
+    {
+        $data = array(
+            'app_package' => $app_package,
+            'user_name'   => $user_name,
+            'user_mobile' => $user_mobile,
+            'event_id'    => $event_id, //用户行为事件
+            'uid'         => $uid,
+            'guid'        => $guid,
+            'create_time' => $create_time,
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::USER_INFO, $data);
+        return true;
+    }
 
+    /**
+     * 放款手续费
+     */
+    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_charge, $pay_time)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'order_no'      => $order_no,
+            'user_name'     => $user_name,
+            'bank_card'     => $bank_card,
+            'pay_money'     => $pay_money,
+            'pay_charge'    => $pay_charge,
+            'pay_time'      => $pay_time,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::PAY, $data);
+        // 实时数据上报
+        //$this->realtimeProcess->sendOut(self::USER_ORDER, $data);
+        return true;
+    }
 
 }
