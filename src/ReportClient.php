@@ -44,7 +44,7 @@ class ReportClient
     const RISK_LIST    = 'report/service/risklist'; //风险名单
     const RISKY_FACE   = 'report/service/riskyface'; //风险人脸
     const FK360        = 'report/service/fk360'; //360风控
-    const PAY = 'report/service/pay'; //放款
+    const PAY          = 'report/service/pay'; //放款
 
     const SMS_SEND    = 'report/stat/smssend'; //短信发送
     const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
@@ -179,6 +179,7 @@ class ReportClient
         //$this->realtimeProcess->sendOut(self::USER_ORDER, $data);
         return true;
     }
+
     /**
      * [freeTicket 免息券使用，成本数据]
      * @author tux (8966723@qq.com) 2019-12-06
@@ -210,6 +211,7 @@ class ReportClient
         //$this->realtimeProcess->sendOut(self::FREE_TICKET, $data);
         return true;
     }
+
     /**
      * [pointRedeem 积分兑换，成本数据]
      * @author tux (8966723@qq.com) 2019-12-06
@@ -1028,7 +1030,7 @@ class ReportClient
             'user_name'     => $user_name,
             'bank_card'     => $bank_card,
             'pay_money'     => $pay_money,
-            'pay_charge'    => $pay_charge,
+            // 'pay_charge'    => $pay_charge,
             'pay_time'      => $pay_time,
             'create_time'   => time(),
         );
