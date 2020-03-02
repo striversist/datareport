@@ -1021,7 +1021,7 @@ class ReportClient
     /**
      * 放款手续费
      */
-    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_charge, $pay_time)
+    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1030,10 +1030,10 @@ class ReportClient
             'user_name'     => $user_name,
             'bank_card'     => $bank_card,
             'pay_money'     => $pay_money,
-            // 'pay_charge'    => $pay_charge,
             'pay_time'      => $pay_time,
             'create_time'   => time(),
         );
+        // 'pay_charge'    => $pay_charge,
         // 离线数据存储
         $this->offlineProcess->addLog(self::PAY, $data);
         // 实时数据上报
