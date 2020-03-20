@@ -45,6 +45,7 @@ class ReportClient
     const RISKY_FACE   = 'report/service/riskyface'; //风险人脸
     const FK360        = 'report/service/fk360'; //360风控
     const PAY          = 'report/service/pay'; //放款
+    const FK_CLOUDUN   = 'report/service/fkcloudun'; //cloudun风控
 
     const SMS_SEND    = 'report/stat/smssend'; //短信发送
     const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
@@ -1038,6 +1039,30 @@ class ReportClient
         $this->offlineProcess->addLog(self::PAY, $data);
         // 实时数据上报
         //$this->realtimeProcess->sendOut(self::USER_ORDER, $data);
+        return true;
+    }
+
+    /**
+     *  cloudun风控
+     */
+    public function fkCloudun($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $user_level, $is_pass, $channel_type, $is_pay)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'user_level'    => $user_level,
+            'is_pass'       => $is_pass,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::FK_CLOUDUN, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FK_CLOUDUN, $data);
         return true;
     }
 
