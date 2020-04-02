@@ -20,7 +20,7 @@ class DataWroldProcess
     /**
      * 初始化,
      */
-    public function __construct($project_env = 0)
+    public function __construct($projectEnv = 0)
     {
         $this->env_source = ($projectEnv == 0) ? "test" : "prod";
     }
