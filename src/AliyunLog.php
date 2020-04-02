@@ -93,6 +93,9 @@ class AliyunLog
         };
     }
 
+    /*
+    查询日志
+     */
     public function queryLog($from, $to, $offset = 0, $line = '100', $query = '', $topic = '', $reverse = false)
     {
         try {

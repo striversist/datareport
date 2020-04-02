@@ -13,10 +13,10 @@ class ReportClient
 {
     private $realtimeProcess; //实时数据处理类
     private $offlineProcess; //离线数据处理类
+    private $dataWroldProcess; //全球数据处理类
 
     const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
     const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
-    const USER_REG      = 'report/stat/userreg'; //注册
     const USER_ORDER    = 'report/stat/userorder'; //进件订单
     const FREE_TICKET   = 'report/stat/freeticket'; //使用免息券
     const POIN_TREDEEM  = 'report/stat/pointredeem'; //使用积分兑换
@@ -63,6 +63,7 @@ class ReportClient
     {
         $this->realtimeProcess = new RealtimeProcess($projectEnv);
         $this->offlineProcess  = new OfflineProcess($countryCode, $projectEnv, $linkType, $logType);
+        $this->dataWroldProcess = new DataWroldProcess($projectEnv);
     }
 
     /**
@@ -88,8 +89,8 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_DEVICE, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::USER_DEVICE, $data);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::USER_DEVICE, $data, 2);
         return true;
     }
     /**
@@ -115,8 +116,8 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ACTIVE, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::USER_ACTIVE, $data);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::USER_ACTIVE, $data, 2);
         return true;
     }
     /**
@@ -136,14 +137,15 @@ class ReportClient
             'app_package' => $app_package,
             'user_name'   => $user_name,
             'user_mobile' => $user_mobile,
+            'event_id'    => 10, //用户行为事件
             'uid'         => $uid,
             'guid'        => $guid,
             'create_time' => $create_time,
         );
         // 离线数据存储
-        $this->offlineProcess->addLog(self::USER_REG, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::USER_REG, $data);
+        $this->offlineProcess->addLog(self::USER_INFO, $data);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::USER_INFO, $data, 2);
         return true;
     }
 
@@ -176,8 +178,8 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::USER_ORDER, $data);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::USER_ORDER, $data, 2);
         return true;
     }
 
@@ -208,8 +210,6 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::FREE_TICKET, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::FREE_TICKET, $data);
         return true;
     }
 
@@ -236,8 +236,6 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::POIN_TREDEEM, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::POIN_TREDEEM, $data);
         return true;
     }
     /**
@@ -275,8 +273,8 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::APP_INSTALL, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::APP_INSTALL, $data);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::APP_INSTALL, $data, 1);
         return true;
     }
     /**
@@ -318,8 +316,8 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::OFFER_INSTALL, $data);
-        // 实时数据上报
-        //$this->realtimeProcess->sendOut(self::OFFER_INSTALL, $data);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::OFFER_INSTALL, $data, 1);
         return true;
     }
     /**
@@ -1016,6 +1014,8 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_INFO, $data);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::USER_INFO, $data, 2);
         return true;
     }
 
