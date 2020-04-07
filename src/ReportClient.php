@@ -23,6 +23,7 @@ class ReportClient
     const APP_INSTALL   = 'report/stat/appinstall'; // 马甲包激活
     const OFFER_INSTALL = 'report/stat/offerinstall'; //cpi激活
     const USER_INFO     = 'report/stat/userinfo'; //用户数据
+    const OFFER_PRICE   = 'report/stat/offerprice'; //每日价格同步
 
     const SMS          = 'report/service/sms'; //发送短信
     const WHITELIST    = 'report/service/whitelist'; //白名单验证
@@ -1063,6 +1064,22 @@ class ReportClient
         $this->offlineProcess->addLog(self::FK_CLOUDUN, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::FK_CLOUDUN, $data);
+        return true;
+    }
+
+    /**
+     *  每日价格同步
+     */
+    public function offerPrice($offer_package, $unit_price, $income_type, $income_date)
+    {
+        $data = array(
+            'offer_package' => $offer_package,
+            'unit_price'    => $unit_price,
+            'income_type'   => $income_type,
+            'income_date'   => $income_date,
+        );
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
         return true;
     }
 
