@@ -52,6 +52,8 @@ class ReportClient
     const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
     const OFFER_CAP   = 'report/stat/offercap'; //cap值同步
 
+    const AUDIT   = 'report/stat/auditing'; //现金贷机审服务
+
     /**
      * [__construct description]
      * @author tux (8966723@qq.com) 2019-12-10
@@ -1080,6 +1082,26 @@ class ReportClient
         );
         // 全球数据上报
         $this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
+        return true;
+    }
+
+    /**
+     * 现金贷机审服务
+     */
+    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $count_num = 1)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_name'     => $user_name,
+            'user_mobile'   => $user_mobile,
+            'user_idcard'   => $user_idcard,
+            'product_type'  => $product_type,
+            'count_num'     => $count_num,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::AUDIT, $data);
         return true;
     }
 
