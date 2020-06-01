@@ -32,6 +32,7 @@ class ReportClient
     const KTP          = 'report/service/ktp'; //实名验证
     const OCR          = 'report/service/ocr'; //图片2文字
     const FACE_COMPARE = 'report/service/facecompare'; //人脸比对
+    const FACE_SERVICE = 'report/service/faceservice'; //人脸比对(cashservice人脸比对)
     const BIOPSY       = 'report/service/biopsy'; //活体
     const PHONE_AGE    = 'report/service/phoneage'; //在网时长
     const PHONE_OWNER  = 'report/service/phoneowner'; //一人多号
@@ -47,12 +48,13 @@ class ReportClient
     const FK360        = 'report/service/fk360'; //360风控
     const PAY          = 'report/service/pay'; //放款
     const FK_CLOUDUN   = 'report/service/fkcloudun'; //cloudun风控
+    const FK_ITIK      = 'report/service/fkitik'; //itik外部数据
 
     const SMS_SEND    = 'report/stat/smssend'; //短信发送
     const SMS_RECEIVE = 'report/stat/smsreceive'; //短信到达
     const OFFER_CAP   = 'report/stat/offercap'; //cap值同步
 
-    const AUDIT   = 'report/stat/auditing'; //现金贷机审服务
+    const AUDIT   = 'report/stay/auditing'; //现金贷机审服务
 
     /**
      * [__construct description]
@@ -526,9 +528,44 @@ class ReportClient
      * @param  [type] $return_code   [针对平安人脸的返回码，默认99]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [string] $order_no    订单号
      * @return [type]                [description]
      */
-    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay)
+    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '')
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'raw_img'       => $raw_img,
+            'diff_img'      => $diff_img,
+            'request_id'    => $request_id,
+            'return_code'   => $return_code,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'order_no'      => $order_no,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::FACE_COMPARE, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
+        return true;
+    }
+
+    /**
+     * [faceCompare cashservice人脸比对]
+     * @author tux (8966723@qq.com) 2019-12-06
+     * @param  [type] $app_package   [description]
+     * @param  [type] $offer_package [description]
+     * @param  [type] $raw_img       [参照图片，或是身份证图片的地址]
+     * @param  [type] $diff_img      [需要对比的图片地址]
+     * @param  [type] $request_id    [每笔调用的唯一索引，平安旧request id，新Authorization]
+     * @param  [type] $return_code   [针对平安人脸的返回码，默认99]
+     * @param  [type] $channel_type  [description]
+     * @param  [type] $is_pay        [description]
+     * @return [type]                [description]
+     */
+    public function faceService($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -542,11 +579,13 @@ class ReportClient
             'create_time'   => time(),
         );
         // 离线数据存储
-        $this->offlineProcess->addLog(self::FACE_COMPARE, $data);
+        $this->offlineProcess->addLog(self::FACE_SERVICE, $data);
         // 实时数据上报
+        $data['source_code'] = 1;
         $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
         return true;
     }
+
     /**
      * [biopsy 活体检测]
      * @author tux (8966723@qq.com) 2019-12-06
@@ -556,9 +595,10 @@ class ReportClient
      * @param  [type] $return_code   [针对平安活体的返回码，默认99]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [string] $order_no    订单号
      * @return [type]                [description]
      */
-    public function biopsy($app_package, $offer_package, $request_id, $return_code, $channel_type, $is_pay)
+    public function biopsy($app_package, $offer_package, $request_id, $return_code, $channel_type, $is_pay, $order_no = '')
     {
         $data = array(
             'app_package'   => $app_package,
@@ -567,6 +607,7 @@ class ReportClient
             'return_code'   => $return_code,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'order_no'      => $order_no,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1070,6 +1111,29 @@ class ReportClient
     }
 
     /**
+     * 外部数据风控
+     */
+    public function fkItik($app_package, $offer_package, $user_birth, $user_name, $user_idcard, $channel_type, $is_pay, $count_num = 1, $compare_score = 0)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_birth'    => $user_birth,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'count_num'     => $count_num,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'compare_score' => $compare_score,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::FK_ITIK, $data);
+        // 实时数据上报
+        return $this->realtimeProcess->sendOut(self::FK_ITIK, $data);
+    }
+
+    /**
      *  每日价格同步
      */
     public function offerPrice($offer_package, $unit_price, $income_type, $income_date)
@@ -1088,7 +1152,7 @@ class ReportClient
     /**
      * 现金贷机审服务
      */
-    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $count_num = 1)
+    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $count_num = 1,$order_no = '')
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1098,6 +1162,7 @@ class ReportClient
             'user_idcard'   => $user_idcard,
             'product_type'  => $product_type,
             'count_num'     => $count_num,
+            'order_no'      => $order_no,
             'create_time'   => time(),
         );
         // 离线数据存储
