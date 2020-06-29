@@ -56,6 +56,8 @@ class ReportClient
 
     const AUDIT   = 'report/stay/auditing'; //现金贷机审服务
     const WHATS_APP   = 'report/service/whatsapp'; // whatsapp短信
+    const COLLECTION   = 'report/service/collection'; // 催收数据上报
+    const BLACK   = 'report/service/black'; // 黑名单（新版）
 
     /**
      * [__construct description]
@@ -1200,6 +1202,63 @@ class ReportClient
         $this->offlineProcess->addLog(self::WHATS_APP, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::WHATS_APP, $data);
+        return true;
+    }
+
+    /**
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_mobile
+     * @param $channel_type
+     * @param $is_pay
+     * @return bool
+     */
+    public function collection($app_package, $offer_package, $user_mobile, $channel_type, $is_pay)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::COLLECTION, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::COLLECTION, $data);
+        return true;
+    }
+
+    /**
+     * [black 黑名单(新版)]
+     * @param  [type] $app_package   [description]
+     * @param  [type] $offer_package [description]
+     * @param  [type] $user_mobile   [description]
+     * @param  [type] $user_name     [description]
+     * @param  [type] $user_idcard   [description]
+     * @param  [type] $is_hit        [是否命中，命中为1]
+     * @param  [type] $channel_type  [description]
+     * @param  [type] $is_pay        [description]
+     * @return [type]                [description]
+     */
+    public function black($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'user_name'     => $user_name,
+            'user_idcard'   => $user_idcard,
+            'is_hit'        => $is_hit,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::BLACK, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::BLACK, $data);
         return true;
     }
 
