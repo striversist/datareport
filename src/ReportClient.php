@@ -55,6 +55,7 @@ class ReportClient
     const OFFER_CAP   = 'report/stat/offercap'; //cap值同步
 
     const AUDIT   = 'report/stay/auditing'; //现金贷机审服务
+    const WHATS_APP   = 'report/service/whatsapp'; // whatsapp短信
 
     /**
      * [__construct description]
@@ -531,7 +532,7 @@ class ReportClient
      * @param  [string] $order_no    订单号
      * @return [type]                [description]
      */
-    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '')
+    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -543,6 +544,7 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'order_no'      => $order_no,
+            'source_code'   => $source_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1167,6 +1169,37 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::AUDIT, $data);
+        return true;
+    }
+
+    /**
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_mobile
+     * @param $sms_content
+     * @param $sms_type
+     * @param $channel_type
+     * @param $is_pay
+     * @return bool
+     */
+    public function whatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay)
+    {
+        $sms_count = 1;
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'sms_content'   => $sms_content,
+            'sms_count'     => $sms_count,
+            'sms_type'      => $sms_type,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::WHATS_APP, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::WHATS_APP, $data);
         return true;
     }
 
