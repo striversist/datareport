@@ -12,16 +12,27 @@ namespace Cashcash\DataReport;
 class DataWroldProcess
 {
     //获取阿里云oss的accessKeyId
-    const ACCESS_KEY_ID = '';
+    private $accessKeyId;
     //获取阿里云oss的accessKeySecret
-    const ACCESS_KEY_SECRET = '';
+    private $accessKeySecret;
     private $env_source;
+    private $code = 400;
 
     /**
      * 初始化,
      */
-    public function __construct($projectEnv = 0)
+    public function __construct($accessKeyId, $accessKeySecret, $projectEnv = 0)
     {
+        $accessKeyId     = trim($accessKeyId);
+        $accessKeySecret = trim($accessKeySecret);
+        if (empty($accessKeyId)) {
+            throw new \Aliyun_Log_Exception($this->code, "aliyun log access key id is empty");
+        }
+        if (empty($accessKeySecret)) {
+            throw new \Aliyun_Log_Exception($this->code, "aliyun log access key secret is empty");
+        }
+        $this->accessKeyId     = $accessKeyId;
+        $this->accessKeySecret = $accessKeySecret;
         $this->env_source = ($projectEnv == 0) ? "test" : "prod";
     }
 
@@ -52,7 +63,7 @@ class DataWroldProcess
             require_once realpath(dirname(__FILE__) . '/aliyun-log-php-sdk-master/Log_Autoload.php');
             $log_info = $this->logInfo($store);
 
-            $client = new \Aliyun_Log_Client($log_info['end_point'], self::ACCESS_KEY_ID, self::ACCESS_KEY_SECRET);
+            $client = new \Aliyun_Log_Client($log_info['end_point'], $this->accessKeyId, $this->accessKeySecret);
 
             $name    = str_replace("/", "_", $url);
             $content = json_encode($data);
@@ -73,9 +84,9 @@ class DataWroldProcess
 
             $req2     = new \Aliyun_Log_Models_PutLogsRequest($log_info['project_name'], $log_info['log_store'], $topic, $source, $logitems);
             $response = $client->putLogs($req2);
-        } catch (Aliyun_Log_Exception $ex) {
+        } catch (\Aliyun_Log_Exception $ex) {
             // logVarDump($ex);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             // logVarDump($ex);
         };
     }

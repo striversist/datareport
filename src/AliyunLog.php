@@ -12,12 +12,13 @@ namespace Cashcash\DataReport;
 class AliyunLog
 {
     //获取阿里云oss的accessKeyId
-    const ACCESS_KEY_ID = '';
+    private $accessKeyId;
     //获取阿里云oss的accessKeySecret
-    const ACCESS_KEY_SECRET = '';
+    private $accessKeySecret;
 
     private $log_info;
     private $env_source;
+    private $code = 400;
 
     /**
      * [__construct description]
@@ -26,8 +27,18 @@ class AliyunLog
      * @param  boolean $projectEnv  [项目当前环境，默认0测试]
      * @param  integer $linkType    [使用内网链接或是外网链接，默认0内网]
      */
-    public function __construct($countryCode, $projectEnv, $linkType)
+    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType)
     {
+        $accessKeyId     = trim($accessKeyId);
+        $accessKeySecret = trim($accessKeySecret);
+        if (empty($accessKeyId)) {
+            throw new \Aliyun_Log_Exception($this->code, "aliyun log access key id is empty");
+        }
+        if (empty($accessKeySecret)) {
+            throw new \Aliyun_Log_Exception($this->code, "aliyun log access key secret is empty");
+        }
+        $this->accessKeyId     = $accessKeyId;
+        $this->accessKeySecret = $accessKeySecret;
         $this->log_info   = $this->logInfo($countryCode, $linkType);
         $this->env_source = ($projectEnv == 0) ? "test" : "prod";
     }
@@ -66,7 +77,7 @@ class AliyunLog
         try {
             require_once realpath(dirname(__FILE__) . '/aliyun-log-php-sdk-master/Log_Autoload.php');
 
-            $client = new \Aliyun_Log_Client($this->log_info['end_point'], self::ACCESS_KEY_ID, self::ACCESS_KEY_SECRET);
+            $client = new \Aliyun_Log_Client($this->log_info['end_point'], $this->accessKeyId, $this->accessKeySecret);
 
             $contents = array(
                 'name'    => $name,
@@ -86,9 +97,9 @@ class AliyunLog
 
             $req2     = new \Aliyun_Log_Models_PutLogsRequest($this->log_info['project_name'], $this->log_info['log_store'], $topic, $source, $logitems);
             $response = $client->putLogs($req2);
-        } catch (Aliyun_Log_Exception $ex) {
-            // logVarDump($ex);
-        } catch (Exception $ex) {
+        } catch (\Aliyun_Log_Exception $ex) {
+//             logVarDump($ex);
+        } catch (\Exception $ex) {
             // logVarDump($ex);
         };
     }
@@ -101,7 +112,7 @@ class AliyunLog
         try {
             require_once realpath(dirname(__FILE__) . '/aliyun-log-php-sdk-master/Log_Autoload.php');
 
-            $client = new \Aliyun_Log_Client($this->log_info['end_point'], self::ACCESS_KEY_ID, self::ACCESS_KEY_SECRET);
+            $client = new \Aliyun_Log_Client($this->log_info['end_point'], $this->accessKeyId, $this->accessKeySecret);
 
             $request = new \Aliyun_Log_Models_GetLogsRequest($this->log_info['project_name'], $this->log_info['log_store'], $from, $to, $topic, $query, $line, $offset, $reverse);
 
@@ -110,9 +121,9 @@ class AliyunLog
                 $response = $client->getLogs($request);
             }
             return array('count' => $response->getCount(), 'logs' => $response->getLogs());
-        } catch (Aliyun_Log_Exception $ex) {
+        } catch (\Aliyun_Log_Exception $ex) {
             // logVarDump($ex);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             // logVarDump($ex);
         };
     }
