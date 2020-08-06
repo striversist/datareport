@@ -1093,7 +1093,7 @@ class ReportClient
     /**
      *  cloudun风控
      */
-    public function fkCloudun($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $user_level, $is_pass, $channel_type, $is_pay)
+    public function fkCloudun($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $user_level, $is_pass, $channel_type, $merchantId, $is_pay)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1105,6 +1105,7 @@ class ReportClient
             'is_pass'       => $is_pass,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'merchantId'    => $merchantId,
             'create_time'   => time(),
         );
         // 离线数据存储

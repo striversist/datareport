@@ -69,8 +69,12 @@ class AliyunLog
         return $log_arr[$countryCode];
     }
 
-    /*
-    写入日志
+    /**
+     * 写入日志
+     * @param $name
+     * @param $content
+     * @throws \Aliyun_Log_Exception
+     * @throws \Exception
      */
     public function addLog($name, $content)
     {
@@ -98,14 +102,24 @@ class AliyunLog
             $req2     = new \Aliyun_Log_Models_PutLogsRequest($this->log_info['project_name'], $this->log_info['log_store'], $topic, $source, $logitems);
             $response = $client->putLogs($req2);
         } catch (\Aliyun_Log_Exception $ex) {
-//             logVarDump($ex);
+            throw $ex;
         } catch (\Exception $ex) {
-            // logVarDump($ex);
-        };
+            throw $ex;
+        }
     }
 
-    /*
-    查询日志
+    /**
+     * 查询日志
+     * @param $from
+     * @param $to
+     * @param int $offset
+     * @param string $line
+     * @param string $query
+     * @param string $topic
+     * @param bool $reverse
+     * @return array
+     * @throws \Aliyun_Log_Exception
+     * @throws \Exception
      */
     public function queryLog($from, $to, $offset = 0, $line = '100', $query = '', $topic = '', $reverse = false)
     {
@@ -122,10 +136,10 @@ class AliyunLog
             }
             return array('count' => $response->getCount(), 'logs' => $response->getLogs());
         } catch (\Aliyun_Log_Exception $ex) {
-            // logVarDump($ex);
+            throw $ex;
         } catch (\Exception $ex) {
-            // logVarDump($ex);
-        };
+            throw $ex;
+        }
     }
 
 }

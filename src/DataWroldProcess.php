@@ -54,8 +54,13 @@ class DataWroldProcess
         ];
     }
 
-    /*
-    写入日志
+    /**
+     * 写入日志
+     * @param $url
+     * @param $data
+     * @param int $store
+     * @throws \Aliyun_Log_Exception
+     * @throws \Exception
      */
     public function addLog($url, $data, $store = 0)
     {
@@ -85,10 +90,10 @@ class DataWroldProcess
             $req2     = new \Aliyun_Log_Models_PutLogsRequest($log_info['project_name'], $log_info['log_store'], $topic, $source, $logitems);
             $response = $client->putLogs($req2);
         } catch (\Aliyun_Log_Exception $ex) {
-            // logVarDump($ex);
+            throw $ex;
         } catch (\Exception $ex) {
-            // logVarDump($ex);
-        };
+            throw $ex;
+        }
     }
 
 }

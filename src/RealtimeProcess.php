@@ -26,21 +26,25 @@ class RealtimeProcess
             $this->baseUrl = 'http://stat.udax.id/api/';
         }
     }
+
     /**
-     * [sendOut 调用计费服务器各上报接口]
-     * @author tux (8966723@qq.com) 2019-12-06
-     * @param  [type] $url  [接口地址]
-     * @param  [type] $data [上报数据]
-     * @return [type]       [description]
+     * sendOut 调用计费服务器各上报接口
+     * @param $url
+     * @param $data
+     * @return mixed
+     * @throws \Error
+     * @throws \Exception
      */
     public function sendOut($url, $data)
     {
         $url = $this->baseUrl . $url;
         try {
             return $this->doPost($url, json_encode($data));
-        } catch (Exception $ex) {
-            //
-        };
+        } catch (\Exception $ex) {
+            throw $ex;
+        } catch (\Error $ex) {
+            throw $ex;
+        }
     }
     /*
     get
@@ -89,7 +93,15 @@ class RealtimeProcess
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, 2000);
         $output = curl_exec($ch);
+        $error  = curl_error($ch);
+        $info   = curl_getinfo($ch);
         curl_close($ch);
+        if ($error || $info['http_code'] != 200) {
+            if ($error) {
+                throw new \Exception($error . ' 上报数据为：' . json_encode($data));
+            }
+            throw new \Exception('curl request failed ' . ' 上报数据为：' . json_encode($data));
+        }
         return $output;
     }
 }
