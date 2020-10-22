@@ -58,6 +58,7 @@ class ReportClient
     const WHATS_APP   = 'report/service/whatsapp'; // whatsapp短信
     const COLLECTION   = 'report/service/collection'; // 催收数据上报
     const BLACK   = 'report/service/black'; // 黑名单（新版）
+    const ZEUSSECOND = 'report/service/zeussecond'; //宙斯二推费用
 
     /**
      * [__construct description]
@@ -474,9 +475,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否验证通过，通过为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $version_type  [版本类型1=详版，2=简版]
      * @return [type]                [description]
      */
-    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
+    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $version_type = 1)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -486,6 +488,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'version_type'  => $version_type,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -750,9 +753,10 @@ class ReportClient
      * @param  [type] $return_score  [返回分]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $service_type  [description]
      * @return [type]                [description]
      */
-    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay)
+    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay,$service_type=1)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -764,6 +768,7 @@ class ReportClient
             'return_score'  => $return_score,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'service_type'  => $service_type,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1260,6 +1265,43 @@ class ReportClient
         $this->offlineProcess->addLog(self::BLACK, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::BLACK, $data);
+        return true;
+    }
+
+    /**
+     * 宙斯二推费用
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_name
+     * @param $user_mobile
+     * @param $user_idcard
+     * @param int $product_type  （产品/服务类型）
+     * @param int $channel_type  (服务提供商)
+     * @param int $is_pay
+     * @param int $count_num 二推数量（默认为1）
+     * @param string $order_no 订单号
+     * @return bool
+     * @throws \Exception
+     */
+    public function zeusSecondCost($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $channel_type, $is_pay=1, $product_type=0, $count_num = 1,$order_no = '')
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_name'     => $user_name,
+            'user_mobile'   => $user_mobile,
+            'user_idcard'   => $user_idcard,
+            'product_type'  => $product_type,
+            'channel_type'  => $channel_type,
+            'is_pay' => $is_pay,
+            'count_num'     => $count_num,
+            'order_no'      => $order_no,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::ZEUSSECOND, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::ZEUSSECOND, $data);
         return true;
     }
 
