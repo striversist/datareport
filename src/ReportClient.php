@@ -339,9 +339,10 @@ class ReportClient
      * @param  [type] $sms_type      [description]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function sms($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay)
+    public function sms($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = 0)
     {
         $sms_count = 1;
         $smsLength = new SmsLength($sms_content);
@@ -359,6 +360,7 @@ class ReportClient
             'sms_type'      => $sms_type,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -379,9 +381,10 @@ class ReportClient
      * @param  [type] $is_hit        [description]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function whitelist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $bank_card, $is_hit, $channel_type, $is_pay)
+    public function whitelist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $bank_card, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -393,6 +396,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -412,9 +416,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否命中，命中为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function blacklist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
+    public function blacklist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -425,6 +430,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -444,9 +450,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否验证通过，通过为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function checkCard($app_package, $offer_package, $bank_code, $bank_card, $user_name, $is_hit, $channel_type, $is_pay)
+    public function checkCard($app_package, $offer_package, $bank_code, $bank_card, $user_name, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -457,6 +464,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -476,9 +484,10 @@ class ReportClient
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @param  [type] $version_type  [版本类型1=详版，2=简版]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $version_type = 1)
+    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $version_type = 1, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -489,6 +498,7 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'version_type'  => $version_type,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -505,9 +515,10 @@ class ReportClient
      * @param  [type] $ocr_img       [ocr图片地址]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function ocr($app_package, $offer_package, $ocr_img, $channel_type, $is_pay)
+    public function ocr($app_package, $offer_package, $ocr_img, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -515,6 +526,7 @@ class ReportClient
             'ocr_img'       => $ocr_img,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -535,9 +547,11 @@ class ReportClient
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @param  [string] $order_no    订单号
+     * @param  [type] $source_code  [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0)
+    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -550,6 +564,7 @@ class ReportClient
             'is_pay'        => $is_pay,
             'order_no'      => $order_no,
             'source_code'   => $source_code,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -570,9 +585,10 @@ class ReportClient
      * @param  [type] $return_code   [针对平安人脸的返回码，默认99]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function faceService($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay)
+    public function faceService($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -583,6 +599,7 @@ class ReportClient
             'return_code'   => $return_code,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -603,9 +620,10 @@ class ReportClient
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @param  [string] $order_no    订单号
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function biopsy($app_package, $offer_package, $request_id, $return_code, $channel_type, $is_pay, $order_no = '')
+    public function biopsy($app_package, $offer_package, $request_id, $return_code, $channel_type, $is_pay, $order_no = '', $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -615,6 +633,7 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'order_no'      => $order_no,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -632,9 +651,10 @@ class ReportClient
      * @param  [type] $phone_age     [description]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function phoneAge($app_package, $offer_package, $user_mobile, $phone_age, $channel_type, $is_pay)
+    public function phoneAge($app_package, $offer_package, $user_mobile, $phone_age, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -643,6 +663,7 @@ class ReportClient
             'phone_age'     => $phone_age,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -662,9 +683,10 @@ class ReportClient
      * @param  [type] $idcard_info   [返回的身份证信息]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function phoneOwner($app_package, $offer_package, $user_mobile, $user_idcard, $mobile_info, $idcard_info, $channel_type, $is_pay)
+    public function phoneOwner($app_package, $offer_package, $user_mobile, $user_idcard, $mobile_info, $idcard_info, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -675,6 +697,7 @@ class ReportClient
             'idcard_info'   => $idcard_info,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -693,9 +716,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否验证通过，通过为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function faceSearch($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay)
+    public function faceSearch($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -705,6 +729,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -722,9 +747,10 @@ class ReportClient
      * @param  [type] $return_score  [返回分]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function telScore($app_package, $offer_package, $user_mobile, $return_score, $channel_type, $is_pay)
+    public function telScore($app_package, $offer_package, $user_mobile, $return_score, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -733,6 +759,7 @@ class ReportClient
             'return_score'  => $return_score,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -754,9 +781,10 @@ class ReportClient
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @param  [type] $service_type  [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay,$service_type=1)
+    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay,$service_type=1, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -769,6 +797,7 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'service_type'  => $service_type,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -814,9 +843,10 @@ class ReportClient
      * @param  [type] $is_hit        [description]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function phoneAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay)
+    public function phoneAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -825,6 +855,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -843,9 +874,10 @@ class ReportClient
      * @param  [type] $is_hit        [description]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function phoneIdcard($app_package, $offer_package, $user_mobile, $user_idcard, $is_hit, $channel_type, $is_pay)
+    public function phoneIdcard($app_package, $offer_package, $user_mobile, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -855,6 +887,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -872,9 +905,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否命中，命中为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function multihead($app_package, $offer_package, $user_idcard, $is_hit, $channel_type, $is_pay)
+    public function multihead($app_package, $offer_package, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -883,6 +917,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -902,9 +937,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否命中，命中为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function riskList($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
+    public function riskList($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -915,6 +951,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -933,9 +970,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否命中，命中为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function riskyFace($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay)
+    public function riskyFace($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -945,6 +983,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -965,9 +1004,10 @@ class ReportClient
      * @param  [type] $return_score  [返回分数，命中某项分数为0]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function fk360($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay)
+    public function fk360($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -979,6 +1019,7 @@ class ReportClient
             'return_score'  => $return_score,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1098,7 +1139,7 @@ class ReportClient
     /**
      *  cloudun风控
      */
-    public function fkCloudun($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $user_level, $is_pass, $channel_type, $merchantId, $is_pay)
+    public function fkCloudun($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $user_level, $is_pass, $channel_type, $merchantId, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1111,6 +1152,7 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'merchantId'    => $merchantId,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1123,7 +1165,7 @@ class ReportClient
     /**
      * 外部数据风控
      */
-    public function fkItik($app_package, $offer_package, $user_birth, $user_name, $user_idcard, $channel_type, $is_pay, $count_num = 1, $compare_score = 0)
+    public function fkItik($app_package, $offer_package, $user_birth, $user_name, $user_idcard, $channel_type, $is_pay, $count_num = 1, $compare_score = 0, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1135,6 +1177,7 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'compare_score' => $compare_score,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1188,9 +1231,10 @@ class ReportClient
      * @param $sms_type
      * @param $channel_type
      * @param $is_pay
+     * @param country_code
      * @return bool
      */
-    public function whatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay)
+    public function whatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = 0)
     {
         $sms_count = 1;
         $data = array(
@@ -1202,6 +1246,7 @@ class ReportClient
             'sms_type'      => $sms_type,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1217,9 +1262,10 @@ class ReportClient
      * @param $user_mobile
      * @param $channel_type
      * @param $is_pay
+     * @param $country_code
      * @return bool
      */
-    public function collection($app_package, $offer_package, $user_mobile, $channel_type, $is_pay)
+    public function collection($app_package, $offer_package, $user_mobile, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1227,6 +1273,7 @@ class ReportClient
             'user_mobile'   => $user_mobile,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1246,9 +1293,10 @@ class ReportClient
      * @param  [type] $is_hit        [是否命中，命中为1]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param  [type] $country_code  [description]
      * @return [type]                [description]
      */
-    public function black($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay)
+    public function black($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1259,6 +1307,7 @@ class ReportClient
             'is_hit'        => $is_hit,
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
