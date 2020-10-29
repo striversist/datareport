@@ -1269,20 +1269,20 @@ class ReportClient
     }
 
     /**
-     * 宙斯二推费用
+     * DK(宙斯)二推费用
      * @param $app_package
      * @param $offer_package
      * @param $user_name
      * @param $user_mobile
      * @param $user_idcard
-     * @param string $order_no 订单号
+     * @param int $service_type  （服务类型）
      * @param int $is_pay
-     * @param int $product_type  （产品/服务类型）
      * @param int $count_num 二推数量（默认为1）
+     * @param string $order_no 订单号
      * @return bool
      * @throws \Exception
      */
-    public function zeusSecondCost($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $order_no = '', $is_pay=1, $product_type=0, $count_num = 1)
+    public function zeusSecondCost($app_package, $offer_package, $user_name, $user_mobile,$order_no, $user_idcard, $is_pay=1, $service_type=91, $count_num = 1)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1290,10 +1290,10 @@ class ReportClient
             'user_name'     => $user_name,
             'user_mobile'   => $user_mobile,
             'user_idcard'   => $user_idcard,
-            'order_no'      => $order_no,
-            'is_pay'        => $is_pay,
-            'product_type'  => $product_type,
+            'service_type'  => $service_type,
+            'is_pay' => $is_pay,
             'count_num'     => $count_num,
+            'order_no'      => $order_no,
             'create_time'   => time(),
         );
         // 离线数据存储
