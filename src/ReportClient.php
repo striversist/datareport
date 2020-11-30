@@ -59,6 +59,9 @@ class ReportClient
     const COLLECTION   = 'report/service/collection'; // 催收数据上报
     const BLACK   = 'report/service/black'; // 黑名单（新版）
     const ZEUSSECOND = 'report/service/zeussecond'; //宙斯二推费用
+    //印度服务
+    const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
+    const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
 
     /**
      * [__construct description]
@@ -170,9 +173,10 @@ class ReportClient
      * @param  [type] $uid         [自定义用户id，唯一]
      * @param  [type] $guid        [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
+     * @param  [int] $product_type   [产品类型]
      * @return [type]                [description]
      */
-    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time)
+    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -184,6 +188,7 @@ class ReportClient
             'uid'           => $uid,
             'guid'          => $guid,
             'create_time'   => $create_time,
+            'product_type'  => $product_type,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
@@ -1187,15 +1192,22 @@ class ReportClient
     }
 
     /**
-     *  每日价格同步
+     * 每日价格同步
+     * @param $offer_package
+     * @param $unit_price
+     * @param $income_type
+     * @param $income_date
+     * @param string $country ID=印尼，IN=印度
+     * @return bool
      */
-    public function offerPrice($offer_package, $unit_price, $income_type, $income_date)
+    public function offerPrice($offer_package, $unit_price, $income_type, $income_date, $country = 'ID')
     {
         $data = array(
             'offer_package' => $offer_package,
             'unit_price'    => $unit_price,
             'income_type'   => $income_type,
             'income_date'   => $income_date,
+            'country'       => $country,
         );
         // 全球数据上报
         $this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
@@ -1205,7 +1217,7 @@ class ReportClient
     /**
      * 现金贷机审服务
      */
-    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $count_num = 1,$order_no = '')
+    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $order_no = '', $count_num = 1)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1349,6 +1361,78 @@ class ReportClient
         $this->offlineProcess->addLog(self::ZEUSSECOND, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::ZEUSSECOND, $data);
+        return true;
+    }
+
+
+    /**
+     * 姓名一致性校验
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_name
+     * @param $user_mobile
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @return bool
+     * @throws \Error
+     * @throws \Exception
+     */
+    public function nameCheck($app_package, $offer_package, $user_name, $user_mobile, $channel_type, $is_pay, $country_code = 0)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_name'     => $user_name,
+            'user_mobile'   => $user_mobile,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::NAME_CHECK, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::NAME_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 银行卡验证
+     * @param $app_package
+     * @param $offer_package
+     * @param $transactionId (用户编号)
+     * @param $bankAccount (银行卡号)
+     * @param $ifscCode (支行编号)
+     * @param $pan (pan卡)
+     * @param $mobile (手机号)
+     * @param $aadhaar (身份证号)
+     * @param $is_pay
+     * @param $channel_type
+     * @param int $country_code
+     * @return bool
+     * @throws \Exception
+     */
+    public function bankCheck($app_package, $offer_package, $transactionId, $bankAccount, $ifscCode, $pan, $mobile, $aadhaar, $channel_type, $is_pay, $country_code = 0)
+    {
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'transaction_id' => $transactionId,
+            'bank_account' => $bankAccount,
+            'ifsc_code' => $ifscCode,
+            'pan' => $pan,
+            'mobile' => $mobile,
+            'aadhaar' => $aadhaar,
+            'is_pay' => $is_pay,
+            'channel_type' => $channel_type,
+            'country_code' => $country_code,
+            'create_time' => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::BANKCHECK, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::BANKCHECK, $data);
         return true;
     }
 
