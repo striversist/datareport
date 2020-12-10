@@ -59,6 +59,8 @@ class ReportClient
     const COLLECTION   = 'report/service/collection'; // 催收数据上报
     const BLACK   = 'report/service/black'; // 黑名单（新版）
     const ZEUSSECOND = 'report/service/zeussecond'; //宙斯二推费用
+    const ID_CHECK = 'report/service/idcheck'; //官方图片验证idcheck
+    const FKDK = 'report/service/dkfk'; //dk风控
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -174,9 +176,10 @@ class ReportClient
      * @param  [type] $guid        [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
      * @param  [int] $product_type   [产品类型]
+     * @param  [int] $country_code   [产品类型]
      * @return [type]                [description]
      */
-    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type)
+    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -189,6 +192,7 @@ class ReportClient
             'guid'          => $guid,
             'create_time'   => $create_time,
             'product_type'  => $product_type,
+            'country_code'  => $country_code,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
@@ -1217,7 +1221,7 @@ class ReportClient
     /**
      * 现金贷机审服务
      */
-    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $order_no = '', $count_num = 1)
+    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $order_no = '', $count_num = 1, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1228,6 +1232,7 @@ class ReportClient
             'product_type'  => $product_type,
             'count_num'     => $count_num,
             'order_no'      => $order_no,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
@@ -1433,6 +1438,73 @@ class ReportClient
         $this->offlineProcess->addLog(self::BANKCHECK, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::BANKCHECK, $data);
+        return true;
+    }
+
+    /**
+     * 官方照片验证(图片版idCheck)
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_idcard
+     * @param $img_url
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @return bool
+     * @throws \Error
+     * @throws \Exception
+     */
+    public function idCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = 0)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard'   => $user_idcard,
+            'img_url'       => $img_url,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::ID_CHECK, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::ID_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * dk风控上报
+     * @param $app_package
+     * @param $offer_package
+     * @param $order_no [订单id]
+     * @param $id_number [订单身份证号]
+     * @param $phone     [手机号]
+     * @param $real_name [真实姓名]
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @return bool
+     * @throws \Exception
+     */
+    public function fkdk($app_package, $offer_package, $order_no, $id_number, $phone, $real_name, $channel_type, $is_pay, $country_code = 0)
+    {
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'order_no' => $order_no,
+            'id_number' => $id_number,
+            'phone' => $phone,
+            'real_name' => $real_name,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::FKDK, $data);
+        // 实时数据上报
+        $this->realtimeProcess->sendOut(self::FKDK, $data);
         return true;
     }
 
