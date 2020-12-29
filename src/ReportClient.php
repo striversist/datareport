@@ -1345,12 +1345,12 @@ class ReportClient
      * @param int $is_pay
      * @param int $service_type
      * @param int $count_num
-     * @param int $channel_type
+     * @param int $channel_source
      * @return bool
      * @throws \Error
      * @throws \Exception
      */
-    public function zeusSecondCost($app_package, $offer_package, $user_name, $user_mobile,$order_no, $user_idcard, $is_pay=1, $service_type=91, $count_num = 1, $channel_type = 0)
+    public function zeusSecondCost($app_package, $offer_package, $user_name, $user_mobile,$order_no, $user_idcard, $is_pay=1, $service_type=91, $count_num = 1, $channel_source = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1359,10 +1359,10 @@ class ReportClient
             'user_mobile'   => $user_mobile,
             'user_idcard'   => $user_idcard,
             'service_type'  => $service_type,
-            'is_pay' => $is_pay,
+            'is_pay'        => $is_pay,
             'count_num'     => $count_num,
             'order_no'      => $order_no,
-            'channel_type'  => $channel_type,
+            'channel_source'=> $channel_source,
             'create_time'   => time(),
         );
         // 离线数据存储
