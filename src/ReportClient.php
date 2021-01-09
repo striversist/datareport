@@ -1087,14 +1087,16 @@ class ReportClient
 
     /**
      * cap值同步
+     * country_code:0=印尼(默认)，1=菲律宾，2=印度
      */
-    public function offerCap($offer_package, $offer_type, $old_value, $new_value)
+    public function offerCap($offer_package, $offer_type, $old_value, $new_value, $country_code = 0)
     {
         $data = array(
             'offer_package' => $offer_package,
             'offer_type'    => $offer_type,
             'old_value'     => $old_value,
             'new_value'     => $new_value,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 离线数据存储
