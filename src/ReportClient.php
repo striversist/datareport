@@ -266,9 +266,11 @@ class ReportClient
      * @param  [type] $appsflyer_id   [description]
      * @param  [type] $channel        [description]
      * @param  [type] $campaign       [description]
+     * @param  [type] $guid           [description]
+     * @param  [type] $guid_ctime     [description]
      * @return [type]                 [description]
      */
-    public function appInstall($app_package, $install_time, $advertising_id, $appsflyer_id, $channel, $campaign, $country, $ip)
+    public function appInstall($app_package, $install_time, $advertising_id, $appsflyer_id, $channel, $campaign, $country, $ip, $guid = '', $guid_ctime = '')
     {
         // $raw_package, $shop_channel
         $raw_package  = $app_package;
@@ -289,6 +291,8 @@ class ReportClient
             'campaign'       => $campaign,
             'country'        => $country,
             'ip'             => $ip,
+            'guid'           => $guid,
+            'guid_ctime'     => $guid_ctime,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::APP_INSTALL, $data);
