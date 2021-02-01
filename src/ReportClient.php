@@ -1132,7 +1132,7 @@ class ReportClient
     /**
      * 放款手续费
      */
-    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time)
+    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time, $country_code = 0)
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1142,6 +1142,7 @@ class ReportClient
             'bank_card'     => $bank_card,
             'pay_money'     => $pay_money,
             'pay_time'      => $pay_time,
+            'country_code'  => $country_code,
             'create_time'   => time(),
         );
         // 'pay_charge'    => $pay_charge,
