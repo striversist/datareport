@@ -65,6 +65,9 @@ class ReportClient
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
+    //印度服务-业务上报
+    const NAME_CHECK_IN   = 'report/stat/namecheck'; // 姓名一致性校验-业务上报
+    const BANK_CHECK_IN    = 'report/stat/bankcheck'; //印度银行卡校验-业务上报
 
     /**
      * [__construct description]
@@ -1552,6 +1555,72 @@ class ReportClient
         $this->offlineProcess->addLog(self::FK_AISKOR, $data);
         // 实时数据上报
         $this->realtimeProcess->sendOut(self::FK_AISKOR, $data);
+        return true;
+    }
+
+    /**
+     * 印度-姓名一致性校验
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_name
+     * @param $user_mobile
+     * @param $pan
+     * @param $aadhaar
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @return bool
+     */
+    public function nameCheckStat($app_package, $offer_package, $user_name, $user_mobile, $pan, $aadhaar, $channel_type, $is_pay, $country_code = 2)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_name'     => $user_name,
+            'user_mobile'   => $user_mobile,
+            'user_pan'      => $pan,
+            'aadhaar'       => $aadhaar,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::NAME_CHECK_IN, $data);
+        return true;
+    }
+
+    /**
+     * 印度-银行卡校验
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_mobile
+     * @param $bank_card
+     * @param $ifscCode
+     * @param $pan
+     * @param $aadhaar
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @return bool
+     */
+    public function bankCheckStat($app_package, $offer_package, $user_mobile, $bank_card, $ifscCode, $pan, $aadhaar, $channel_type, $is_pay, $country_code = 2)
+    {
+        $data = array(
+            'app_package'   => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile'   => $user_mobile,
+            'bank_card'     => $bank_card,
+            'ifsc_code'     => $ifscCode,
+            'user_pan'      => $pan,
+            'aadhaar'       => $aadhaar,
+            'channel_type'  => $channel_type,
+            'is_pay'        => $is_pay,
+            'country_code'  => $country_code,
+            'create_time'   => time(),
+        );
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::BANK_CHECK_IN, $data);
         return true;
     }
 
