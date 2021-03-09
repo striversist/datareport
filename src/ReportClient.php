@@ -1053,7 +1053,7 @@ class ReportClient
      * @param  [type] $app_package [马甲包名]
      * @param  [type] $user_mobile [发送手机号码]
      * @param  [type] $sms_type    [短信发送场景]
-     * @param  [type] $country_code    [国家码，id：印尼，in：印度，th：泰国]
+     * @param  [type] $country_code    [国家码，0=印尼，1=菲律宾，2=印度，3=泰国]
      */
     public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001,$country_code = 0)
     {
@@ -1077,7 +1077,7 @@ class ReportClient
      * @param  [type] $app_package [马甲包名]
      * @param  [type] $user_mobile [发送手机号码]
      * @param  string $sms_type    [短信发送场景]
-     * @param  [type] $country_code    [国家码，id：印尼，in：印度，th：泰国]
+     * @param  [type] $country_code    [国家码，0=印尼，1=菲律宾，2=印度，3=泰国]
      * @return [type]              [description]
      */
     public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001,$country_code = 0)
