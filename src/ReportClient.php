@@ -14,6 +14,12 @@ class ReportClient
     private $realtimeProcess; //实时数据处理类
     private $offlineProcess; //离线数据处理类
     private $dataWroldProcess; //全球数据处理类
+    private $report_area;//上报地区
+
+    const REPORT_AREA_ID = 0; //上报地区：印尼
+    const REPORT_AREA_PH = 1;//上报地区：菲律宾
+    const REPORT_AREA_IN = 2;//上报地区：印度
+    const REPORT_AREA_TH = 3;//上报地区：泰国
 
     const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
     const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
@@ -76,12 +82,14 @@ class ReportClient
      * @param  integer $projectEnv  [项目当前环境，默认0测试，1生产]
      * @param  integer $linkType    [使用内网链接或是外网链接，默认0内网，1外网]
      * @param  integer $logType     [日志服务商，默认0阿里云，1华为云]
+     * @param  integer $report_area    [上报地区，0=印尼，1=菲律宾，2=印度，3=泰国]
      */
-    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0)
+    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0,$report_area = self::REPORT_AREA_ID)
     {
         $this->realtimeProcess  = new RealtimeProcess($projectEnv);
         $this->offlineProcess   = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType);
         $this->dataWroldProcess = new DataWroldProcess($accessKeyId, $accessKeySecret, $projectEnv);
+        $this->report_area = $report_area;
     }
 
     /**
@@ -1053,9 +1061,8 @@ class ReportClient
      * @param  [type] $app_package [马甲包名]
      * @param  [type] $user_mobile [发送手机号码]
      * @param  [type] $sms_type    [短信发送场景]
-     * @param  [type] $country_code    [国家码，0=印尼，1=菲律宾，2=印度，3=泰国]
      */
-    public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001,$country_code = 0)
+    public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001)
     {
         $data = array(
             'partner_id'  => $partner_id,
@@ -1063,7 +1070,7 @@ class ReportClient
             'user_mobile' => $user_mobile,
             'sms_type'    => $sms_type,
             'create_time' => time(),
-            'country_code' => $country_code,
+            'country_code' => $this->report_area,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_SEND, $data);
@@ -1077,10 +1084,9 @@ class ReportClient
      * @param  [type] $app_package [马甲包名]
      * @param  [type] $user_mobile [发送手机号码]
      * @param  string $sms_type    [短信发送场景]
-     * @param  [type] $country_code    [国家码，0=印尼，1=菲律宾，2=印度，3=泰国]
      * @return [type]              [description]
      */
-    public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001,$country_code = 0)
+    public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001)
     {
         $data = array(
             'partner_id'  => $partner_id,
@@ -1088,7 +1094,7 @@ class ReportClient
             'user_mobile' => $user_mobile,
             'sms_type'    => $sms_type,
             'create_time' => time(),
-            'country_code' => $country_code,
+            'country_code' => $this->report_area,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
