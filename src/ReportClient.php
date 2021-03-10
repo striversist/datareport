@@ -1061,8 +1061,9 @@ class ReportClient
      * @param  [type] $app_package [马甲包名]
      * @param  [type] $user_mobile [发送手机号码]
      * @param  [type] $sms_type    [短信发送场景]
+     * @param  [type] $request_id    [发送短信成功后返回的请求ID]
      */
-    public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001)
+    public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001,$request_id = '')
     {
         $data = array(
             'partner_id'  => $partner_id,
@@ -1071,6 +1072,7 @@ class ReportClient
             'sms_type'    => $sms_type,
             'create_time' => time(),
             'country_code' => $this->report_area,
+            'request_id' => $request_id,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_SEND, $data);
@@ -1084,9 +1086,9 @@ class ReportClient
      * @param  [type] $app_package [马甲包名]
      * @param  [type] $user_mobile [发送手机号码]
      * @param  string $sms_type    [短信发送场景]
-     * @return [type]              [description]
+     * @param  string $request_id    [发送短信成功后返回的请求ID]
      */
-    public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001)
+    public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001,$request_id = '')
     {
         $data = array(
             'partner_id'  => $partner_id,
@@ -1095,6 +1097,7 @@ class ReportClient
             'sms_type'    => $sms_type,
             'create_time' => time(),
             'country_code' => $this->report_area,
+            'request_id' => $request_id,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
