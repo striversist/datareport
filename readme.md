@@ -1,4 +1,4 @@
-- v2.2.1，短信上报添加request_id
+- v2.2.2，短信上报添加request_id
 
 ```
 1.ReportClient::__construct(..)，添加国家码传参
