@@ -9,12 +9,15 @@
 
 namespace Cashcash\DataReport;
 
+use Cashcash\DataReport\sms\SmsReportClient;
+
 class ReportClient
 {
     private $realtimeProcess; //实时数据处理类
     private $offlineProcess; //离线数据处理类
     private $dataWroldProcess; //全球数据处理类
     private $report_area;//上报地区
+    private $projectEnv;
 
     const REPORT_AREA_ID = 0; //上报地区：印尼
     const REPORT_AREA_PH = 1;//上报地区：菲律宾
@@ -90,6 +93,7 @@ class ReportClient
         $this->offlineProcess   = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType);
         $this->dataWroldProcess = new DataWroldProcess($accessKeyId, $accessKeySecret, $projectEnv);
         $this->report_area = $report_area;
+        $this->projectEnv = $projectEnv;
     }
 
     /**
@@ -1101,6 +1105,11 @@ class ReportClient
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
+
+        //新短信系统回填
+        $smsReport = new SmsReportClient($this->projectEnv);
+        $smsReport->successCallback($request_id);
+
         return true;
     }
 

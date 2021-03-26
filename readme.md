@@ -7,3 +7,9 @@
 
 3.ReportClient::smsReceive(..)，添加request_id传参
 ```
+
+- 2.2.3，短信回填上报至新短信系统的回填接口
+```
+1.引入新短信系统的上报类
+2.ReportClient::smsReceive(...)，追加调用新短信系统的回填上报接口
+```
