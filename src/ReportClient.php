@@ -514,9 +514,11 @@ class ReportClient
      * @param  [type] $is_pay        [description]
      * @param  [type] $version_type  [版本类型1=详版，2=简版]
      * @param  [type] $country_code  [description]
+     * @param  [type] $request_id    [description]
+     * @param  [type] $request_time  [description]
      * @return [type]                [description]
      */
-    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $version_type = 1, $country_code = 0)
+    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $version_type = 1, $country_code = 0, $request_id = '', $request_time = '')
     {
         $data = array(
             'app_package'   => $app_package,
@@ -528,12 +530,14 @@ class ReportClient
             'is_pay'        => $is_pay,
             'version_type'  => $version_type,
             'country_code'  => $country_code,
+            'request_id'    => $request_id,
+            'request_time'  => $request_time,
             'create_time'   => time(),
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::KTP, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::KTP, $data);
+        //$this->realtimeProcess->sendOut(self::KTP, $data);
         return true;
     }
     /**
@@ -545,9 +549,11 @@ class ReportClient
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @param  [type] $country_code  [description]
+     * @param  [type] $request_id    [description]
+     * @param  [type] $request_time  [description]
      * @return [type]                [description]
      */
-    public function ocr($app_package, $offer_package, $ocr_img, $channel_type, $is_pay, $country_code = 0)
+    public function ocr($app_package, $offer_package, $ocr_img, $channel_type, $is_pay, $country_code = 0, $request_id = '', $request_time = '')
     {
         $data = array(
             'app_package'   => $app_package,
@@ -556,12 +562,14 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'country_code'  => $country_code,
+            'request_id'    => $request_id,
+            'request_time'  => $request_time,
             'create_time'   => time(),
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::OCR, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::OCR, $data);
+        //$this->realtimeProcess->sendOut(self::OCR, $data);
         return true;
     }
     /**
@@ -615,9 +623,11 @@ class ReportClient
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @param  [type] $country_code  [description]
+     * @param  [type] $request_id_dt [description]
+     * @param  [type] $request_time  [description]
      * @return [type]                [description]
      */
-    public function faceService($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay, $country_code = 0)
+    public function faceService($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay, $country_code = 0, $request_id_dt = '', $request_time = '')
     {
         $data = array(
             'app_package'   => $app_package,
@@ -629,13 +639,15 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'country_code'  => $country_code,
+            'request_id_dt' => $request_id_dt,
+            'request_time'  => $request_time,
             'create_time'   => time(),
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_SERVICE, $data);
         // 实时数据上报
-        $data['source_code'] = 1;
-        $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
+        //$data['source_code'] = 1;
+        //$this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
         return true;
     }
 
@@ -668,7 +680,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::BIOPSY, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::BIOPSY, $data);
+        //$this->realtimeProcess->sendOut(self::BIOPSY, $data);
         return true;
     }
     /**
@@ -1343,9 +1355,11 @@ class ReportClient
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
      * @param  [type] $country_code  [description]
+     * @param  [type] $request_id    [description]
+     * @param  [type] $request_time  [description]
      * @return [type]                [description]
      */
-    public function black($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = 0)
+    public function black($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = 0, $request_id = '', $request_time = '')
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1357,12 +1371,14 @@ class ReportClient
             'channel_type'  => $channel_type,
             'is_pay'        => $is_pay,
             'country_code'  => $country_code,
+            'request_id'    => $request_id,
+            'request_time'  => $request_time,
             'create_time'   => time(),
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::BLACK, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::BLACK, $data);
+        //$this->realtimeProcess->sendOut(self::BLACK, $data);
         return true;
     }
 
