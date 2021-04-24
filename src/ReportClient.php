@@ -447,7 +447,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::WHITELIST, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::WHITELIST, $data);
+        //$this->realtimeProcess->sendOut(self::WHITELIST, $data);
         return true;
     }
     /**
@@ -480,7 +480,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::BLACKLIST, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::BLACKLIST, $data);
+        //$this->realtimeProcess->sendOut(self::BLACKLIST, $data);
         return true;
     }
     /**
@@ -513,7 +513,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::CHECK_CARD, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::CHECK_CARD, $data);
+        //$this->realtimeProcess->sendOut(self::CHECK_CARD, $data);
         return true;
     }
     /**
@@ -618,7 +618,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_COMPARE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
+        //$this->realtimeProcess->sendOut(self::FACE_COMPARE, $data);
         return true;
     }
 
@@ -718,7 +718,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_AGE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::PHONE_AGE, $data);
+        //$this->realtimeProcess->sendOut(self::PHONE_AGE, $data);
         return true;
     }
     /**
@@ -751,7 +751,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_OWNER, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::PHONE_OWNER, $data);
+        //$this->realtimeProcess->sendOut(self::PHONE_OWNER, $data);
         return true;
     }
     /**
@@ -782,7 +782,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_SEARCH, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FACE_SEARCH, $data);
+        //$this->realtimeProcess->sendOut(self::FACE_SEARCH, $data);
         return true;
     }
     /**
@@ -811,7 +811,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::TEL_SCORE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::TEL_SCORE, $data);
+        //$this->realtimeProcess->sendOut(self::TEL_SCORE, $data);
         return true;
     }
     /**
@@ -848,7 +848,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_SCORE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FK_SCORE, $data);
+        //$this->realtimeProcess->sendOut(self::FK_SCORE, $data);
         return true;
     }
     /**
@@ -876,7 +876,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::SPIDER, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::SPIDER, $data);
+        //$this->realtimeProcess->sendOut(self::SPIDER, $data);
         return true;
     }
     /**
@@ -905,7 +905,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_AUTH, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::PHONE_AUTH, $data);
+        //$this->realtimeProcess->sendOut(self::PHONE_AUTH, $data);
         return true;
     }
     /**
@@ -936,7 +936,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_IDCARD, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::PHONE_IDCARD, $data);
+        //$this->realtimeProcess->sendOut(self::PHONE_IDCARD, $data);
         return true;
     }
     /**
@@ -965,7 +965,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::MULTIHEAD, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::MULTIHEAD, $data);
+        //$this->realtimeProcess->sendOut(self::MULTIHEAD, $data);
         return true;
     }
     /**
@@ -998,7 +998,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::RISK_LIST, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::RISK_LIST, $data);
+        //$this->realtimeProcess->sendOut(self::RISK_LIST, $data);
         return true;
     }
     /**
@@ -1029,7 +1029,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::RISKY_FACE, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::RISKY_FACE, $data);
+        //$this->realtimeProcess->sendOut(self::RISKY_FACE, $data);
         return true;
     }
     /**
@@ -1064,7 +1064,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK360, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FK360, $data);
+        //$this->realtimeProcess->sendOut(self::FK360, $data);
         return true;
     }
 
@@ -1209,7 +1209,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_CLOUDUN, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FK_CLOUDUN, $data);
+        //$this->realtimeProcess->sendOut(self::FK_CLOUDUN, $data);
         return true;
     }
 
@@ -1234,7 +1234,8 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_ITIK, $data);
         // 实时数据上报
-        return $this->realtimeProcess->sendOut(self::FK_ITIK, $data);
+        //$this->realtimeProcess->sendOut(self::FK_ITIK, $data);
+        return true;
     }
 
     /**
@@ -1311,7 +1312,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::WHATS_APP, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::WHATS_APP, $data);
+        //$this->realtimeProcess->sendOut(self::WHATS_APP, $data);
         return true;
     }
 
@@ -1337,7 +1338,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::COLLECTION, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::COLLECTION, $data);
+        //$this->realtimeProcess->sendOut(self::COLLECTION, $data);
         return true;
     }
 
@@ -1412,7 +1413,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::ZEUSSECOND, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::ZEUSSECOND, $data);
+        //$this->realtimeProcess->sendOut(self::ZEUSSECOND, $data);
         return true;
     }
 
@@ -1444,7 +1445,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::NAME_CHECK, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::NAME_CHECK, $data);
+        //$this->realtimeProcess->sendOut(self::NAME_CHECK, $data);
         return true;
     }
 
@@ -1482,7 +1483,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::BANKCHECK, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::BANKCHECK, $data);
+        //$this->realtimeProcess->sendOut(self::BANKCHECK, $data);
         return true;
     }
 
@@ -1513,7 +1514,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::ID_CHECK, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::ID_CHECK, $data);
+        //$this->realtimeProcess->sendOut(self::ID_CHECK, $data);
         return true;
     }
 
@@ -1547,7 +1548,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FKDK, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FKDK, $data);
+        //$this->realtimeProcess->sendOut(self::FKDK, $data);
         return true;
     }
 
@@ -1582,7 +1583,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_AISKOR, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::FK_AISKOR, $data);
+        //$this->realtimeProcess->sendOut(self::FK_AISKOR, $data);
         return true;
     }
 
