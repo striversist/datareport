@@ -653,11 +653,12 @@ class ReportClient
      * @param  [string] $order_no    订单号
      * @param  [type] $source_code  [description]
      * @param  [type] $country_code  [国家编码]
-     * @param  [type] $request_id_dt    [请求ID]
+     * @param  [type] $report_source [上报来源]
+     * @param  [type] $request_id_dt [请求ID]
      * @param  [type] $request_time  [请求时间]
      * @return [type]                [description]
      */
-    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0, $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '')
+    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0, $country_code = self::REPORT_AREA_ID, $report_source = 0, $request_id_dt = '', $request_time = '')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -673,6 +674,7 @@ class ReportClient
             'source_code'   => $source_code,
             'country_code'  => $country_code,
             'create_time'   => time(),
+            'report_source' => $report_source,
             'request_id_dt' => $request_id_dt,
             'report_year'   => $res['year'],
             'report_month'  => $res['month'],
@@ -943,11 +945,12 @@ class ReportClient
      * @param  [type] $is_pay        [description]
      * @param  [type] $service_type  [description]
      * @param  [type] $country_code  [国家编码]
+     * @param  [type] $feature_type  [特征类型]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
      * @return [type]                [description]
      */
-    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay,$service_type=1, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay,$service_type=1, $country_code = self::REPORT_AREA_ID, $feature_type = 0, $request_id = '', $request_time = '')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -963,6 +966,7 @@ class ReportClient
             'service_type'  => $service_type,
             'country_code'  => $country_code,
             'create_time'   => time(),
+            'feature_type'  => $feature_type,
             'request_id'    => $request_id,
             'report_year'   => $res['year'],
             'report_month'  => $res['month'],
