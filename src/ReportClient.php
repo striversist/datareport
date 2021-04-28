@@ -653,12 +653,11 @@ class ReportClient
      * @param  [string] $order_no    订单号
      * @param  [type] $source_code  [description]
      * @param  [type] $country_code  [国家编码]
-     * @param  [type] $report_source [上报来源]
      * @param  [type] $request_id_dt [请求ID]
      * @param  [type] $request_time  [请求时间]
      * @return [type]                [description]
      */
-    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0, $country_code = self::REPORT_AREA_ID, $report_source = 0, $request_id_dt = '', $request_time = '')
+    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0, $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -674,7 +673,6 @@ class ReportClient
             'source_code'   => $source_code,
             'country_code'  => $country_code,
             'create_time'   => time(),
-            'report_source' => $report_source,
             'request_id_dt' => $request_id_dt,
             'report_year'   => $res['year'],
             'report_month'  => $res['month'],
