@@ -10,7 +10,7 @@ class SmsReportClient{
 
     const ENV_PROD_HOST = 'http://sms.haohaimobi.com';
 
-    const ENV_DEV_HOST = 'http://test-sms.haohaimobi.com';
+    const ENV_DEV_HOST = 'http://13.213.9.187:10000';
 
     const SIGN_TOKEN = 'fs2341231tafafdf';
 
