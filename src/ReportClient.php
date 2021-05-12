@@ -214,9 +214,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param  [type] $user_type     [用户类型]
      * @return [type]                [description]
      */
-    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $user_type = -1)
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -236,6 +237,7 @@ class ReportClient
             'report_month'  => $res['month'],
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
+            'user_type'     => $user_type,
         );
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
