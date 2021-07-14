@@ -18,3 +18,9 @@
 ```
 \Cashcash\DataReport\sms:ENV_DEV_HOST
 ```
+
+- 2.3.3
+
+```
+\Cashcash\DataReport\SmsLength异常类undefinde InvalidArgumentException修复
+```
