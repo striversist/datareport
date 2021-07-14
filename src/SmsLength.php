@@ -7,8 +7,8 @@
  * @copyright    firestorm phper
  */
 namespace Cashcash\DataReport;
-
-class SmsLength 
+use \InvalidArgumentException;
+class SmsLength
 {
     /**
      * @var int Maximum characters in SMS with 7-bit encoding (3GPP TS 23.038 / GSM 03.38)
