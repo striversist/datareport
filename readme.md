@@ -24,3 +24,9 @@
 ```
 \Cashcash\DataReport\SmsLength异常类undefinde InvalidArgumentException修复
 ```
+
+- 2.3.4
+
+```
+ReportClient::appInstall(..)，添加account_id传参
+```
