@@ -124,9 +124,10 @@ class ReportClient
      * @param  [type] $advertising_id [谷歌广告id, gaid]
      * @param  [type] $guid           [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
+     * @param  [int] $country_code   [国家编码]
      * @return [type]                 [description]
      */
-    public function userDevice($app_package, $app_channel, $app_version, $advertising_id, $guid, $create_time)
+    public function userDevice($app_package, $app_channel, $app_version, $advertising_id, $guid, $create_time, $country_code = self::REPORT_AREA_ID)
     {
         $data = array(
             'app_package'    => $app_package,
@@ -134,6 +135,7 @@ class ReportClient
             'app_version'    => $app_version,
             'advertising_id' => $advertising_id,
             'guid'           => $guid,
+            'country_code'   => $country_code,
             'create_time'    => $create_time,
         );
         // 离线数据存储
@@ -178,9 +180,10 @@ class ReportClient
      * @param  [type] $uid         [自定义用户id，唯一]
      * @param  [type] $guid        [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
+     * @param  [type] $country_code[国家编码]
      * @return [type]              [description]
      */
-    public function userReg($app_package, $user_name, $user_mobile, $uid, $guid, $create_time)
+    public function userReg($app_package, $user_name, $user_mobile, $uid, $guid, $create_time, $country_code = self::REPORT_AREA_ID)
     {
         $data = array(
             'app_package' => $app_package,
@@ -189,6 +192,7 @@ class ReportClient
             'event_id'    => 10, //用户行为事件
             'uid'         => $uid,
             'guid'        => $guid,
+            'country_code'=> $country_code,
             'create_time' => $create_time,
         );
         // 离线数据存储
@@ -1329,7 +1333,7 @@ class ReportClient
     /**
      *用户数据
      */
-    public function userInfo($app_package, $user_name, $user_mobile, $event_id, $uid, $guid, $create_time)
+    public function userInfo($app_package, $user_name, $user_mobile, $event_id, $uid, $guid, $create_time, $country_code = self::REPORT_AREA_ID)
     {
         $data = array(
             'app_package' => $app_package,
@@ -1338,6 +1342,7 @@ class ReportClient
             'event_id'    => $event_id, //用户行为事件
             'uid'         => $uid,
             'guid'        => $guid,
+            'country_code'=> $country_code,
             'create_time' => $create_time,
         );
         // 离线数据存储
