@@ -70,6 +70,11 @@ class AliyunLog
                 'project_name' => 'data-mx',
                 'log_store'    => 'cashcash',
             ],
+            'in' => [
+                'end_point'    => $linkType == 0 ? 'ap-south-1-intranet.log.aliyuncs.com' : 'ap-south-1.log.aliyuncs.com',
+                'project_name' => 'data-in',
+                'log_store'    => 'cashcash',
+            ],
         ];
         return $log_arr[$countryCode];
     }
