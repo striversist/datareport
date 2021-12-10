@@ -18,6 +18,7 @@ class ReportClient
     private $dataWroldProcess; //全球数据处理类
     private $report_area;//上报地区
     private $projectEnv;
+    private $reportData;//上报数据
 
     const REPORT_AREA_ID = 0; //上报地区：印尼
     const REPORT_AREA_PH = 1;//上报地区：菲律宾
@@ -87,14 +88,16 @@ class ReportClient
      * @param  integer $linkType    [使用内网链接或是外网链接，默认0内网，1外网]
      * @param  integer $logType     [日志服务商，默认0阿里云，1华为云]
      * @param  integer $report_area    [上报地区，0=印尼，1=菲律宾，2=印度，3=泰国]
+     * @param array $reportData
      */
-    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0,$report_area = self::REPORT_AREA_ID)
+    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0, $report_area = self::REPORT_AREA_ID, $reportData = array())
     {
         $this->realtimeProcess  = new RealtimeProcess($projectEnv);
         $this->offlineProcess   = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType);
         $this->dataWroldProcess = new DataWroldProcess($accessKeyId, $accessKeySecret, $projectEnv);
         $this->report_area = $report_area;
         $this->projectEnv = $projectEnv;
+        $this->reportData = $reportData;
     }
 
     /**
@@ -138,6 +141,7 @@ class ReportClient
             'country_code'   => $country_code,
             'create_time'    => $create_time,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_DEVICE, $data);
         // 全球数据上报
@@ -165,6 +169,7 @@ class ReportClient
             'guid'        => $guid,
             'create_time' => $create_time,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ACTIVE, $data);
         // 全球数据上报
@@ -195,6 +200,7 @@ class ReportClient
             'country_code'=> $country_code,
             'create_time' => $create_time,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_INFO, $data);
         // 全球数据上报
@@ -245,6 +251,7 @@ class ReportClient
             'user_type'     => $user_type,
             'channel_source'=> $channel_source,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
         // 全球数据上报
@@ -277,6 +284,7 @@ class ReportClient
             'guid'          => $guid,
             'create_time'   => $create_time,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FREE_TICKET, $data);
         return true;
@@ -303,6 +311,7 @@ class ReportClient
             'guid'        => $guid,
             'create_time' => $create_time,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::POIN_TREDEEM, $data);
         return true;
@@ -346,6 +355,7 @@ class ReportClient
             'guid_ctime'     => $guid_ctime,
             'account_id'     => $account_id
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::APP_INSTALL, $data);
         // 全球数据上报
@@ -389,6 +399,7 @@ class ReportClient
             'country'        => $country,
             'ip'             => $ip,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OFFER_INSTALL, $data);
         // 全球数据上报
@@ -437,10 +448,11 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS, $data);
         // 实时数据上报
-        $this->realtimeProcess->sendOut(self::SMS, $data);
+        //$this->realtimeProcess->sendOut(self::SMS, $data);
         return true;
     }
     /**
@@ -481,6 +493,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::WHITELIST, $data);
         // 实时数据上报
@@ -523,6 +536,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BLACKLIST, $data);
         // 实时数据上报
@@ -565,6 +579,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CHECK_CARD, $data);
         // 实时数据上报
@@ -607,6 +622,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::KTP, $data);
         // 实时数据上报
@@ -643,6 +659,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OCR, $data);
         // 实时数据上报
@@ -689,6 +706,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_COMPARE, $data);
         // 实时数据上报
@@ -732,6 +750,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_SERVICE, $data);
         // 实时数据上报
@@ -775,6 +794,7 @@ class ReportClient
             'report_time'   => $res['time'],
 
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BIOPSY, $data);
         // 实时数据上报
@@ -813,6 +833,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_AGE, $data);
         // 实时数据上报
@@ -855,6 +876,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_OWNER, $data);
         // 实时数据上报
@@ -895,6 +917,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_SEARCH, $data);
         // 实时数据上报
@@ -933,6 +956,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::TEL_SCORE, $data);
         // 实时数据上报
@@ -981,6 +1005,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_SCORE, $data);
         // 实时数据上报
@@ -1009,6 +1034,7 @@ class ReportClient
             'is_pay'        => $is_pay,
             'create_time'   => time(),
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SPIDER, $data);
         // 实时数据上报
@@ -1047,6 +1073,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_AUTH, $data);
         // 实时数据上报
@@ -1087,6 +1114,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_IDCARD, $data);
         // 实时数据上报
@@ -1125,6 +1153,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::MULTIHEAD, $data);
         // 实时数据上报
@@ -1167,6 +1196,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::RISK_LIST, $data);
         // 实时数据上报
@@ -1207,6 +1237,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::RISKY_FACE, $data);
         // 实时数据上报
@@ -1251,6 +1282,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK360, $data);
         // 实时数据上报
@@ -1278,6 +1310,7 @@ class ReportClient
             'country_code' => $this->report_area,
             'request_id' => $request_id,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_SEND, $data);
         return true;
@@ -1303,6 +1336,7 @@ class ReportClient
             'country_code' => $this->report_area,
             'request_id' => $request_id,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
 
@@ -1327,6 +1361,7 @@ class ReportClient
             'country_code'  => $country_code,
             'create_time'   => time(),
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OFFER_CAP, $data);
         return true;
@@ -1347,6 +1382,7 @@ class ReportClient
             'country_code'=> $country_code,
             'create_time' => $create_time,
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_INFO, $data);
         // 全球数据上报
@@ -1376,7 +1412,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        // 'pay_charge'    => $pay_charge,
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PAY, $data);
         // 实时数据上报
@@ -1409,6 +1445,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_CLOUDUN, $data);
         // 实时数据上报
@@ -1440,6 +1477,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_ITIK, $data);
         // 实时数据上报
@@ -1465,6 +1503,7 @@ class ReportClient
             'income_date'   => $income_date,
             'country'       => $country,
         );
+        $data = array_merge($data, $this->reportData);
         // 全球数据上报
         $this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
         return true;
@@ -1493,6 +1532,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::AUDIT, $data);
         return true;
@@ -1532,6 +1572,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::WHATS_APP, $data);
         // 实时数据上报
@@ -1567,6 +1608,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::COLLECTION, $data);
         // 实时数据上报
@@ -1609,6 +1651,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BLACK, $data);
         // 实时数据上报
@@ -1655,6 +1698,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::ZEUSSECOND, $data);
         // 实时数据上报
@@ -1696,6 +1740,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::NAME_CHECK, $data);
         // 实时数据上报
@@ -1743,6 +1788,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BANKCHECK, $data);
         // 实时数据上报
@@ -1783,6 +1829,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::ID_CHECK, $data);
         // 实时数据上报
@@ -1826,6 +1873,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FKDK, $data);
         // 实时数据上报
@@ -1870,6 +1918,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_AISKOR, $data);
         // 实时数据上报
@@ -1912,6 +1961,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::NAME_CHECK_IN, $data);
         return true;
@@ -1954,6 +2004,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
+        $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BANK_CHECK_IN, $data);
         return true;

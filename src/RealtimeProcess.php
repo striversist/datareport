@@ -21,9 +21,9 @@ class RealtimeProcess
     public function __construct($projectEnv)
     {
         if ($projectEnv == 0) {
-            $this->baseUrl = 'http://teststat.udax.id/api/';
+            $this->baseUrl = 'http://teststat.toolsvqdr.com/api/';
         } else {
-            $this->baseUrl = 'http://stat.udax.id/api/';
+            $this->baseUrl = 'http://stat-sg.toolsvqdr.com/api/';
         }
     }
 
