@@ -30,3 +30,17 @@
 ```
 ReportClient::appInstall(..)，添加account_id传参
 ```
+
+- 2.4.0
+
+```
+1.增加appid上报字段(全公司唯一的ID号),封装在构造函数中，增加reportData(数组)字段
+2.request_id和report_time(时间日期格式)字段必传(具体看更新后的代码)
+(原有逻辑不变，实例化ReportClient类时，增加reportData字段至构造函数中)
+    $reportData = array(
+        'appid' => 1000
+    );
+    $report = new ReportClient(.......,$reportData);
+    $report->userOrder(.........);
+后期有新增字段都可以封装在$reportData中，不用再更新composer包
+```
