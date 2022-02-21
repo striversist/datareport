@@ -73,6 +73,7 @@ class ReportClient
     const ID_CHECK = 'report/service/idcheck'; //官方图片验证idcheck
     const FKDK = 'report/service/dkfk'; //dk风控
     const FK_AISKOR = 'report/service/fkaiskor'; //aiskor定制风控
+    const FK_FEATURE = 'report/service/feature'; //风控特征模型分
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -2007,6 +2008,42 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BANK_CHECK_IN, $data);
+        return true;
+    }
+
+    /**
+     * 特征模型分上报
+     * @param $app_package
+     * @param $offer_package
+     * @param $service_type
+     * @param $order_no
+     * @param $create_time
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function feature($app_package, $offer_package, $service_type, $order_no, $create_time, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'service_type' => $service_type,
+            'order_no' => $order_no,
+            'create_time' => $create_time,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::FK_FEATURE, $data);
         return true;
     }
 
