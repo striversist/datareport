@@ -35,6 +35,7 @@ class ReportClient
     const OFFER_INSTALL = 'report/stat/offerinstall'; //cpi激活
     const USER_INFO     = 'report/stat/userinfo'; //用户数据
     const OFFER_PRICE   = 'report/stat/offerprice'; //每日价格同步
+    const USER_PRIMARY  = 'report/stat/userprimary';//用户平台级审批数据
 
     const SMS          = 'report/service/sms'; //发送短信
     const WHITELIST    = 'report/service/whitelist'; //白名单验证
@@ -1507,6 +1508,34 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 全球数据上报
         $this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
+        return true;
+    }
+
+    /**
+     * 用户平台级审批数据
+     * @param array $reports
+     * @return bool
+     * @throws \Aliyun_Log_Exception
+     */
+    public function userPrimary($reports = array())
+    {
+        $data = array(
+            'app_package'    => $reports['app_package'] ?? '',
+            'app_channel'    => $reports['app_channel'] ?? '',
+            'app_version'    => $reports['app_version'] ?? '',
+            'advertising_id' => $reports['advertising_id'] ?? '',
+            'guid'           => $reports['guid'] ?? '',
+            'uid'            => $reports['uid'] ?? '',
+            'appsflyer_id'   => $reports['appsflyer_id'] ?? '',
+            'user_mobile'    => $reports['user_mobile'] ?? '',
+            'user_idcard'    => $reports['user_idcard'] ?? '',
+            'event_type'     => $reports['event_type'] ?? 0,
+            'country_code'   => $reports['country_code'] ?? self::REPORT_AREA_ID,
+            'create_time'    => $reports['create_time'] ?? time(),
+        );
+        $data = array_merge($data, $this->reportData);
+        // 全球数据上报
+        $this->dataWroldProcess->addLog(self::USER_PRIMARY, $data, 2);
         return true;
     }
 
