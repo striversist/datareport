@@ -26,6 +26,7 @@ class ReportClient
     const REPORT_AREA_TH = 3;//上报地区：泰国
     const REPORT_AREA_MX = 4;//上报地区：墨西哥
     const REPORT_AREA_LA = 5;//上报地区：老挝
+    const REPORT_AREA_CO = 6;//上报地区：哥伦比亚
 
     const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
     const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
