@@ -79,6 +79,7 @@ class ReportClient
     const FK_AISKOR = 'report/service/fkaiskor'; //aiskor定制风控
     const FK_FEATURE = 'report/service/feature'; //风控特征模型分
     const LIVENESS_CHECK = 'report/service/livenesscheck'; //静默活体检测
+    const COMMENT_GENERATE    = 'report/service/comment'; // 评论生成上报
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -2116,6 +2117,41 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::LIVENESS_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 生成评论服务
+     * @param $app_package
+     * @param $offer_package
+     * @param $channel_type
+     * @param $num
+     * @param $is_pay
+     * @param $country_code
+     * @param $request_time
+     * @param $request_id
+     * @return bool
+     */
+    public function commentGenerate($app_package, $offer_package, $channel_type, $num, $is_pay, $country_code, $request_time, $request_id): bool
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'num' => $num,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::COMMENT_GENERATE, $data);
         return true;
     }
 
