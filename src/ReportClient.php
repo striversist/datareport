@@ -80,6 +80,7 @@ class ReportClient
     const FK_FEATURE = 'report/service/feature'; //风控特征模型分
     const LIVENESS_CHECK = 'report/service/livenesscheck'; //静默活体检测
     const COMMENT_GENERATE    = 'report/service/comment'; // 评论生成上报
+    const ANTI_FAKE = 'report/service/antifake'; // 防伪检测-假证/P图检测
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -2155,4 +2156,42 @@ class ReportClient
         return true;
     }
 
+    /**
+     * 防伪检测-假证/P图检测
+     * @param $app_package
+     * @param $offer_package
+     * @param $img_url
+     * @param $return_code
+     * @param $channel_type
+     * @param $is_pay
+     * @param $order_no
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function antiFake($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'img_url' => $img_url,
+            'return_code' => $return_code,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'order_no' => $order_no,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::ANTI_FAKE, $data);
+        return true;
+    }
 }
