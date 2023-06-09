@@ -44,3 +44,8 @@ ReportClient::appInstall(..)，添加account_id传参
     $report->userOrder(.........);
 后期有新增字段都可以封装在$reportData中，不用再更新composer包
 ```
+
+- 2.5.1
+```
+增加孟加拉（BD）配置信息
+```
