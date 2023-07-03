@@ -82,6 +82,9 @@ class ReportClient
     const LIVENESS_CHECK = 'report/service/livenesscheck'; //静默活体检测
     const COMMENT_GENERATE    = 'report/service/comment'; // 评论生成上报
     const ANTI_FAKE = 'report/service/antifake'; // 防伪检测-假证/P图检测
+    const ADD_FACE = 'report/service/addface'; // 添加人脸图片
+    const OCR_PASSPORT = 'report/service/ocrpassport'; // 护照OCR
+    const SMS_WHATSAPP = 'report/service/smswhatsapp'; // sms-whatsapp
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -2193,6 +2196,119 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::ANTI_FAKE, $data);
+        return true;
+    }
+
+    /**
+     * 添加人脸图片
+     * @param $app_package
+     * @param $offer_package
+     * @param $img_url
+     * @param $return_code
+     * @param $channel_type
+     * @param $is_pay
+     * @param $order_no
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function addFace($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'img_url' => $img_url,
+            'return_code' => $return_code,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'order_no' => $order_no,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::ADD_FACE, $data);
+        return true;
+    }
+
+    /**
+     * 护照OCR
+     * @param $app_package
+     * @param $offer_package
+     * @param $img_url
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function ocrPassport($app_package, $offer_package, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'img_url' => $img_url,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::OCR_PASSPORT, $data);
+        return true;
+    }
+
+    /**
+     * SMS-WHATSAPP消息
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_mobile
+     * @param $sms_content
+     * @param $sms_type
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function smsWhatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_mobile' => $user_mobile,
+            'sms_content' => $sms_content,
+            'sms_type' => $sms_type,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::SMS_WHATSAPP, $data);
         return true;
     }
 }
