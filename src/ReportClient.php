@@ -82,6 +82,7 @@ class ReportClient
     const FK_FEATURE = 'report/service/feature'; //风控特征模型分
     const LIVENESS_CHECK = 'report/service/livenesscheck'; //静默活体检测
     const COMMENT_GENERATE    = 'report/service/comment'; // 评论生成上报
+    const CREDIT_PERSONAL    = 'report/service/creditpersonal'; // 优质用户
     const ANTI_FAKE = 'report/service/antifake'; // 防伪检测-假证/P图检测
     const ADD_FACE = 'report/service/addface'; // 添加人脸图片
     const OCR_PASSPORT = 'report/service/ocrpassport'; // 护照OCR
@@ -2310,6 +2311,41 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_WHATSAPP, $data);
+        return true;
+    }
+
+    /**
+     * 优质用户
+     * @param $app_package
+     * @param $offer_package
+     * @param $channel_type
+     * @param $user_idcard
+     * @param $is_pay
+     * @param $country_code
+     * @param $request_time
+     * @param $request_id
+     * @return bool
+     */
+    public function creditPersional($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_time, $request_id): bool
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard' => $user_idcard,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::CREDIT_PERSONAL, $data);
         return true;
     }
 }
