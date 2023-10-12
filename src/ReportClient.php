@@ -30,6 +30,7 @@ class ReportClient
     const REPORT_AREA_MM = 7;//上报地区：缅甸
     const REPORT_AREA_BD = 8;//上报地区：孟加拉
     const REPORT_AREA_VN = 9;//上报地区：越南
+    const REPORT_AREA_PE = 10;//上报地区：越南
 
     const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
     const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
