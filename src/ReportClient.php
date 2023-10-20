@@ -88,6 +88,9 @@ class ReportClient
     const ADD_FACE = 'report/service/addface'; // 添加人脸图片
     const OCR_PASSPORT = 'report/service/ocrpassport'; // 护照OCR
     const SMS_WHATSAPP = 'report/service/smswhatsapp'; // sms-whatsapp
+    const SALARY_CHECK = 'report/service/salarycheck'; // 薪资查询
+    const SAME_INFO_CHECK = 'report/service/sameinfocheck'; // 多重身份查询
+    const CONTACT_CHECK = 'report/service/contactcheck'; // 联系人查询
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -2347,6 +2350,113 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CREDIT_PERSONAL, $data);
+        return true;
+    }
+
+    /**
+     * 薪资查询
+     * @param $app_package
+     * @param $offer_package
+     * @param $channel_type
+     * @param $user_idcard
+     * @param $is_pay
+     * @param $country_code
+     * @param $request_id
+     * @param $request_time
+     * @return bool
+     */
+    public function salaryCheck($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_id, $request_time): bool
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard' => $user_idcard,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::SALARY_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 多重身份查询
+     * @param $app_package
+     * @param $offer_package
+     * @param $channel_type
+     * @param $user_idcard
+     * @param $user_mobile
+     * @param $is_pay
+     * @param $country_code
+     * @param $request_id
+     * @param $request_time
+     * @return bool
+     */
+    public function sameInfoCheck($app_package, $offer_package, $channel_type, $user_idcard, $user_mobile, $is_pay, $country_code, $request_id, $request_time): bool
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard' => $user_idcard,
+            'user_mobile' => $user_mobile,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::SAME_INFO_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 联系人查询
+     * @param $app_package
+     * @param $offer_package
+     * @param $channel_type
+     * @param $user_idcard
+     * @param $is_pay
+     * @param $country_code
+     * @param $request_id
+     * @param $request_time
+     * @return bool
+     */
+    public function contactCheck($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_id, $request_time): bool
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard' => $user_idcard,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::CONTACT_CHECK, $data);
         return true;
     }
 }
