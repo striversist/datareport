@@ -19,6 +19,7 @@ class ReportClient
     private $report_area;//上报地区
     private $projectEnv;
     private $reportData;//上报数据
+    private $countryCode;
 
     const REPORT_AREA_ID = 0; //上报地区：印尼
     const REPORT_AREA_PH = 1;//上报地区：菲律宾
@@ -116,6 +117,7 @@ class ReportClient
         $this->report_area = $report_area;
         $this->projectEnv = $projectEnv;
         $this->reportData = $reportData;
+        $this->countryCode = $countryCode;
     }
 
     /**
@@ -1359,7 +1361,7 @@ class ReportClient
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
 
         //新短信系统回填
-        $smsReport = new SmsReportClient($this->projectEnv);
+        $smsReport = new SmsReportClient($this->countryCode,$this->projectEnv);
         $smsReport->successCallback($request_id);
 
         return true;
