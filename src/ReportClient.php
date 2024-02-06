@@ -91,6 +91,7 @@ class ReportClient
     const SALARY_CHECK = 'report/service/salarycheck'; // 薪资查询
     const SAME_INFO_CHECK = 'report/service/sameinfocheck'; // 多重身份查询
     const CONTACT_CHECK = 'report/service/contactcheck'; // 联系人查询
+    const OCR_TEXT = 'report/service/ocrtext'; // 通用文本OCR
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -2457,6 +2458,41 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CONTACT_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 通用文本OCR
+     * @param $app_package
+     * @param $offer_package
+     * @param $img_url
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function ocrText($app_package, $offer_package, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'img_url' => $img_url,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::OCR_TEXT, $data);
         return true;
     }
 }
