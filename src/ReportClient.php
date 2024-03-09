@@ -1414,7 +1414,7 @@ class ReportClient
     /**
      * 放款手续费
      */
-    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $channel_type='', $apply_money='')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1423,6 +1423,8 @@ class ReportClient
             'order_no'      => $order_no,
             'user_name'     => $user_name,
             'bank_card'     => $bank_card,
+            'channel_type'     => $channel_type,
+            'apply_money'     => $apply_money,
             'pay_money'     => $pay_money,
             'pay_time'      => $pay_time,
             'country_code'  => $country_code,
