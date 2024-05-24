@@ -110,6 +110,11 @@ class AliyunLog
                 'project_name' => 'data-pe',
                 'log_store'    => 'cashcash',
             ],
+            'cl' => [
+                'end_point'    => $linkType == 0 ? 'us-east-1-intranet.log.aliyuncs.com' : 'us-east-1.log.aliyuncs.com',
+                'project_name' => 'data-cl',
+                'log_store'    => 'cashcash',
+            ],
         ];
         return $log_arr[$countryCode];
     }
