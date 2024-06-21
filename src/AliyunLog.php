@@ -71,8 +71,8 @@ class AliyunLog
                 'log_store'    => 'cashcash',
             ],
             'in' => [
-                'end_point'    => $linkType == 0 ? 'ap-south-1-intranet.log.aliyuncs.com' : 'ap-south-1.log.aliyuncs.com',
-                'project_name' => 'data-in',
+                'end_point'    => $linkType == 0 ? 'ap-southeast-1-intranet.log.aliyuncs.com' : 'ap-southeast-1.log.aliyuncs.com',
+                'project_name' => 'data-in-v2',
                 'log_store'    => 'cashcash',
             ],
             'ph' => [
