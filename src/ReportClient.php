@@ -252,7 +252,7 @@ class ReportClient
      * @param  [type] $channel_source[渠道来源]
      * @return [type]                [description]
      */
-    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $user_type = -1, $channel_source = 0)
+    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $user_type = -1, $channel_source = 0, $user_level = '')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -274,6 +274,7 @@ class ReportClient
             'report_time'   => $res['time'],
             'user_type'     => $user_type,
             'channel_source'=> $channel_source,
+            'user_level'    => $user_level,
         );
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
