@@ -32,6 +32,8 @@ class ReportClient
     const REPORT_AREA_VN = 9;//上报地区：越南
     const REPORT_AREA_PE = 10;//上报地区：秘鲁
     const REPORT_AREA_CL = 11;//上报地区：智利
+    const REPORT_AREA_KE = 12;//上报地区：肯尼亚
+    const REPORT_AREA_PK = 13;//上报地区：巴基斯坦
 
     const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
     const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
