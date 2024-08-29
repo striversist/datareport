@@ -66,7 +66,7 @@ class AliyunLog
                 'log_store'    => 'cashcash',
             ],
             'mx' => [
-                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'us-west-1.log.aliyuncs.com',
+                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'log-global.aliyuncs.com',
                 'project_name' => 'data-mx',
                 'log_store'    => 'cashcash',
             ],
@@ -86,7 +86,7 @@ class AliyunLog
                 'log_store'    => 'cashcash',
             ],
             'co' => [
-                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'us-west-1.log.aliyuncs.com',
+                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'log-global.aliyuncs.com',
                 'project_name' => 'data-co',
                 'log_store'    => 'cashcash',
             ],
