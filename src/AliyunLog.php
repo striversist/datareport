@@ -65,14 +65,19 @@ class AliyunLog
                 'project_name' => 'data-sg',
                 'log_store'    => 'cashcash',
             ],
+            'th' => [
+                'end_point'    => $linkType == 0 ? 'ap-southeast-7-intranet.log.aliyuncs.com' : 'ap-southeast-7.log.aliyuncs.com',
+                'project_name' => 'data-th',
+                'log_store'    => 'cashcash',
+            ],
             'mx' => [
-                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'us-west-1.log.aliyuncs.com',
+                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'log-global.aliyuncs.com',
                 'project_name' => 'data-mx',
                 'log_store'    => 'cashcash',
             ],
             'in' => [
-                'end_point'    => $linkType == 0 ? 'ap-south-1-intranet.log.aliyuncs.com' : 'ap-south-1.log.aliyuncs.com',
-                'project_name' => 'data-in',
+                'end_point'    => $linkType == 0 ? 'ap-southeast-1-intranet.log.aliyuncs.com' : 'ap-southeast-1.log.aliyuncs.com',
+                'project_name' => 'data-in-v2',
                 'log_store'    => 'cashcash',
             ],
             'ph' => [
@@ -86,7 +91,7 @@ class AliyunLog
                 'log_store'    => 'cashcash',
             ],
             'co' => [
-                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'us-west-1.log.aliyuncs.com',
+                'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'log-global.aliyuncs.com',
                 'project_name' => 'data-co',
                 'log_store'    => 'cashcash',
             ],
@@ -108,6 +113,16 @@ class AliyunLog
             'pe' => [
                 'end_point'    => $linkType == 0 ? 'us-east-1-intranet.log.aliyuncs.com' : 'us-east-1.log.aliyuncs.com',
                 'project_name' => 'data-pe',
+                'log_store'    => 'cashcash',
+            ],
+            'cl' => [
+                'end_point'    => $linkType == 0 ? 'us-east-1-intranet.log.aliyuncs.com' : 'us-east-1.log.aliyuncs.com',
+                'project_name' => 'data-cl',
+                'log_store'    => 'cashcash',
+            ],
+            'pk' => [
+                'end_point'    => $linkType == 0 ? 'me-central-1-intranet.log.aliyuncs.com' : 'me-central-1.log.aliyuncs.com',
+                'project_name' => 'data-pk',
                 'log_store'    => 'cashcash',
             ],
         ];

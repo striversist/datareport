@@ -31,7 +31,10 @@ class ReportClient
     const REPORT_AREA_MM = 7;//上报地区：缅甸
     const REPORT_AREA_BD = 8;//上报地区：孟加拉
     const REPORT_AREA_VN = 9;//上报地区：越南
-    const REPORT_AREA_PE = 10;//上报地区：越南
+    const REPORT_AREA_PE = 10;//上报地区：秘鲁
+    const REPORT_AREA_CL = 11;//上报地区：智利
+    const REPORT_AREA_KE = 12;//上报地区：肯尼亚
+    const REPORT_AREA_PK = 13;//上报地区：巴基斯坦
 
     const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
     const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
@@ -92,12 +95,18 @@ class ReportClient
     const SALARY_CHECK = 'report/service/salarycheck'; // 薪资查询
     const SAME_INFO_CHECK = 'report/service/sameinfocheck'; // 多重身份查询
     const CONTACT_CHECK = 'report/service/contactcheck'; // 联系人查询
+    const OCR_TEXT = 'report/service/ocrtext'; // 通用文本OCR
+    const UNIQUE_FACES = 'report/service/uniquefaces'; // 人脸去重
+    const IP_CHECK = 'report/service/ipcheck'; //IP检测
+    const EXPRESSION_CHECK = 'report/service/expressioncheck'; //异常表情检测
+    const DEEP_FAKE_CHECK = 'report/service/deepfakecheck'; //人脸造假检测
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
     //印度服务-业务上报
     const NAME_CHECK_IN   = 'report/stat/namecheck'; // 姓名一致性校验-业务上报
     const BANK_CHECK_IN    = 'report/stat/bankcheck'; //印度银行卡校验-业务上报
+    const CUSTOMER_TICKET_CHECK = 'report/service/customerticketcheck';  // 客户工单校验
 
     /**
      * [__construct description]
@@ -248,7 +257,7 @@ class ReportClient
      * @param  [type] $channel_source[渠道来源]
      * @return [type]                [description]
      */
-    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $user_type = -1, $channel_source = 0)
+    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $user_type = -1, $channel_source = 0, $user_level = '')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -270,6 +279,7 @@ class ReportClient
             'report_time'   => $res['time'],
             'user_type'     => $user_type,
             'channel_source'=> $channel_source,
+            'user_level'    => $user_level,
         );
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
@@ -1413,7 +1423,7 @@ class ReportClient
     /**
      * 放款手续费
      */
-    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $channel_type='', $apply_money='', $is_zhanqi='')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1422,8 +1432,11 @@ class ReportClient
             'order_no'      => $order_no,
             'user_name'     => $user_name,
             'bank_card'     => $bank_card,
+            'channel_type'     => $channel_type,
+            'apply_money'     => $apply_money,
             'pay_money'     => $pay_money,
             'pay_time'      => $pay_time,
+            'is_zhanqi' => $is_zhanqi,
             'country_code'  => $country_code,
             'create_time'   => time(),
             'request_id'    => $request_id,
@@ -2459,6 +2472,223 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CONTACT_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 通用文本OCR
+     * @param $app_package
+     * @param $offer_package
+     * @param $img_url
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function ocrText($app_package, $offer_package, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'img_url' => $img_url,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::OCR_TEXT, $data);
+        return true;
+    }
+
+
+    /**
+     * 人脸去重
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_idcard
+     * @param $img_url
+     * @param $channel_type
+     * @param $order_no
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function uniqueFaces($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $order_no, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard'   => $user_idcard,
+            'img_url' => $img_url,
+            'channel_type' => $channel_type,
+            'order_no' => $order_no,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::UNIQUE_FACES, $data);
+        return true;
+    }
+
+    /**
+     * IP检测
+     * @param $app_package
+     * @param $offer_package
+     * @param $ip_addr
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function ipCheck($app_package, $offer_package, $ip_addr, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'ip_addr' => $ip_addr,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::IP_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 客户工单检测
+     * @param $app_package
+     * @param $offer_package
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function customerTicketCheck($app_package, $offer_package, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::CUSTOMER_TICKET_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 异常表情检测
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_idcard
+     * @param $img_url
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function expressionCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard' => $user_idcard,
+            'img_url' => $img_url,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::EXPRESSION_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * 人脸造假检测
+     * @param $app_package
+     * @param $offer_package
+     * @param $user_idcard
+     * @param $img_url
+     * @param $channel_type
+     * @param $is_pay
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function deepfakeCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'user_idcard' => $user_idcard,
+            'img_url' => $img_url,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time'],
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::DEEP_FAKE_CHECK, $data);
         return true;
     }
 }
