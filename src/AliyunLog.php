@@ -65,6 +65,11 @@ class AliyunLog
                 'project_name' => 'data-sg',
                 'log_store'    => 'cashcash',
             ],
+            'th' => [
+                'end_point'    => $linkType == 0 ? 'ap-southeast-7-intranet.log.aliyuncs.com' : 'ap-southeast-7.log.aliyuncs.com',
+                'project_name' => 'data-th',
+                'log_store'    => 'cashcash',
+            ],
             'mx' => [
                 'end_point'    => $linkType == 0 ? 'us-west-1-intranet.log.aliyuncs.com' : 'log-global.aliyuncs.com',
                 'project_name' => 'data-mx',
