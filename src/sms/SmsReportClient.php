@@ -9,10 +9,10 @@ class SmsReportClient{
     const ENV_PROD = 1;
 
     //生产环境默认域名
-    const ENV_PROD_HOST = 'http://sms.haohaimobi.com';
+    const DEFAULT_PROD_HOST = 'http://sms.haohaimobi.com';
 
     //测试环境默认域名
-    const ENV_DEV_HOST = 'http://test-sms.haohaimobi.com';
+    const DEFAULT_DEV_HOST = 'http://test-sms.haohaimobi.com';
 
     const SIGN_TOKEN = 'fs2341231tafafdf';
 
@@ -36,15 +36,16 @@ class SmsReportClient{
         if ($env === self::ENV_PROD){
             //每个国家的上报域名
             $hostMappers = [
-                'MX' => 'http://mx-sms.haohaimobi.com',
+                'MX' => 'http://cdn-sms.haohaimobi.com',
+                'CO' => 'http://cdn-sms.haohaimobi.com',
+                'CL' => 'http://cdn-sms.haohaimobi.com',
+                'PE' => 'http://cdn-sms.haohaimobi.com',
             ];
-            $this->host  = $hostMappers[$this->countryCode]??self::ENV_PROD_HOST;
+            $this->host  = $hostMappers[$this->countryCode]??self::DEFAULT_PROD_HOST;
         }else{
             //每个国家的上报域名
-            $hostMappers = [
-                'MX' => 'http://mx-test-sms.haohaimobi.com',
-            ];
-            $this->host  = $hostMappers[$this->countryCode]??self::ENV_DEV_HOST;
+            $hostMappers = [];
+            $this->host  = $hostMappers[$this->countryCode]??self::DEFAULT_DEV_HOST;
         }
 
     }
@@ -65,6 +66,7 @@ class SmsReportClient{
             'Content-Type: application/x-www-form-urlencoded',
             'timestamp:' . $timestamp,
             'sign:' . $sign,
+            'X-Trace-Log-Id:' . 'report-' . $requestId
         ];
 
         $rsp = $this->request($url,$params,$header);
