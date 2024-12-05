@@ -9,7 +9,7 @@ class SmsReportClient{
     const ENV_PROD = 1;
 
     //生产环境默认域名
-    const DEFAULT_PROD_HOST = 'http://sms.haohaimobi.com';
+    const DEFAULT_PROD_HOST = 'http://sms-sea.haohaimobi.com';
 
     //测试环境默认域名
     const DEFAULT_DEV_HOST = 'http://test-sms.haohaimobi.com';
@@ -40,6 +40,14 @@ class SmsReportClient{
                 'CO' => 'http://cdn-sms.haohaimobi.com',
                 'CL' => 'http://cdn-sms.haohaimobi.com',
                 'PE' => 'http://cdn-sms.haohaimobi.com',
+
+                'ID' => 'http://sms-sea.haohaimobi.com',
+                'TH' => 'http://sms-sea.haohaimobi.com',
+                'IN' => 'http://sms-sea.haohaimobi.com',
+                'VN' => 'http://sms-sea.haohaimobi.com',
+                'PH' => 'http://sms-sea.haohaimobi.com',
+                'MM' => 'http://sms-sea.haohaimobi.com',
+                'BD' => 'http://sms-sea.haohaimobi.com',
             ];
             $this->host  = $hostMappers[$this->countryCode]??self::DEFAULT_PROD_HOST;
         }else{
@@ -69,7 +77,7 @@ class SmsReportClient{
             'X-Trace-Log-Id:' . 'report-' . $requestId
         ];
 
-        $rsp = $this->request($url,$params,$header);
+        return $this->request($url,$params,$header);
     }
 
 
@@ -136,7 +144,16 @@ class SmsReportClient{
 
         $ret = json_decode($response,true);
 
-        return is_array($ret)?$ret:[];
+        $rsp =  is_array($ret)?$ret:[];
+
+        return [
+            'country' => $this->countryCode,
+            'url' => $url,
+            'payload' => $queryString,
+            'rowBody' => $rsp,
+            'httpCode' => $httpCode,
+            'errorNo' => $errorCode
+        ];
     }
 }
 

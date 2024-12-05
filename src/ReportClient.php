@@ -1357,6 +1357,16 @@ class ReportClient
      */
     public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001,$request_id = '')
     {
+        //新短信系统回填
+        try {
+            $smsReport = new SmsReportClient($this->countryCode,$this->projectEnv);
+            $smsRptResult = $smsReport->successCallback($request_id);
+        }catch (\Exception $e){
+            $smsRptResult = '';
+        }catch (\Throwable $e){
+            $smsRptResult = '';
+        }
+
         $data = array(
             'partner_id'  => $partner_id,
             'app_package' => $app_package,
@@ -1365,14 +1375,11 @@ class ReportClient
             'create_time' => time(),
             'country_code' => $this->report_area,
             'request_id' => $request_id,
+            'sms_endpoint_result' => $smsRptResult
         );
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
-
-        //新短信系统回填
-        $smsReport = new SmsReportClient($this->countryCode,$this->projectEnv);
-        $smsReport->successCallback($request_id);
 
         return true;
     }
