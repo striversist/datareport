@@ -120,9 +120,9 @@ class ReportClient
      */
     public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0, $report_area = self::REPORT_AREA_ID, $reportData = array())
     {
-        $this->realtimeProcess  = new RealtimeProcess($projectEnv);
+        //$this->realtimeProcess  = new RealtimeProcess($projectEnv); //实时写入数据库(已废弃)
         $this->offlineProcess   = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType);
-        $this->dataWroldProcess = new DataWroldProcess($accessKeyId, $accessKeySecret, $projectEnv);
+        //$this->dataWroldProcess = new DataWroldProcess($accessKeyId, $accessKeySecret, $projectEnv);//实时写入阿里云(废弃)
         $this->report_area = $report_area;
         $this->projectEnv = $projectEnv;
         $this->reportData = $reportData;
@@ -174,7 +174,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_DEVICE, $data);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::USER_DEVICE, $data, 2);
+        //$this->dataWroldProcess->addLog(self::USER_DEVICE, $data, 2);
         return true;
     }
     /**
@@ -202,7 +202,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ACTIVE, $data);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::USER_ACTIVE, $data, 2);
+        //$this->dataWroldProcess->addLog(self::USER_ACTIVE, $data, 2);
         return true;
     }
     /**
@@ -233,7 +233,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_INFO, $data);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::USER_INFO, $data, 2);
+        //$this->dataWroldProcess->addLog(self::USER_INFO, $data, 2);
         return true;
     }
 
@@ -285,7 +285,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::USER_ORDER, $data, 2);
+        //$this->dataWroldProcess->addLog(self::USER_ORDER, $data, 2);
         return true;
     }
 
@@ -389,7 +389,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::APP_INSTALL, $data);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::APP_INSTALL, $data, 1);
+        //$this->dataWroldProcess->addLog(self::APP_INSTALL, $data, 1);
         return true;
     }
     /**
@@ -433,7 +433,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::OFFER_INSTALL, $data);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::OFFER_INSTALL, $data, 1);
+        //$this->dataWroldProcess->addLog(self::OFFER_INSTALL, $data, 1);
         return true;
     }
     /**
@@ -1423,7 +1423,7 @@ class ReportClient
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_INFO, $data);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::USER_INFO, $data, 2);
+        //$this->dataWroldProcess->addLog(self::USER_INFO, $data, 2);
         return true;
     }
 
@@ -1545,7 +1545,7 @@ class ReportClient
         );
         $data = array_merge($data, $this->reportData);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
+        //$this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
         return true;
     }
 
@@ -1573,7 +1573,7 @@ class ReportClient
         );
         $data = array_merge($data, $this->reportData);
         // 全球数据上报
-        $this->dataWroldProcess->addLog(self::USER_PRIMARY, $data, 2);
+        //$this->dataWroldProcess->addLog(self::USER_PRIMARY, $data, 2);
         return true;
     }
 
