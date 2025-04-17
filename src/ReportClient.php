@@ -121,7 +121,7 @@ class ReportClient
     public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0, $report_area = self::REPORT_AREA_ID, $reportData = array())
     {
         //$this->realtimeProcess  = new RealtimeProcess($projectEnv); //实时写入数据库(已废弃)
-        $this->offlineProcess   = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType);
+        $this->offlineProcess = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType, $reportData);
         //$this->dataWroldProcess = new DataWroldProcess($accessKeyId, $accessKeySecret, $projectEnv);//实时写入阿里云(废弃)
         $this->report_area = $report_area;
         $this->projectEnv = $projectEnv;

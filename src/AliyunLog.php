@@ -19,6 +19,11 @@ class AliyunLog
     private $log_info;
     private $env_source;
     private $code = 400;
+    private $reportData;//上报扩展数据
+
+    //是否开启上报系统
+    const OPEN_REPORT_SYS_NO = 0; //否
+    const OPEN_REPORT_SYS_YES = 1; //是
 
     /**
      * [__construct description]
@@ -27,7 +32,7 @@ class AliyunLog
      * @param  boolean $projectEnv  [项目当前环境，默认0测试]
      * @param  integer $linkType    [使用内网链接或是外网链接，默认0内网]
      */
-    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType)
+    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $reportData)
     {
         $accessKeyId     = trim($accessKeyId);
         $accessKeySecret = trim($accessKeySecret);
@@ -39,8 +44,9 @@ class AliyunLog
         }
         $this->accessKeyId     = $accessKeyId;
         $this->accessKeySecret = $accessKeySecret;
-        $this->log_info   = $this->logInfo($countryCode, $linkType);
+        $this->reportData = $reportData;
         $this->env_source = ($projectEnv == 0) ? "test" : "prod";
+        $this->log_info   = $this->logInfo($countryCode, $linkType);
     }
 
     /*
@@ -126,7 +132,19 @@ class AliyunLog
                 'log_store'    => 'cashcash',
             ],
         ];
-        return $log_arr[$countryCode];
+        $logInfo = $log_arr[$countryCode];
+        $logInfo['report_url'] = $this->getReportLogInfo($countryCode, $linkType);
+        return $logInfo;
+    }
+
+    public function getReportLogInfo($countryCode, $linkType = 0)
+    {
+        // $linkType 0=公网，1=内网
+        $log_arr = [
+            'prod' => $linkType == 0 ? "http://tool-$countryCode.toolsvqdr.com" : "http://tool-$countryCode-int.toolsvqdr.com",
+            'test' => "http://devtool-$countryCode.toolsvqdr.com",
+        ];
+        return $log_arr[$this->env_source];
     }
 
     /**
@@ -149,18 +167,27 @@ class AliyunLog
                 'time'    => time(),
             );
 
-            #写入日志
-            $topic    = "";
-            $source   = $this->env_source;
-            $logitems = array();
+            # 是否开启自建上报系统: 默认关闭 取reportData中的配置信息 is_open_self_built_report_sys 0=否，1=是
+            $is_open_self_built_report_sys = $this->reportData['is_open_self_built_report_sys'] ?? $this::OPEN_REPORT_SYS_NO;
+            //增加自建上报系统数据上报
+            if ($is_open_self_built_report_sys == $this::OPEN_REPORT_SYS_YES) $this->selfBuiltReportSys($contents);
 
-            $logItem = new \Aliyun_Log_Models_LogItem();
-            $logItem->setTime(time());
-            $logItem->setContents($contents);
-            array_push($logitems, $logItem);
+            # 是否开启Aliyun上报系统，默认开启 取reportData中的配置信息 is_open_ali_report_sys 0=否，1=是
+            $is_open_ali_report_sys = $this->reportData['is_open_ali_report_sys'] ?? $this::OPEN_REPORT_SYS_YES;
+            if ($is_open_ali_report_sys == $this::OPEN_REPORT_SYS_YES) {
+                #写入日志
+                $topic = "";
+                $source = $this->env_source;
+                $logitems = array();
 
-            $req2     = new \Aliyun_Log_Models_PutLogsRequest($this->log_info['project_name'], $this->log_info['log_store'], $topic, $source, $logitems);
-            $response = $client->putLogs($req2);
+                $logItem = new \Aliyun_Log_Models_LogItem();
+                $logItem->setTime(time());
+                $logItem->setContents($contents);
+                array_push($logitems, $logItem);
+
+                $req2 = new \Aliyun_Log_Models_PutLogsRequest($this->log_info['project_name'], $this->log_info['log_store'], $topic, $source, $logitems);
+                $response = $client->putLogs($req2);
+            }
         } catch (\Aliyun_Log_Exception $ex) {
             throw $ex;
         } catch (\Exception $ex) {
@@ -200,6 +227,62 @@ class AliyunLog
         } catch (\Exception $ex) {
             throw $ex;
         }
+    }
+
+    /**
+     * 自建上报方法
+     * @param $contents
+     * @return bool|string
+     */
+    public function selfBuiltReportSys($contents)
+    {
+        try {
+            $report_api = $this->log_info['report_url'] . '/api/dataset/report';
+            return $this->doPost($report_api, json_encode($contents));
+        } catch (\Exception | \Error $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * post请求方法
+     * @param $url
+     * @param $data
+     * @param array $headers
+     * @param int $timeout_ms
+     * @return bool|string
+     * @throws \Exception
+     */
+    public function doPost($url, $data, $headers = array(), $timeout_ms = 10000)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        // 执行后不直接打印出来
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // 设置请求方式为post
+        curl_setopt($ch, CURLOPT_POST, true);
+        // post的变量
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        // 请求头，可以传数组
+        if (!empty($headers)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
+        // 跳过证书检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // 不从证书中检查SSL加密算法是否存在
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, $timeout_ms);
+        $output = curl_exec($ch);
+        $error = curl_error($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+        if ($error || $info['http_code'] != 200) {
+            if ($error) {
+                throw new \Exception($error . ' 上报数据为：' . json_encode($data));
+            }
+            throw new \Exception('curl request failed ' . ' 上报数据为：' . json_encode($data));
+        }
+        return $output;
     }
 
 }
