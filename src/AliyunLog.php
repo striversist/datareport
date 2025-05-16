@@ -139,9 +139,13 @@ class AliyunLog
 
     public function getReportLogInfo($countryCode, $linkType = 0)
     {
-        // $linkType 0=公网，1=内网
+        // $linkType 0=内网，1=公网
+        $self_link_type = $this->reportData['self_link_type'] ?? null;
+        if (isset($self_link_type) && is_numeric($self_link_type)) {
+            $linkType = $self_link_type;
+        }
         $log_arr = [
-            'prod' => $linkType == 0 ? "http://tool-$countryCode.toolsvqdr.com" : "http://tool-$countryCode-int.toolsvqdr.com",
+            'prod' => $linkType == 0 ? "http://tool-$countryCode-int.toolsvqdr.com" : "http://tool-$countryCode.toolsvqdr.com",
             'test' => "http://devtool-$countryCode.toolsvqdr.com",
         ];
         return $log_arr[$this->env_source];
