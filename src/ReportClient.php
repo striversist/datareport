@@ -100,6 +100,7 @@ class ReportClient
     const IP_CHECK = 'report/service/ipcheck'; //IP检测
     const EXPRESSION_CHECK = 'report/service/expressioncheck'; //异常表情检测
     const DEEP_FAKE_CHECK = 'report/service/deepfakecheck'; //人脸造假检测
+    const H5_LIVENESS_CHECK = 'report/service/h5liveness'; //H5活体
     //印度服务
     const NAME_CHECK   = 'report/service/namecheck'; // 姓名一致性校验
     const BANKCHECK    = 'report/service/bankcheck'; //印度银行卡校验
@@ -2696,6 +2697,45 @@ class ReportClient
         $data = array_merge($data, $this->reportData);
         // 离线数据存储
         $this->offlineProcess->addLog(self::DEEP_FAKE_CHECK, $data);
+        return true;
+    }
+
+    /**
+     * H5活体
+     * @param $app_package
+     * @param $offer_package
+     * @param $img_url
+     * @param $return_code
+     * @param $channel_type
+     * @param $is_pay
+     * @param $order_no
+     * @param int $country_code
+     * @param string $request_id
+     * @param string $request_time
+     * @return bool
+     */
+    public function h5LivenessCheck($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    {
+        $res = $this->getDateDetail($request_time);
+        $data = array(
+            'app_package' => $app_package,
+            'offer_package' => $offer_package,
+            'img_url' => $img_url,
+            'return_code' => $return_code,
+            'channel_type' => $channel_type,
+            'is_pay' => $is_pay,
+            'order_no' => $order_no,
+            'country_code' => $country_code,
+            'create_time' => time(),
+            'request_id' => $request_id,
+            'report_year' => $res['year'],
+            'report_month' => $res['month'],
+            'report_day' => $res['day'],
+            'report_time' => $res['time']
+        );
+        $data = array_merge($data, $this->reportData);
+        // 离线数据存储
+        $this->offlineProcess->addLog(self::H5_LIVENESS_CHECK, $data);
         return true;
     }
 }
