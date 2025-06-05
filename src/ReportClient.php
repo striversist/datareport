@@ -2744,6 +2744,7 @@ class ReportClient
      * ai消息对话
      * @param $app_package
      * @param $offer_package
+     * @param $chat_type
      * @param $model_id
      * @param $prompt_tokens
      * @param $completion_tokens
@@ -2755,12 +2756,13 @@ class ReportClient
      * @param string $request_time
      * @return bool
      */
-    public function aiChatCompletion($app_package, $offer_package, $model_id, $prompt_tokens, $completion_tokens, $total_tokens, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function aiChatCompletion($app_package, $offer_package, $chat_type, $model_id, $prompt_tokens, $completion_tokens, $total_tokens, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
             'app_package' => $app_package,
             'offer_package' => $offer_package,
+            'chat_type' => $chat_type,
             'model_id' => $model_id,
             'prompt_tokens' => $prompt_tokens,
             'completion_tokens' => $completion_tokens,
