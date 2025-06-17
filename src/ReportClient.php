@@ -119,11 +119,12 @@ class ReportClient
      * @param  integer $logType     [日志服务商，默认0阿里云，1华为云]
      * @param  integer $report_area    [上报地区，0=印尼，1=菲律宾，2=印度，3=泰国]
      * @param array $reportData
+     * @param array $configData
      */
-    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0, $report_area = self::REPORT_AREA_ID, $reportData = array())
+    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv = 0, $linkType = 0, $logType = 0, $report_area = self::REPORT_AREA_ID, $reportData = array(), $configData = array())
     {
         //$this->realtimeProcess  = new RealtimeProcess($projectEnv); //实时写入数据库(已废弃)
-        $this->offlineProcess = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType, $reportData);
+        $this->offlineProcess = new OfflineProcess($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $logType, $configData);
         //$this->dataWroldProcess = new DataWroldProcess($accessKeyId, $accessKeySecret, $projectEnv);//实时写入阿里云(废弃)
         $this->report_area = $report_area;
         $this->projectEnv = $projectEnv;

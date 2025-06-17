@@ -19,7 +19,7 @@ class AliyunLog
     private $log_info;
     private $env_source;
     private $code = 400;
-    private $reportData;//上报扩展数据
+    private $configData;//配置扩展数据
 
     //是否开启上报系统
     const OPEN_REPORT_SYS_NO = 0; //否
@@ -32,7 +32,7 @@ class AliyunLog
      * @param  boolean $projectEnv  [项目当前环境，默认0测试]
      * @param  integer $linkType    [使用内网链接或是外网链接，默认0内网]
      */
-    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $reportData)
+    public function __construct($accessKeyId, $accessKeySecret, $countryCode, $projectEnv, $linkType, $configData)
     {
         $accessKeyId     = trim($accessKeyId);
         $accessKeySecret = trim($accessKeySecret);
@@ -44,7 +44,7 @@ class AliyunLog
         }
         $this->accessKeyId     = $accessKeyId;
         $this->accessKeySecret = $accessKeySecret;
-        $this->reportData = $reportData;
+        $this->configData = $configData;
         $this->env_source = ($projectEnv == 0) ? "test" : "prod";
         $this->log_info   = $this->logInfo($countryCode, $linkType);
     }
@@ -133,20 +133,16 @@ class AliyunLog
             ],
         ];
         $logInfo = $log_arr[$countryCode];
-        $logInfo['report_url'] = $this->getReportLogInfo($countryCode, $linkType);
+        $logInfo['report_url'] = $this->getReportLogInfo($countryCode);
         return $logInfo;
     }
 
-    public function getReportLogInfo($countryCode, $linkType = 0)
+    public function getReportLogInfo($countryCode)
     {
-        // $linkType 0=内网，1=公网
-        $self_link_type = $this->reportData['self_link_type'] ?? null;
-        if (isset($self_link_type) && is_numeric($self_link_type)) {
-            $linkType = $self_link_type;
-        }
+        $cs_host = $this->configData['cs_host'] ?? "";
         $log_arr = [
-            'prod' => $linkType == 0 ? "http://tool-$countryCode-int.toolsvqdr.com" : "http://tool-$countryCode.toolsvqdr.com",
-            'test' => "http://devtool-$countryCode.toolsvqdr.com",
+            'prod' => !empty($cs_host) ? $cs_host : "http://tool-$countryCode-int.toolsvqdr.com",
+            'test' => !empty($cs_host) ? $cs_host : "http://devtool-$countryCode.toolsvqdr.com",
         ];
         return $log_arr[$this->env_source];
     }
@@ -171,13 +167,13 @@ class AliyunLog
                 'time'    => time(),
             );
 
-            # 是否开启自建上报系统: 默认关闭 取reportData中的配置信息 is_open_self_built_report_sys 0=否，1=是
-            $is_open_self_built_report_sys = $this->reportData['is_open_self_built_report_sys'] ?? $this::OPEN_REPORT_SYS_NO;
+            # 是否开启自建上报系统: 默认关闭 取configData中的配置信息 is_open_self_built_report_sys 0=否，1=是
+            $is_open_self_built_report_sys = $this->configData['is_open_self_built_report_sys'] ?? $this::OPEN_REPORT_SYS_NO;
             //增加自建上报系统数据上报
             if ($is_open_self_built_report_sys == $this::OPEN_REPORT_SYS_YES) $this->selfBuiltReportSys($contents);
 
-            # 是否开启Aliyun上报系统，默认开启 取reportData中的配置信息 is_open_ali_report_sys 0=否，1=是
-            $is_open_ali_report_sys = $this->reportData['is_open_ali_report_sys'] ?? $this::OPEN_REPORT_SYS_YES;
+            # 是否开启Aliyun上报系统，默认开启 取configData中的配置信息 is_open_ali_report_sys 0=否，1=是
+            $is_open_ali_report_sys = $this->configData['is_open_ali_report_sys'] ?? $this::OPEN_REPORT_SYS_YES;
             if ($is_open_ali_report_sys == $this::OPEN_REPORT_SYS_YES) {
                 #写入日志
                 $topic = "";
@@ -257,7 +253,7 @@ class AliyunLog
      * @return bool|string
      * @throws \Exception
      */
-    public function doPost($url, $data, $headers = array(), $timeout_ms = 10000)
+    public function doPost($url, $data, $headers = array(), $timeout_ms = 2000)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
