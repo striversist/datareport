@@ -167,8 +167,8 @@ class AliyunLog
                 'time'    => time(),
             );
 
-            # 是否开启自建上报系统: 默认关闭 取configData中的配置信息 is_open_self_built_report_sys 0=否，1=是
-            $is_open_self_built_report_sys = $this->configData['is_open_self_built_report_sys'] ?? $this::OPEN_REPORT_SYS_NO;
+            # 是否开启自建上报系统: 默认开启 取configData中的配置信息 is_open_self_built_report_sys 0=否，1=是
+            $is_open_self_built_report_sys = $this->configData['is_open_self_built_report_sys'] ?? $this::OPEN_REPORT_SYS_YES;
             //增加自建上报系统数据上报
             if ($is_open_self_built_report_sys == $this::OPEN_REPORT_SYS_YES) $this->selfBuiltReportSys($contents);
 
@@ -237,8 +237,9 @@ class AliyunLog
     public function selfBuiltReportSys($contents)
     {
         try {
+            $timeout = $this->configData['timeout'] ?? 3;
             $report_api = $this->log_info['report_url'] . '/api/dataset/report';
-            return $this->doPost($report_api, json_encode($contents));
+            return $this->doPost($report_api, json_encode($contents), [], $timeout * 1000);
         } catch (\Exception | \Error $e) {
             return $e->getMessage();
         }
@@ -253,7 +254,7 @@ class AliyunLog
      * @return bool|string
      * @throws \Exception
      */
-    public function doPost($url, $data, $headers = array(), $timeout_ms = 2000)
+    public function doPost($url, $data, $headers = array(), $timeout_ms = 3000)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
