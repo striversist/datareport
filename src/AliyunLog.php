@@ -131,7 +131,21 @@ class AliyunLog
                 'project_name' => 'data-pk',
                 'log_store'    => 'cashcash',
             ],
+            'my' => [
+                'end_point'    => $linkType == 0 ? 'ap-southeast-3-intranet.log.aliyuncs.com' : 'ap-southeast-3.log.aliyuncs.com',
+                'project_name' => 'data-my',
+                'log_store'    => 'cashcash',
+            ],
         ];
+        if (!isset($log_arr[$countryCode])){
+            $log_arr = [
+                $countryCode => [
+                    'end_point'    => $this->configData['end_point'] ?? "ap-southeast-1.log.aliyuncs.com",
+                    'project_name' => $this->configData['project_name'] ?? 'data-' . $countryCode,
+                    'log_store'    => $this->configData['log_store'] ?? "cashcash",
+                ],
+            ];
+        }
         $logInfo = $log_arr[$countryCode];
         $logInfo['report_url'] = $this->getReportLogInfo($countryCode);
         return $logInfo;
