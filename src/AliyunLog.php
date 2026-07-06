@@ -136,6 +136,11 @@ class AliyunLog
                 'project_name' => 'data-my',
                 'log_store'    => 'cashcash',
             ],
+            'ar' => [
+                'end_point'    => 'us-east-1.log.aliyuncs.com',
+                'project_name' => 'cashservice-ar',
+                'log_store'    => 'cs_report_log_v1',
+            ],
         ];
         if (!isset($log_arr[$countryCode])){
             $log_arr = [
@@ -171,9 +176,6 @@ class AliyunLog
     public function addLog($name, $content)
     {
         try {
-            require_once realpath(dirname(__FILE__) . '/aliyun-log-php-sdk-master/Log_Autoload.php');
-
-            $client = new \Aliyun_Log_Client($this->log_info['end_point'], $this->accessKeyId, $this->accessKeySecret);
 
             $contents = array(
                 'name'    => $name,
@@ -189,6 +191,9 @@ class AliyunLog
             # 是否开启Aliyun上报系统，默认开启 取configData中的配置信息 is_open_ali_report_sys 0=否，1=是
             $is_open_ali_report_sys = $this->configData['is_open_ali_report_sys'] ?? $this::OPEN_REPORT_SYS_YES;
             if ($is_open_ali_report_sys == $this::OPEN_REPORT_SYS_YES) {
+                require_once realpath(dirname(__FILE__) . '/aliyun-log-php-sdk-master/Log_Autoload.php');
+
+                $client = new \Aliyun_Log_Client($this->log_info['end_point'], $this->accessKeyId, $this->accessKeySecret);
                 #写入日志
                 $topic = "";
                 $source = $this->env_source;
