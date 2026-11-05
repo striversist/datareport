@@ -36,6 +36,7 @@ class ReportClient
     const REPORT_AREA_KE = 12;//上报地区：肯尼亚
     const REPORT_AREA_PK = 13;//上报地区：巴基斯坦
     const REPORT_AREA_MY = 14;//上报地区：马来西亚
+    const REPORT_AREA_BR = 16;//上报地区：巴西
 
     const USER_DEVICE   = 'report/stat/userdevice'; //新增设备信息
     const USER_ACTIVE   = 'report/stat/useractive'; //日活数据
@@ -161,9 +162,10 @@ class ReportClient
      * @param  [type] $guid           [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
      * @param  [int] $country_code   [国家编码]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                 [description]
      */
-    public function userDevice($app_package, $app_channel, $app_version, $advertising_id, $guid, $create_time, $country_code = self::REPORT_AREA_ID)
+    public function userDevice($app_package, $app_channel, $app_version, $advertising_id, $guid, $create_time, $country_code = self::REPORT_AREA_ID, $extra_report_data = [])
     {
         $data = array(
             'app_package'    => $app_package,
@@ -174,7 +176,7 @@ class ReportClient
             'country_code'   => $country_code,
             'create_time'    => $create_time,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_DEVICE, $data);
         // 全球数据上报
@@ -190,9 +192,10 @@ class ReportClient
      * @param  [type] $uid         [自定义用户id，唯一]
      * @param  [type] $guid        [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]              [description]
      */
-    public function userActive($app_package, $app_channel, $app_version, $uid, $guid, $create_time)
+    public function userActive($app_package, $app_channel, $app_version, $uid, $guid, $create_time, $extra_report_data = [])
     {
         $data = array(
             'app_package' => $app_package,
@@ -202,7 +205,7 @@ class ReportClient
             'guid'        => $guid,
             'create_time' => $create_time,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ACTIVE, $data);
         // 全球数据上报
@@ -219,9 +222,10 @@ class ReportClient
      * @param  [type] $guid        [自定义设备id，唯一]
      * @param  [int] $create_time   [创建时间，时间戳]
      * @param  [type] $country_code[国家编码]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]              [description]
      */
-    public function userReg($app_package, $user_name, $user_mobile, $uid, $guid, $create_time, $country_code = self::REPORT_AREA_ID)
+    public function userReg($app_package, $user_name, $user_mobile, $uid, $guid, $create_time, $country_code = self::REPORT_AREA_ID, $extra_report_data = [])
     {
         $data = array(
             'app_package' => $app_package,
@@ -233,7 +237,7 @@ class ReportClient
             'country_code'=> $country_code,
             'create_time' => $create_time,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_INFO, $data);
         // 全球数据上报
@@ -259,9 +263,10 @@ class ReportClient
      * @param  [type] $request_time  [请求时间]
      * @param  [type] $user_type     [用户类型]
      * @param  [type] $channel_source[渠道来源]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $user_type = -1, $channel_source = 0, $user_level = '')
+    public function userOrder($app_package, $offer_package, $order_no, $push_time, $order_status, $order_type, $uid, $guid, $create_time, $product_type, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $user_type = -1, $channel_source = 0, $user_level = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -285,7 +290,7 @@ class ReportClient
             'channel_source'=> $channel_source,
             'user_level'    => $user_level,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_ORDER, $data);
         // 全球数据上报
@@ -304,9 +309,10 @@ class ReportClient
      * @param  [type] $uid           [该免息券总金额]
      * @param  [type] $guid          [description]
      * @param  [int] $create_time   [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function freeTicket($app_package, $offer_package, $order_no, $ticket_num, $ticket_price, $uid, $guid, $create_time)
+    public function freeTicket($app_package, $offer_package, $order_no, $ticket_num, $ticket_price, $uid, $guid, $create_time, $extra_report_data = [])
     {
         $data = array(
             'app_package'   => $app_package,
@@ -318,7 +324,7 @@ class ReportClient
             'guid'          => $guid,
             'create_time'   => $create_time,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FREE_TICKET, $data);
         return true;
@@ -333,9 +339,10 @@ class ReportClient
      * @param  [type] $uid         [description]
      * @param  [type] $guid        [description]
      * @param  [int] $create_time [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]              [description]
      */
-    public function pointRedeem($app_package, $goods_point, $goods_price, $uid, $guid, $create_time)
+    public function pointRedeem($app_package, $goods_point, $goods_price, $uid, $guid, $create_time, $extra_report_data = [])
     {
         $data = array(
             'app_package' => $app_package,
@@ -345,7 +352,7 @@ class ReportClient
             'guid'        => $guid,
             'create_time' => $create_time,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::POIN_TREDEEM, $data);
         return true;
@@ -362,9 +369,10 @@ class ReportClient
      * @param  [type] $guid           [description]
      * @param  [type] $guid_ctime     [description]
      * @param  [type] $account_id     [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                 [description]
      */
-    public function appInstall($app_package, $install_time, $advertising_id, $appsflyer_id, $channel, $campaign, $country, $ip, $guid = '', $guid_ctime = '', $account_id = '')
+    public function appInstall($app_package, $install_time, $advertising_id, $appsflyer_id, $channel, $campaign, $country, $ip, $guid = '', $guid_ctime = '', $account_id = '', $extra_report_data = [])
     {
         // $raw_package, $shop_channel
         $raw_package  = $app_package;
@@ -389,7 +397,7 @@ class ReportClient
             'guid_ctime'     => $guid_ctime,
             'account_id'     => $account_id
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::APP_INSTALL, $data);
         // 全球数据上报
@@ -408,9 +416,10 @@ class ReportClient
      * @param  [type] $clickid        [description]
      * @param  [type] $country        [description]
      * @param  [type] $ip             [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                 [description]
      */
-    public function offerInstall($offer_package, $install_time, $advertising_id, $cid, $sub_id, $cc_id, $clickid, $country, $ip)
+    public function offerInstall($offer_package, $install_time, $advertising_id, $cid, $sub_id, $cc_id, $clickid, $country, $ip, $extra_report_data = [])
     {
         // $raw_package, $shop_channel
         $raw_package  = $offer_package;
@@ -433,7 +442,7 @@ class ReportClient
             'country'        => $country,
             'ip'             => $ip,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OFFER_INSTALL, $data);
         // 全球数据上报
@@ -453,9 +462,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function sms($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function sms($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $sms_count = 1;
         $smsLength = new SmsLength($sms_content);
@@ -482,7 +492,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS, $data);
         // 实时数据上报
@@ -504,9 +514,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function whitelist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $bank_card, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function whitelist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $bank_card, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -527,7 +538,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::WHITELIST, $data);
         // 实时数据上报
@@ -548,9 +559,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function blacklist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function blacklist($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -570,7 +582,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BLACKLIST, $data);
         // 实时数据上报
@@ -591,9 +603,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function checkCard($app_package, $offer_package, $bank_code, $bank_card, $user_name, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function checkCard($app_package, $offer_package, $bank_code, $bank_card, $user_name, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -613,7 +626,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CHECK_CARD, $data);
         // 实时数据上报
@@ -634,9 +647,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [description]
      * @param  [type] $request_time  [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $version_type = 1, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function ktp($app_package, $offer_package, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $version_type = 1, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -656,7 +670,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::KTP, $data);
         // 实时数据上报
@@ -674,9 +688,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [description]
      * @param  [type] $request_time  [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function ocr($app_package, $offer_package, $ocr_img, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function ocr($app_package, $offer_package, $ocr_img, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -693,7 +708,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OCR, $data);
         // 实时数据上报
@@ -716,9 +731,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id_dt [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0, $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '')
+    public function faceCompare($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay,$order_no = '',$source_code = 0, $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -740,7 +756,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_COMPARE, $data);
         // 实时数据上报
@@ -762,9 +778,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id_dt [description]
      * @param  [type] $request_time  [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function faceService($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '')
+    public function faceService($app_package, $offer_package, $raw_img, $diff_img, $request_id, $return_code, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -784,7 +801,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_SERVICE, $data);
         // 实时数据上报
@@ -806,9 +823,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id_dt    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function biopsy($app_package, $offer_package, $request_id, $return_code, $channel_type, $is_pay, $order_no = '', $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '')
+    public function biopsy($app_package, $offer_package, $request_id, $return_code, $channel_type, $is_pay, $order_no = '', $country_code = self::REPORT_AREA_ID, $request_id_dt = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -828,7 +846,7 @@ class ReportClient
             'report_time'   => $res['time'],
 
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BIOPSY, $data);
         // 实时数据上报
@@ -847,9 +865,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function phoneAge($app_package, $offer_package, $user_mobile, $phone_age, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function phoneAge($app_package, $offer_package, $user_mobile, $phone_age, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -867,7 +886,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_AGE, $data);
         // 实时数据上报
@@ -888,9 +907,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function phoneOwner($app_package, $offer_package, $user_mobile, $user_idcard, $mobile_info, $idcard_info, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function phoneOwner($app_package, $offer_package, $user_mobile, $user_idcard, $mobile_info, $idcard_info, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -910,7 +930,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_OWNER, $data);
         // 实时数据上报
@@ -930,9 +950,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function faceSearch($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function faceSearch($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -951,7 +972,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FACE_SEARCH, $data);
         // 实时数据上报
@@ -970,9 +991,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function telScore($app_package, $offer_package, $user_mobile, $return_score, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function telScore($app_package, $offer_package, $user_mobile, $return_score, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -990,7 +1012,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::TEL_SCORE, $data);
         // 实时数据上报
@@ -1014,9 +1036,10 @@ class ReportClient
      * @param  [type] $feature_type  [特征类型]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay,$service_type=1, $country_code = self::REPORT_AREA_ID, $feature_type = 0, $request_id = '', $request_time = '')
+    public function fkScore($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay,$service_type=1, $country_code = self::REPORT_AREA_ID, $feature_type = 0, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1039,7 +1062,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_SCORE, $data);
         // 实时数据上报
@@ -1055,9 +1078,10 @@ class ReportClient
      * @param  [type] $auth_code     [爬虫产品类型标识码]
      * @param  [type] $channel_type  [description]
      * @param  [type] $is_pay        [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function spider($app_package, $offer_package, $task_id, $auth_code, $channel_type, $is_pay)
+    public function spider($app_package, $offer_package, $task_id, $auth_code, $channel_type, $is_pay, $extra_report_data = [])
     {
         $data = array(
             'app_package'   => $app_package,
@@ -1068,7 +1092,7 @@ class ReportClient
             'is_pay'        => $is_pay,
             'create_time'   => time(),
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SPIDER, $data);
         // 实时数据上报
@@ -1087,9 +1111,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function phoneAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function phoneAuth($app_package, $offer_package, $user_mobile, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1107,7 +1132,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_AUTH, $data);
         // 实时数据上报
@@ -1127,9 +1152,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function phoneIdcard($app_package, $offer_package, $user_mobile, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function phoneIdcard($app_package, $offer_package, $user_mobile, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1148,7 +1174,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PHONE_IDCARD, $data);
         // 实时数据上报
@@ -1167,9 +1193,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function multihead($app_package, $offer_package, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function multihead($app_package, $offer_package, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1187,7 +1214,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::MULTIHEAD, $data);
         // 实时数据上报
@@ -1208,9 +1235,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function riskList($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function riskList($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1230,7 +1258,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::RISK_LIST, $data);
         // 实时数据上报
@@ -1250,9 +1278,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function riskyFace($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function riskyFace($app_package, $offer_package, $user_idcard, $face_img, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1271,7 +1300,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::RISKY_FACE, $data);
         // 实时数据上报
@@ -1293,9 +1322,10 @@ class ReportClient
      * @param  [type] $country_code  [国家编码]
      * @param  [type] $request_id    [请求ID]
      * @param  [type] $request_time  [请求时间]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function fk360($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function fk360($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $fk_type, $return_score, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1316,7 +1346,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK360, $data);
         // 实时数据上报
@@ -1332,8 +1362,9 @@ class ReportClient
      * @param  [type] $user_mobile [发送手机号码]
      * @param  [type] $sms_type    [短信发送场景]
      * @param  [type] $request_id    [发送短信成功后返回的请求ID]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001,$request_id = '')
+    public function smsSend($partner_id, $app_package, $user_mobile, $sms_type = 1001,$request_id = '', $extra_report_data = [])
     {
         $data = array(
             'partner_id'  => $partner_id,
@@ -1344,7 +1375,7 @@ class ReportClient
             'country_code' => $this->report_area,
             'request_id' => $request_id,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_SEND, $data);
         return true;
@@ -1358,8 +1389,9 @@ class ReportClient
      * @param  [type] $user_mobile [发送手机号码]
      * @param  string $sms_type    [短信发送场景]
      * @param  string $request_id    [发送短信成功后返回的请求ID]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001,$request_id = '')
+    public function smsReceive($partner_id, $app_package, $user_mobile, $sms_type = 1001,$request_id = '', $extra_report_data = [])
     {
         //新短信系统回填
         try {
@@ -1381,7 +1413,7 @@ class ReportClient
             'request_id' => $request_id,
             'sms_endpoint_result' => $smsRptResult
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_RECEIVE, $data);
 
@@ -1391,8 +1423,9 @@ class ReportClient
     /**
      * cap值同步
      * country_code:0=印尼(默认)，1=菲律宾，2=印度
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function offerCap($offer_package, $offer_type, $old_value, $new_value, $country_code = self::REPORT_AREA_ID)
+    public function offerCap($offer_package, $offer_type, $old_value, $new_value, $country_code = self::REPORT_AREA_ID, $extra_report_data = [])
     {
         $data = array(
             'offer_package' => $offer_package,
@@ -1402,7 +1435,7 @@ class ReportClient
             'country_code'  => $country_code,
             'create_time'   => time(),
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OFFER_CAP, $data);
         return true;
@@ -1410,8 +1443,9 @@ class ReportClient
 
     /**
      *用户数据
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function userInfo($app_package, $user_name, $user_mobile, $event_id, $uid, $guid, $create_time, $country_code = self::REPORT_AREA_ID)
+    public function userInfo($app_package, $user_name, $user_mobile, $event_id, $uid, $guid, $create_time, $country_code = self::REPORT_AREA_ID, $extra_report_data = [])
     {
         $data = array(
             'app_package' => $app_package,
@@ -1423,7 +1457,7 @@ class ReportClient
             'country_code'=> $country_code,
             'create_time' => $create_time,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::USER_INFO, $data);
         // 全球数据上报
@@ -1433,8 +1467,9 @@ class ReportClient
 
     /**
      * 放款手续费
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $channel_type='', $apply_money='', $is_zhanqi='')
+    public function pay($app_package, $offer_package, $order_no, $user_name, $bank_card, $pay_money, $pay_time, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $channel_type='', $apply_money='', $is_zhanqi='', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1456,7 +1491,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::PAY, $data);
         // 实时数据上报
@@ -1466,8 +1501,9 @@ class ReportClient
 
     /**
      *  cloudun风控
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function fkCloudun($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $user_level, $is_pass, $channel_type, $merchantId, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function fkCloudun($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $user_level, $is_pass, $channel_type, $merchantId, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1489,7 +1525,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_CLOUDUN, $data);
         // 实时数据上报
@@ -1499,8 +1535,9 @@ class ReportClient
 
     /**
      * 外部数据风控
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function fkItik($app_package, $offer_package, $user_birth, $user_name, $user_idcard, $channel_type, $is_pay, $count_num = 1, $compare_score = 0, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function fkItik($app_package, $offer_package, $user_birth, $user_name, $user_idcard, $channel_type, $is_pay, $count_num = 1, $compare_score = 0, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1521,7 +1558,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_ITIK, $data);
         // 实时数据上报
@@ -1536,9 +1573,10 @@ class ReportClient
      * @param $income_type
      * @param $income_date
      * @param string $country ID=印尼，IN=印度
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function offerPrice($offer_package, $unit_price, $income_type, $income_date, $country = 'ID')
+    public function offerPrice($offer_package, $unit_price, $income_type, $income_date, $country = 'ID', $extra_report_data = [])
     {
         $data = array(
             'offer_package' => $offer_package,
@@ -1547,7 +1585,7 @@ class ReportClient
             'income_date'   => $income_date,
             'country'       => $country,
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 全球数据上报
         //$this->dataWroldProcess->addLog(self::OFFER_PRICE, $data, 2);
         return true;
@@ -1556,10 +1594,11 @@ class ReportClient
     /**
      * 用户平台级审批数据
      * @param array $reports
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      * @throws \Aliyun_Log_Exception
      */
-    public function userPrimary($reports = array())
+    public function userPrimary($reports = array(), $extra_report_data = [])
     {
         $data = array(
             'app_package'    => $reports['app_package'] ?? '',
@@ -1575,7 +1614,7 @@ class ReportClient
             'country_code'   => $reports['country_code'] ?? self::REPORT_AREA_ID,
             'create_time'    => $reports['create_time'] ?? time(),
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 全球数据上报
         //$this->dataWroldProcess->addLog(self::USER_PRIMARY, $data, 2);
         return true;
@@ -1583,8 +1622,9 @@ class ReportClient
 
     /**
      * 现金贷机审服务
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      */
-    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $order_no = '', $count_num = 1, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function machineAudit($app_package, $offer_package, $user_name, $user_mobile, $user_idcard, $product_type, $order_no = '', $count_num = 1, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1604,7 +1644,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::AUDIT, $data);
         return true;
@@ -1621,9 +1661,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function whatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function whatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $sms_count = 1;
         $res = $this->getDateDetail($request_time);
@@ -1644,7 +1685,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::WHATS_APP, $data);
         // 实时数据上报
@@ -1661,9 +1702,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function collection($app_package, $offer_package, $user_mobile, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function collection($app_package, $offer_package, $user_mobile, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1680,7 +1722,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::COLLECTION, $data);
         // 实时数据上报
@@ -1701,9 +1743,10 @@ class ReportClient
      * @param  [type] $country_code  [description]
      * @param  [type] $request_id    [description]
      * @param  [type] $request_time  [description]
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return [type]                [description]
      */
-    public function black($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function black($app_package, $offer_package, $user_mobile, $user_name, $user_idcard, $is_hit, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1723,7 +1766,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BLACK, $data);
         // 实时数据上报
@@ -1745,11 +1788,12 @@ class ReportClient
      * @param int $channel_source
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      * @throws \Error
      * @throws \Exception
      */
-    public function zeusSecondCost($app_package, $offer_package, $user_name, $user_mobile,$order_no, $user_idcard, $is_pay=1, $service_type=91, $count_num = 1, $channel_source = 0, $request_id = '', $request_time = '')
+    public function zeusSecondCost($app_package, $offer_package, $user_name, $user_mobile,$order_no, $user_idcard, $is_pay=1, $service_type=91, $count_num = 1, $channel_source = 0, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1770,7 +1814,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::ZEUSSECOND, $data);
         // 实时数据上报
@@ -1790,11 +1834,12 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      * @throws \Error
      * @throws \Exception
      */
-    public function nameCheck($app_package, $offer_package, $user_name, $user_mobile, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function nameCheck($app_package, $offer_package, $user_name, $user_mobile, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1812,7 +1857,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::NAME_CHECK, $data);
         // 实时数据上报
@@ -1835,10 +1880,11 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      * @throws \Exception
      */
-    public function bankCheck($app_package, $offer_package, $transactionId, $bankAccount, $ifscCode, $pan, $mobile, $aadhaar, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function bankCheck($app_package, $offer_package, $transactionId, $bankAccount, $ifscCode, $pan, $mobile, $aadhaar, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1860,7 +1906,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BANKCHECK, $data);
         // 实时数据上报
@@ -1879,11 +1925,12 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      * @throws \Error
      * @throws \Exception
      */
-    public function idCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function idCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1901,7 +1948,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::ID_CHECK, $data);
         // 实时数据上报
@@ -1922,10 +1969,11 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      * @throws \Exception
      */
-    public function fkdk($app_package, $offer_package, $order_no, $id_number, $phone, $real_name, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function fkdk($app_package, $offer_package, $order_no, $id_number, $phone, $real_name, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1945,7 +1993,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FKDK, $data);
         // 实时数据上报
@@ -1966,11 +2014,12 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      * @throws \Error
      * @throws \Exception
      */
-    public function fkAiskor($app_package, $offer_package, $user_mobile, $user_idcard, $order_no, $channel_type, $model_id, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function fkAiskor($app_package, $offer_package, $user_mobile, $user_idcard, $order_no, $channel_type, $model_id, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -1990,7 +2039,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_AISKOR, $data);
         // 实时数据上报
@@ -2011,9 +2060,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function nameCheckStat($app_package, $offer_package, $user_name, $user_mobile, $pan, $aadhaar, $channel_type, $is_pay, $country_code = self::REPORT_AREA_IN, $request_id = '', $request_time = '')
+    public function nameCheckStat($app_package, $offer_package, $user_name, $user_mobile, $pan, $aadhaar, $channel_type, $is_pay, $country_code = self::REPORT_AREA_IN, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2033,7 +2083,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::NAME_CHECK_IN, $data);
         return true;
@@ -2053,9 +2103,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function bankCheckStat($app_package, $offer_package, $user_mobile, $bank_card, $ifscCode, $pan, $aadhaar, $channel_type, $is_pay, $country_code = self::REPORT_AREA_IN, $request_id = '', $request_time = '')
+    public function bankCheckStat($app_package, $offer_package, $user_mobile, $bank_card, $ifscCode, $pan, $aadhaar, $channel_type, $is_pay, $country_code = self::REPORT_AREA_IN, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2076,7 +2127,7 @@ class ReportClient
             'report_day'    => $res['day'],
             'report_time'   => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::BANK_CHECK_IN, $data);
         return true;
@@ -2093,9 +2144,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function feature($app_package, $offer_package, $service_type, $order_no, $create_time, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function feature($app_package, $offer_package, $service_type, $order_no, $create_time, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2112,7 +2164,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::FK_FEATURE, $data);
         return true;
@@ -2130,9 +2182,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function livenessCheck($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function livenessCheck($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2151,7 +2204,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::LIVENESS_CHECK, $data);
         return true;
@@ -2167,9 +2220,10 @@ class ReportClient
      * @param $country_code
      * @param $request_time
      * @param $request_id
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function commentGenerate($app_package, $offer_package, $channel_type, $num, $is_pay, $country_code, $request_time, $request_id): bool
+    public function commentGenerate($app_package, $offer_package, $channel_type, $num, $is_pay, $country_code, $request_time, $request_id, $extra_report_data = []): bool
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2186,7 +2240,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::COMMENT_GENERATE, $data);
         return true;
@@ -2204,9 +2258,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function antiFake($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function antiFake($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2225,7 +2280,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::ANTI_FAKE, $data);
         return true;
@@ -2243,9 +2298,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function addFace($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function addFace($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2264,7 +2320,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::ADD_FACE, $data);
         return true;
@@ -2280,9 +2336,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function ocrPassport($app_package, $offer_package, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function ocrPassport($app_package, $offer_package, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2299,7 +2356,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OCR_PASSPORT, $data);
         return true;
@@ -2317,9 +2374,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function smsWhatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function smsWhatsApp($app_package, $offer_package, $user_mobile, $sms_content, $sms_type, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2338,7 +2396,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SMS_WHATSAPP, $data);
         return true;
@@ -2354,9 +2412,10 @@ class ReportClient
      * @param $country_code
      * @param $request_time
      * @param $request_id
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function creditPersional($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_time, $request_id): bool
+    public function creditPersional($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_time, $request_id, $extra_report_data = []): bool
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2373,7 +2432,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CREDIT_PERSONAL, $data);
         return true;
@@ -2389,9 +2448,10 @@ class ReportClient
      * @param $country_code
      * @param $request_id
      * @param $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function salaryCheck($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_id, $request_time): bool
+    public function salaryCheck($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_id, $request_time, $extra_report_data = []): bool
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2408,7 +2468,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SALARY_CHECK, $data);
         return true;
@@ -2425,9 +2485,10 @@ class ReportClient
      * @param $country_code
      * @param $request_id
      * @param $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function sameInfoCheck($app_package, $offer_package, $channel_type, $user_idcard, $user_mobile, $is_pay, $country_code, $request_id, $request_time): bool
+    public function sameInfoCheck($app_package, $offer_package, $channel_type, $user_idcard, $user_mobile, $is_pay, $country_code, $request_id, $request_time, $extra_report_data = []): bool
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2445,7 +2506,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::SAME_INFO_CHECK, $data);
         return true;
@@ -2461,9 +2522,10 @@ class ReportClient
      * @param $country_code
      * @param $request_id
      * @param $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function contactCheck($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_id, $request_time): bool
+    public function contactCheck($app_package, $offer_package, $channel_type, $user_idcard, $is_pay, $country_code, $request_id, $request_time, $extra_report_data = []): bool
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2480,7 +2542,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CONTACT_CHECK, $data);
         return true;
@@ -2496,9 +2558,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function ocrText($app_package, $offer_package, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function ocrText($app_package, $offer_package, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2515,7 +2578,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::OCR_TEXT, $data);
         return true;
@@ -2534,9 +2597,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function uniqueFaces($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $order_no, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function uniqueFaces($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $order_no, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2555,7 +2619,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::UNIQUE_FACES, $data);
         return true;
@@ -2571,9 +2635,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function ipCheck($app_package, $offer_package, $ip_addr, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function ipCheck($app_package, $offer_package, $ip_addr, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2590,7 +2655,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::IP_CHECK, $data);
         return true;
@@ -2605,9 +2670,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function customerTicketCheck($app_package, $offer_package, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function customerTicketCheck($app_package, $offer_package, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2623,7 +2689,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::CUSTOMER_TICKET_CHECK, $data);
         return true;
@@ -2640,9 +2706,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function expressionCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function expressionCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2660,7 +2727,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::EXPRESSION_CHECK, $data);
         return true;
@@ -2677,9 +2744,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function deepfakeCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function deepfakeCheck($app_package, $offer_package, $user_idcard, $img_url, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2697,7 +2765,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time'],
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::DEEP_FAKE_CHECK, $data);
         return true;
@@ -2715,9 +2783,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function h5LivenessCheck($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function h5LivenessCheck($app_package, $offer_package, $img_url, $return_code, $channel_type, $is_pay, $order_no, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2736,7 +2805,7 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::H5_LIVENESS_CHECK, $data);
         return true;
@@ -2756,9 +2825,10 @@ class ReportClient
      * @param int $country_code
      * @param string $request_id
      * @param string $request_time
+     * @param array $extra_report_data 扩展上报字段（新增字段时使用）
      * @return bool
      */
-    public function aiChatCompletion($app_package, $offer_package, $chat_type, $model_id, $prompt_tokens, $completion_tokens, $total_tokens, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '')
+    public function aiChatCompletion($app_package, $offer_package, $chat_type, $model_id, $prompt_tokens, $completion_tokens, $total_tokens, $channel_type, $is_pay, $country_code = self::REPORT_AREA_ID, $request_id = '', $request_time = '', $extra_report_data = [])
     {
         $res = $this->getDateDetail($request_time);
         $data = array(
@@ -2779,9 +2849,26 @@ class ReportClient
             'report_day' => $res['day'],
             'report_time' => $res['time']
         );
-        $data = array_merge($data, $this->reportData);
+        $data = array_merge($data, $this->reportData, (array)$extra_report_data);
         // 离线数据存储
         $this->offlineProcess->addLog(self::AI_CHAT_COMPLETION, $data);
         return true;
+    }
+
+    /**
+     * 通用上报
+     * @param string $name 上报名称（如 report/service/xxx，内部会将 / 转为 _）
+     * @param array $report_data 上报数据
+     * @return bool
+     */
+    public function commonReport($name, $report_data = array())
+    {
+        $name = trim((string)$name);
+        if ($name === '') {
+            return false;
+        }
+        $data = array_merge((array)$report_data, $this->reportData);
+        // 离线数据存储
+        return $this->offlineProcess->addLog($name, $data);
     }
 }

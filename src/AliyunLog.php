@@ -136,6 +136,11 @@ class AliyunLog
                 'project_name' => 'data-my',
                 'log_store'    => 'cashcash',
             ],
+            'br' => [
+                'end_point'    => $linkType == 0 ? 'sa-east-1-internal.log.aliyuncs.com' : 'sa-east-1.log.aliyuncs.com',
+                'project_name' => 'cashservice-br',
+                'log_store'    => 'cs_report_log_v1',
+            ],
             'ar' => [
                 'end_point'    => 'us-east-1.log.aliyuncs.com',
                 'project_name' => 'cashservice-ar',
